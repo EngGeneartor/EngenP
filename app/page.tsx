@@ -354,6 +354,134 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ═══ Example Preview ═══ */}
+      <section className="relative z-10 py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <FadeIn className="text-center">
+            <span className="pill border border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-400">미리보기</span>
+            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-foreground/90 md:text-5xl">
+              이런 문제가 <span className="text-gradient">자동으로</span> 만들어집니다
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-[15px] text-foreground/55">
+              실제 수능특강 지문을 기반으로 AI가 생성한 변형 문제 예시입니다.
+            </p>
+          </FadeIn>
+
+          <div className="mt-14 grid gap-6 lg:grid-cols-2">
+            {/* 원문 지문 */}
+            <FadeIn>
+              <div className="glass-card rounded-2xl p-6 h-full">
+                <div className="mb-4 flex items-center gap-2">
+                  <span className="pill border border-purple-500/20 bg-purple-500/8 text-purple-400">EBS 수능특강</span>
+                  <span className="pill border border-border/30 bg-muted/20 text-muted-foreground/60">영어</span>
+                  <span className="pill border border-border/30 bg-muted/20 text-muted-foreground/60">2024</span>
+                </div>
+                <h3 className="mb-4 text-[16px] font-bold text-foreground/85">Cultural Intelligence in a Globalized World</h3>
+                <p className="text-[12.5px] leading-[1.85] text-foreground/55">
+                  The concept of &quot;cultural intelligence&quot; has emerged as a critical competency in our increasingly globalized world. Unlike traditional measures of intelligence, cultural intelligence (CQ) refers to an individual&apos;s capability to function effectively across various cultural contexts. Research has shown that individuals with high CQ are better equipped to navigate the complexities of cross-cultural interactions...
+                </p>
+                <div className="mt-5 rounded-xl bg-background/30 border border-border/15 p-4">
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <div>
+                      <p className="text-xl font-extrabold text-gradient">247</p>
+                      <p className="text-[10px] text-muted-foreground/50">단어 수</p>
+                    </div>
+                    <div>
+                      <p className="text-xl font-extrabold text-gradient">12.4</p>
+                      <p className="text-[10px] text-muted-foreground/50">평균 문장 길이</p>
+                    </div>
+                    <div>
+                      <p className="text-xl font-extrabold text-gradient">B2</p>
+                      <p className="text-[10px] text-muted-foreground/50">CEFR 레벨</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+
+            {/* 생성된 변형 문제들 */}
+            <div className="flex flex-col gap-4">
+              {/* 문제 1: 어법 */}
+              <FadeIn delay={100}>
+                <div className="glass-card rounded-2xl p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 text-sm font-extrabold text-white">1</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="mb-2 flex flex-wrap items-center gap-1.5">
+                        <span className="pill border border-sky-500/25 bg-sky-500/8 text-sky-400 text-[10px]">어법</span>
+                        <span className="pill border border-amber-500/25 bg-amber-500/8 text-amber-400 text-[10px]">Lv.3</span>
+                        <span className="pill border border-border/20 bg-muted/15 text-muted-foreground/50 text-[10px]">주어-동사 수일치</span>
+                      </div>
+                      <p className="text-[12px] font-semibold text-foreground/80 mb-2">밑줄 친 (A), (B)에서 어법에 맞는 표현으로 가장 적절한 것은?</p>
+                      <div className="space-y-1">
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">① (A) refers - (B) is</div>
+                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-300 font-medium">② (A) refers - (B) are ✓</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">③ (A) referring - (B) is</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">④ (A) referring - (B) are</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+
+              {/* 문제 2: 빈칸 추론 */}
+              <FadeIn delay={200}>
+                <div className="glass-card rounded-2xl p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 text-sm font-extrabold text-white">2</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="mb-2 flex flex-wrap items-center gap-1.5">
+                        <span className="pill border border-teal-500/25 bg-teal-500/8 text-teal-400 text-[10px]">빈칸 추론</span>
+                        <span className="pill border border-rose-500/25 bg-rose-500/8 text-rose-400 text-[10px]">Lv.4</span>
+                        <span className="pill border border-border/20 bg-muted/15 text-muted-foreground/50 text-[10px]">글의 흐름 파악</span>
+                      </div>
+                      <p className="text-[12px] font-semibold text-foreground/80 mb-2">다음 빈칸에 들어갈 말로 가장 적절한 것은?</p>
+                      <div className="space-y-1">
+                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-300 font-medium">① accumulating information ✓</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">② avoiding conflicts</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">③ expressing emotions</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">④ maintaining traditions</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">⑤ building relationships</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+
+              {/* 문제 3: 어휘 */}
+              <FadeIn delay={300}>
+                <div className="glass-card rounded-2xl p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 text-sm font-extrabold text-white">3</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="mb-2 flex flex-wrap items-center gap-1.5">
+                        <span className="pill border border-purple-500/25 bg-purple-500/8 text-purple-400 text-[10px]">어휘</span>
+                        <span className="pill border border-emerald-500/25 bg-emerald-500/8 text-emerald-400 text-[10px]">Lv.2</span>
+                        <span className="pill border border-border/20 bg-muted/15 text-muted-foreground/50 text-[10px]">문맥상 어휘 선택</span>
+                      </div>
+                      <p className="text-[12px] font-semibold text-foreground/80 mb-2">밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">① perform</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">② adapt</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">③ valuable</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">④ lack</span>
+                        <span className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-2.5 py-1 text-[11px] text-purple-300 font-medium">⑤ succeed ✓</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+            </div>
+          </div>
+
+          <FadeIn delay={400} className="mt-10 text-center">
+            <p className="text-[13px] text-foreground/40">
+              위 문제는 AI가 실제 지문을 분석하여 자동 생성한 예시입니다. 어법, 빈칸 추론, 어휘 등 10가지 유형을 지원합니다.
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══ Who Is It For ═══ */}
       <section className="relative z-10 py-24">
         <div className="mx-auto max-w-5xl px-6">
