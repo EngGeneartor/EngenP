@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Zap, Upload, Sparkles, FileDown, ArrowRight, BookOpen, Brain, Target, Shield, Clock, Star, GraduationCap, BarChart3, MessageCircle, User, LogOut } from "lucide-react"
+import { Zap, Upload, Sparkles, FileDown, ArrowRight, BookOpen, Brain, Target, Shield, Clock, ChevronRight, Star, GraduationCap, BarChart3, MessageCircle, User, LogOut } from "lucide-react"
 import { AmbientBackground } from "@/components/ambient-background"
 import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
@@ -181,11 +181,18 @@ export default function LandingPage() {
         <FadeIn delay={300}>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
             <Link
-              href="/login"
+              href={userEmail ? "/dashboard" : "/login"}
               className="btn-shine group flex items-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-8 py-4 text-[15px] font-bold text-white shadow-xl shadow-purple-500/20 transition-smooth hover:shadow-purple-500/35 hover:brightness-110 active:scale-[0.98]"
             >
-              무료로 시작하기
+              {userEmail ? "대시보드로 이동" : "무료로 시작하기"}
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/dashboard?demo=true"
+              className="flex items-center gap-2 rounded-2xl border border-border/40 bg-muted/20 px-8 py-4 text-[15px] font-semibold text-foreground/60 transition-smooth hover:bg-muted/40 hover:text-foreground/80"
+            >
+              데모 체험하기
+              <ChevronRight className="size-4" />
             </Link>
           </div>
         </FadeIn>
