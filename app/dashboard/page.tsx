@@ -6,6 +6,7 @@ import { MessageCircle, X } from "lucide-react"
 import { LeftSidebar } from "@/components/left-sidebar"
 import { MainContent } from "@/components/main-content"
 import { AIChatSidebar } from "@/components/ai-chat-sidebar"
+import { ProjectHistory } from "@/components/project-history"
 import { AmbientBackground } from "@/components/ambient-background"
 import { supabase } from "@/lib/supabase"
 import type { User } from "@supabase/supabase-js"
@@ -17,6 +18,7 @@ function DashboardContent() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null)
   const [chatOpen, setChatOpen] = useState(true)
+  const [historyCollapsed, setHistoryCollapsed] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
   const isDemo = searchParams.get("demo") === "true"
@@ -64,6 +66,8 @@ function DashboardContent() {
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background">
       <AmbientBackground />
+      <ProjectHistory collapsed={historyCollapsed} onToggle={() => setHistoryCollapsed(!historyCollapsed)} />
+      <div className="divider-v-gradient shrink-0" />
       <LeftSidebar
         uploadedFiles={uploadedFiles}
         setUploadedFiles={setUploadedFiles}
