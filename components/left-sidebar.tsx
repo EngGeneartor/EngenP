@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Upload, FileText, BarChart3, Settings2, ChevronDown, Zap, Sparkles, LogOut } from "lucide-react"
+import { useState, useRef, useCallback } from "react"
+import { Upload, FileText, BarChart3, Settings2, ChevronDown, Zap, Sparkles, LogOut, X, Loader2, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { supabase } from "@/lib/supabase"
 import { Slider } from "@/components/ui/slider"
@@ -10,18 +10,34 @@ import { Label } from "@/components/ui/label"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
 
+interface UploadedFile {
+  name: string
+  size: number
+  path: string
+  uploadedAt: Date
+}
+
 const questionTypes = [
-  { id: "grammar", label: "어법", icon: "G" },
-  { id: "vocabulary", label: "어휘", icon: "V" },
-  { id: "blank", label: "빈칸 추론", icon: "B" },
-  { id: "order", label: "순서 배열", icon: "O" },
-  { id: "insertion", label: "문장 삽입", icon: "I" },
-  { id: "title", label: "제목 추론", icon: "T" },
-  { id: "purpose", label: "글의 목적", icon: "P" },
-  { id: "summary", label: "요약문", icon: "S" },
-  { id: "implication", label: "함축 의미", icon: "H" },
-  { id: "mood", label: "심경 변화", icon: "M" },
+  { id: "grammar", label: "어법" },
+  { id: "vocabulary", label: "어휘" },
+  { id: "blank", label: "빈칸 추론" },
+  { id: "order", label: "순서 배열" },
+  { id: "insertion", label: "문장 삽입" },
+  { id: "title", label: "제목 추론" },
+  { id: "purpose", label: "글의 목적" },
+  { id: "summary", label: "요약문" },
+  { id: "implication", label: "함축 의미" },
+  { id: "mood", label: "심경 변화" },
 ]
+
+const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png", "text/plain"]
+const MAX_SIZE = 10 * 1024 * 1024 // 10MB
+
+function formatFileSize(bytes: number) {
+  if (bytes < 1024) return `${bytes}B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)}MB`
+}
 
 export function LeftSidebar() {
   const [difficulty, setDifficulty] = useState([3])
@@ -32,6 +48,11 @@ export function LeftSidebar() {
     analysis: false,
     options: true,
   })
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadError, setUploadError] = useState("")
+  const [isDragging, setIsDragging] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const toggleType = (typeId: string) => {
     setSelectedTypes((prev) =>
@@ -40,6 +61,93 @@ export function LeftSidebar() {
   }
 
   const difficultyLabels = ["", "매우 쉬움", "쉬움", "보통", "어려움", "매우 어려움"]
+
+  const uploadFile = useCallback(async (file: File) => {
+    setUploadError("")
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setUploadError("지원하지 않는 파일 형식입니다. (PDF, JPG, PNG, TXT)")
+      return
+    }
+
+    if (file.size > MAX_SIZE) {
+      setUploadError("파일 크기가 10MB를 초과합니다.")
+      return
+    }
+
+    if (uploadedFiles.some(f => f.name === file.name)) {
+      setUploadError("이미 업로드된 파일입니다.")
+      return
+    }
+
+    setIsUploading(true)
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        setUploadError("로그인이 필요합니다.")
+        return
+      }
+
+      const filePath = `${user.id}/${Date.now()}_${file.name}`
+      const { error } = await supabase.storage
+        .from("passages")
+        .upload(filePath, file)
+
+      if (error) {
+        setUploadError(`업로드 실패: ${error.message}`)
+        return
+      }
+
+      setUploadedFiles(prev => [...prev, {
+        name: file.name,
+        size: file.size,
+        path: filePath,
+        uploadedAt: new Date(),
+      }])
+    } catch {
+      setUploadError("업로드 중 오류가 발생했습니다.")
+    } finally {
+      setIsUploading(false)
+    }
+  }, [uploadedFiles])
+
+  const deleteFile = async (file: UploadedFile) => {
+    const { error } = await supabase.storage
+      .from("passages")
+      .remove([file.path])
+
+    if (!error) {
+      setUploadedFiles(prev => prev.filter(f => f.path !== file.path))
+    }
+  }
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+      Array.from(files).forEach(uploadFile)
+    }
+    if (fileInputRef.current) fileInputRef.current.value = ""
+  }
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+    const files = e.dataTransfer.files
+    if (files) {
+      Array.from(files).forEach(uploadFile)
+    }
+  }, [uploadFile])
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDragging(false)
+  }
 
   return (
     <aside className="relative z-10 flex h-full w-[310px] flex-col sidebar-glass">
@@ -70,39 +178,99 @@ export function LeftSidebar() {
                 </div>
                 <span>타겟 지문 업로드</span>
               </div>
-              <ChevronDown
-                className={cn(
-                  "size-4 text-muted-foreground/50 transition-transform duration-300",
-                  sectionsOpen.upload && "rotate-180"
+              <div className="flex items-center gap-2">
+                {uploadedFiles.length > 0 && (
+                  <span className="pill border border-purple-500/20 bg-purple-500/10 text-purple-400">{uploadedFiles.length}개</span>
                 )}
-              />
+                <ChevronDown
+                  className={cn(
+                    "size-4 text-muted-foreground/50 transition-transform duration-300",
+                    sectionsOpen.upload && "rotate-180"
+                  )}
+                />
+              </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="pt-2">
-              <div className="group/drop rounded-2xl border border-dashed border-border/60 bg-muted/20 p-5 text-center transition-smooth hover:border-purple-500/40 hover:bg-purple-500/[0.03]">
-                <div className="mx-auto flex size-11 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/15 to-indigo-500/15 transition-smooth group-hover/drop:from-purple-500/25 group-hover/drop:to-indigo-500/25">
-                  <Upload className="size-5 text-purple-400/80" />
-                </div>
-                <p className="mt-3 text-[13px] font-medium text-foreground/80">
-                  파일을 드래그하거나 클릭
-                </p>
-                <p className="mt-1 text-[11px] text-muted-foreground/70">
-                  PDF, JPG, PNG, TXT (최대 10MB)
-                </p>
-                <Button variant="outline" size="sm" className="mt-3 rounded-xl border-border/40 bg-transparent text-xs font-medium text-foreground/60 transition-smooth hover:border-purple-500/40 hover:bg-purple-500/10 hover:text-purple-300">
-                  파일 선택
-                </Button>
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,.txt"
+                multiple
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+
+              {/* Drop zone */}
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                className={cn(
+                  "cursor-pointer rounded-2xl border border-dashed p-5 text-center transition-smooth",
+                  isDragging
+                    ? "border-purple-500 bg-purple-500/10"
+                    : "border-border/60 bg-muted/20 hover:border-purple-500/40 hover:bg-purple-500/[0.03]",
+                  isUploading && "pointer-events-none opacity-60"
+                )}
+              >
+                {isUploading ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <Loader2 className="size-8 animate-spin text-purple-400" />
+                    <p className="text-[12px] font-medium text-purple-300">업로드 중...</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className={cn(
+                      "mx-auto flex size-11 items-center justify-center rounded-xl bg-gradient-to-br transition-smooth",
+                      isDragging
+                        ? "from-purple-500/30 to-indigo-500/30"
+                        : "from-purple-500/15 to-indigo-500/15"
+                    )}>
+                      <Upload className={cn("size-5", isDragging ? "text-purple-300" : "text-purple-400/80")} />
+                    </div>
+                    <p className="mt-3 text-[13px] font-medium text-foreground/80">
+                      {isDragging ? "여기에 놓으세요!" : "파일을 드래그하거나 클릭"}
+                    </p>
+                    <p className="mt-1 text-[11px] text-muted-foreground/70">
+                      PDF, JPG, PNG, TXT (최대 10MB)
+                    </p>
+                  </>
+                )}
               </div>
-              <div className="mt-2.5 flex items-center gap-2.5 rounded-xl bg-purple-500/[0.06] border border-purple-500/[0.08] px-3.5 py-2.5 transition-smooth hover:bg-purple-500/[0.08]">
-                <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-purple-500/15">
-                  <FileText className="size-3.5 text-purple-400" />
+
+              {/* Error message */}
+              {uploadError && (
+                <div className="mt-2 flex items-center gap-2 rounded-xl bg-red-500/10 border border-red-500/15 px-3 py-2">
+                  <X className="size-3.5 shrink-0 text-red-400" />
+                  <p className="text-[11px] text-red-300">{uploadError}</p>
                 </div>
-                <span className="flex-1 truncate text-xs font-medium text-foreground/70">
-                  2024_수능특강_영어_지문1.pdf
-                </span>
-                <button className="text-[11px] font-medium text-muted-foreground/50 transition-smooth hover:text-red-400">
-                  삭제
-                </button>
-              </div>
+              )}
+
+              {/* Uploaded files list */}
+              {uploadedFiles.length > 0 && (
+                <div className="mt-2.5 flex flex-col gap-1.5">
+                  {uploadedFiles.map((file) => (
+                    <div key={file.path} className="flex items-center gap-2.5 rounded-xl bg-purple-500/[0.06] border border-purple-500/[0.08] px-3 py-2.5 transition-smooth hover:bg-purple-500/[0.08]">
+                      <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-purple-500/15">
+                        <FileText className="size-3.5 text-purple-400" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="truncate text-[11px] font-medium text-foreground/70">{file.name}</p>
+                        <p className="text-[10px] text-muted-foreground/50">{formatFileSize(file.size)}</p>
+                      </div>
+                      <CheckCircle2 className="size-3.5 shrink-0 text-emerald-400/60" />
+                      <button
+                        onClick={() => deleteFile(file)}
+                        className="text-[11px] font-medium text-muted-foreground/40 transition-smooth hover:text-red-400"
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CollapsibleContent>
           </Collapsible>
 
@@ -118,15 +286,12 @@ export function LeftSidebar() {
                 </div>
                 <span>기출 스타일 분석</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="pill border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">분석됨</span>
-                <ChevronDown
-                  className={cn(
-                    "size-4 text-muted-foreground/50 transition-transform duration-300",
-                    sectionsOpen.analysis && "rotate-180"
-                  )}
-                />
-              </div>
+              <ChevronDown
+                className={cn(
+                  "size-4 text-muted-foreground/50 transition-transform duration-300",
+                  sectionsOpen.analysis && "rotate-180"
+                )}
+              />
             </CollapsibleTrigger>
             <CollapsibleContent className="pt-2">
               <div className="rounded-2xl border border-dashed border-border/60 bg-muted/20 p-4 text-center transition-smooth hover:border-indigo-500/40 hover:bg-indigo-500/[0.03]">
@@ -138,11 +303,6 @@ export function LeftSidebar() {
                 </p>
                 <p className="mt-0.5 text-[11px] text-muted-foreground/60">
                   AI가 출제 스타일을 분석합니다
-                </p>
-              </div>
-              <div className="mt-2 rounded-xl bg-indigo-500/[0.06] border border-indigo-500/[0.08] px-3.5 py-2.5">
-                <p className="text-xs text-muted-foreground/80">
-                  분석 완료: <span className="font-bold text-indigo-400">서울고 2024 1학기</span>
                 </p>
               </div>
             </CollapsibleContent>
@@ -221,9 +381,7 @@ export function LeftSidebar() {
                 {/* Question Types */}
                 <div className="rounded-2xl bg-muted/20 p-4">
                   <div className="mb-3 flex items-center justify-between">
-                    <Label className="text-xs font-semibold text-foreground/70">
-                      문제 유형
-                    </Label>
+                    <Label className="text-xs font-semibold text-foreground/70">문제 유형</Label>
                     <span className="text-[11px] text-muted-foreground/50">{selectedTypes.length}개 선택</span>
                   </div>
                   <div className="grid grid-cols-2 gap-1.5">
@@ -256,12 +414,24 @@ export function LeftSidebar() {
       {/* Generate Button */}
       <div className="px-4 pb-5 pt-2">
         <div className="divider-gradient mb-4" />
-        <Button className="btn-shine w-full rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 py-6 text-[13px] font-bold tracking-wide text-white shadow-xl shadow-purple-500/15 transition-smooth hover:shadow-purple-500/25 hover:brightness-110 active:scale-[0.98]" size="lg">
+        <Button
+          disabled={uploadedFiles.length === 0}
+          className={cn(
+            "btn-shine w-full rounded-2xl py-6 text-[13px] font-bold tracking-wide text-white shadow-xl transition-smooth active:scale-[0.98]",
+            uploadedFiles.length > 0
+              ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 shadow-purple-500/15 hover:shadow-purple-500/25 hover:brightness-110"
+              : "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
+          )}
+          size="lg"
+        >
           <Sparkles className="mr-2 size-4" />
-          문제 생성하기
+          {uploadedFiles.length > 0 ? "문제 생성하기" : "지문을 먼저 업로드하세요"}
         </Button>
         <p className="mt-2 text-center text-[10px] text-muted-foreground/40">
-          {selectedTypes.length}개 유형 · {questionCount[0]}문항 · 난이도 {difficulty[0]}
+          {uploadedFiles.length > 0
+            ? `${uploadedFiles.length}개 파일 · ${selectedTypes.length}개 유형 · ${questionCount[0]}문항 · 난이도 ${difficulty[0]}`
+            : "파일을 업로드하면 문제를 생성할 수 있습니다"
+          }
         </p>
         <button
           onClick={async () => {
