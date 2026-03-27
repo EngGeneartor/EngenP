@@ -3,23 +3,45 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Abyss - AI 영어 내신 변형 문제 생성기',
-  description: 'AI 기반 고등학교 영어 내신 변형 문제 자동 생성 서비스',
+  description: '시험 지문을 넣으면 변형 문제가 나온다. AI 기반 고등학교 영어 내신 변형 문제 자동 생성 서비스.',
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
+        url: '/EngenP/icon-light-32x32.png',
         media: '(prefers-color-scheme: light)',
       },
       {
-        url: '/icon-dark-32x32.png',
+        url: '/EngenP/icon-dark-32x32.png',
         media: '(prefers-color-scheme: dark)',
       },
       {
-        url: '/icon.svg',
+        url: '/EngenP/icon.svg',
         type: 'image/svg+xml',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/EngenP/apple-icon.png',
+  },
+  openGraph: {
+    title: 'Abyss - AI 영어 내신 변형 문제 생성기',
+    description: '시험 지문을 넣으면 변형 문제가 나온다. 모의고사, 교과서, 추가지문을 업로드하면 AI가 고품질 변형 문제를 자동 생성합니다.',
+    url: 'https://enggeneartor.github.io/EngenP/',
+    siteName: 'Abyss',
+    images: [
+      {
+        url: 'https://enggeneartor.github.io/EngenP/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Abyss - AI 영어 내신 변형 문제 생성기',
+      },
+    ],
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Abyss - AI 영어 내신 변형 문제 생성기',
+    description: '시험 지문을 넣으면 변형 문제가 나온다.',
+    images: ['https://enggeneartor.github.io/EngenP/og-image.png'],
   },
 }
 

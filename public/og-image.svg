@@ -1,0 +1,55 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0c0a1a"/>
+      <stop offset="50%" stop-color="#1a1035"/>
+      <stop offset="100%" stop-color="#0c0a1a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="300" cy="315" r="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="900" cy="315" r="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Logo icon -->
+  <rect x="520" y="120" width="72" height="72" rx="18" fill="url(#accent)"/>
+  <path d="M560 140l-14 26h10l-5 20 20-28h-12l5-18z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- Brand text -->
+  <text x="600" y="250" text-anchor="middle" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" letter-spacing="-1">Abyss</text>
+
+  <!-- Tagline -->
+  <text x="600" y="310" text-anchor="middle" fill="#a78bfa" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600">AI 영어 내신 변형 문제 생성기</text>
+
+  <!-- Description -->
+  <text x="600" y="370" text-anchor="middle" fill="#8b8b9e" font-family="system-ui, -apple-system, sans-serif" font-size="20">시험 지문을 넣으면 변형 문제가 나온다</text>
+
+  <!-- Feature pills -->
+  <rect x="290" y="420" width="120" height="36" rx="18" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-opacity="0.3"/>
+  <text x="350" y="443" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="600">10+ 문제 유형</text>
+
+  <rect x="440" y="420" width="130" height="36" rx="18" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-opacity="0.3"/>
+  <text x="505" y="443" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="600">5단계 난이도</text>
+
+  <rect x="600" y="420" width="130" height="36" rx="18" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-opacity="0.3"/>
+  <text x="665" y="443" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="600">30초 생성</text>
+
+  <rect x="760" y="420" width="150" height="36" rx="18" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-opacity="0.3"/>
+  <text x="835" y="443" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="600">.docx 추출</text>
+
+  <!-- Bottom URL -->
+  <text x="600" y="560" text-anchor="middle" fill="#4b4b5e" font-family="system-ui, sans-serif" font-size="16">enggeneartor.github.io/EngenP</text>
+</svg>
