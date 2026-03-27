@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Send, Bot, User, Sparkles, Lightbulb, MessageCircle, LogOut } from "lucide-react"
+import { Send, Bot, User, Sparkles, Lightbulb, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -103,20 +103,11 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
     <aside className="relative z-10 flex h-full w-[310px] flex-col sidebar-glass">
       {/* User Info */}
       {userEmail && (
-        <div className="flex items-center gap-2 px-5 pt-4 pb-2">
-          <div className="flex items-center gap-2 flex-1 min-w-0 rounded-xl bg-muted/20 px-3 py-2">
+        <div className="px-5 pt-4 pb-2">
+          <div className="flex items-center gap-2 rounded-xl bg-muted/20 px-3 py-2">
             <User className="size-3.5 shrink-0 text-purple-400" />
             <span className="text-[11px] font-medium text-foreground/55 truncate">{userEmail}</span>
           </div>
-          {onSignOut && (
-            <button
-              onClick={onSignOut}
-              className="rounded-lg p-2 text-foreground/30 transition-smooth hover:bg-red-500/10 hover:text-red-400 shrink-0"
-              title="로그아웃"
-            >
-              <LogOut className="size-3.5" />
-            </button>
-          )}
         </div>
       )}
 
