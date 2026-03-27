@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'EngenP - AI 영어 내신 변형 문제 생성기',
+  title: 'Abyss - AI 영어 내신 변형 문제 생성기',
   description: 'AI 기반 고등학교 영어 내신 변형 문제 자동 생성 서비스',
   icons: {
     icon: [
