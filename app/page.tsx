@@ -110,12 +110,12 @@ export default function LandingPage() {
       {/* ═══ Navigation ═══ */}
       <nav className="fixed top-0 z-50 w-full sidebar-glass">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5">
+          <a href="/" onClick={(e) => { e.preventDefault(); window.location.reload() }} className="flex items-center gap-2.5 cursor-pointer">
             <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 glow-sm">
               <Zap className="size-4 text-white" strokeWidth={2.5} />
             </div>
             <span className="text-lg font-extrabold tracking-tight text-gradient-bright">Abyss</span>
-          </Link>
+          </a>
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-[13px] font-medium text-foreground/65 transition-smooth hover:text-foreground/80">기능</a>
             <a href="#how-it-works" className="text-[13px] font-medium text-foreground/65 transition-smooth hover:text-foreground/80">사용 방법</a>
@@ -128,12 +128,6 @@ export default function LandingPage() {
                   <User className="size-3.5 text-purple-400" />
                   <span className="text-[12px] font-medium text-foreground/60">{userEmail}</span>
                 </div>
-                <Link
-                  href="/dashboard"
-                  className="btn-shine rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-5 py-2.5 text-[13px] font-bold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:shadow-purple-500/30 hover:brightness-110"
-                >
-                  대시보드
-                </Link>
                 <button
                   onClick={async () => { await supabase.auth.signOut(); setUserEmail(null) }}
                   className="rounded-lg p-2 text-foreground/30 transition-smooth hover:bg-red-500/10 hover:text-red-400"
