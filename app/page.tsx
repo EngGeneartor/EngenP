@@ -4,9 +4,11 @@ import { AIChatSidebar } from "@/components/ai-chat-sidebar"
 
 export default function Dashboard() {
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
+    <div className="ambient-bg noise-overlay flex h-screen w-full overflow-hidden bg-background">
       <LeftSidebar />
+      <div className="divider-v-gradient shrink-0" />
       <MainContent />
+      <div className="divider-v-gradient shrink-0" />
       <AIChatSidebar />
     </div>
   )

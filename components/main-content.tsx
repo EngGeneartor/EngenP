@@ -1,11 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Edit3, Trash2, RefreshCw, Download, FileText, Sparkles, CheckCircle2 } from "lucide-react"
+import { Edit3, Trash2, RefreshCw, Download, Sparkles, CheckCircle2, Eye, BookOpen } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Card } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 const samplePassage = `The concept of "cultural intelligence" has emerged as a critical competency in our increasingly globalized world. Unlike traditional measures of intelligence, cultural intelligence (CQ) refers to an individual's capability to function effectively across various cultural contexts. Research has shown that individuals with high CQ are better equipped to navigate the complexities of cross-cultural interactions, whether in business negotiations, educational settings, or personal relationships.
@@ -70,131 +69,134 @@ export function MainContent() {
   }
 
   const getDifficultyColor = (level: number) => {
-    if (level <= 2) return "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-    if (level <= 3) return "border-amber-500/30 bg-amber-500/10 text-amber-400"
-    return "border-rose-500/30 bg-rose-500/10 text-rose-400"
+    if (level <= 2) return "border-emerald-500/25 bg-emerald-500/8 text-emerald-400"
+    if (level <= 3) return "border-amber-500/25 bg-amber-500/8 text-amber-400"
+    return "border-rose-500/25 bg-rose-500/8 text-rose-400"
   }
 
   const getTypeColor = (type: string) => {
     const colors: Record<string, string> = {
-      어법: "border-blue-500/30 bg-blue-500/10 text-blue-400",
-      어휘: "border-purple-500/30 bg-purple-500/10 text-purple-400",
-      "빈칸 추론": "border-teal-500/30 bg-teal-500/10 text-teal-400",
-      "순서 배열": "border-orange-500/30 bg-orange-500/10 text-orange-400",
-      "문장 삽입": "border-pink-500/30 bg-pink-500/10 text-pink-400",
+      어법: "border-sky-500/25 bg-sky-500/8 text-sky-400",
+      어휘: "border-purple-500/25 bg-purple-500/8 text-purple-400",
+      "빈칸 추론": "border-teal-500/25 bg-teal-500/8 text-teal-400",
+      "순서 배열": "border-orange-500/25 bg-orange-500/8 text-orange-400",
+      "문장 삽입": "border-pink-500/25 bg-pink-500/8 text-pink-400",
     }
-    return colors[type] || "border-gray-500/30 bg-gray-500/10 text-gray-400"
+    return colors[type] || "border-gray-500/25 bg-gray-500/8 text-gray-400"
   }
 
   return (
-    <main className="flex flex-1 flex-col bg-background">
+    <main className="relative z-10 flex flex-1 flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-border/50 bg-card/50 px-6 py-3.5">
-        <div className="flex items-center gap-3">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20">
-            <Sparkles className="size-5 text-purple-400" />
+      <header className="flex items-center justify-between px-7 py-4">
+        <div className="flex items-center gap-4">
+          <div className="relative flex size-11 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500/15 to-indigo-500/15">
+            <BookOpen className="size-5 text-purple-400/80" />
+            <div className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full bg-emerald-400 animate-pulse-ring" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-foreground">2024 수능특강 영어 - 지문 1</h2>
-            <p className="text-xs text-muted-foreground">Cultural Intelligence</p>
+            <h2 className="text-[15px] font-bold tracking-tight text-foreground/90">2024 수능특강 영어 - 지문 1</h2>
+            <p className="text-[12px] font-medium text-muted-foreground/60">Cultural Intelligence in a Globalized World</p>
           </div>
         </div>
-        <Badge className="gap-1.5 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-emerald-400">
-          <CheckCircle2 className="size-3.5" />
-          3문항 생성 완료
-        </Badge>
+        <div className="flex items-center gap-3">
+          <Badge className="pill border border-emerald-500/20 bg-emerald-500/8 text-emerald-400 gap-1.5">
+            <CheckCircle2 className="size-3" />
+            3문항 생성 완료
+          </Badge>
+        </div>
       </header>
 
+      <div className="divider-gradient mx-6" />
+
       {/* Tabs */}
-      <div className="flex-1 overflow-hidden p-5">
+      <div className="flex-1 overflow-hidden p-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex h-full flex-col">
-          <TabsList className="w-fit rounded-xl bg-secondary/60 p-1">
-            <TabsTrigger value="passage" className="gap-2 rounded-lg px-4 text-sm data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-300">
-              <FileText className="size-4" />
+          <TabsList className="w-fit rounded-2xl bg-muted/30 p-1 backdrop-blur-sm">
+            <TabsTrigger value="passage" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300 data-[state=active]:shadow-sm">
+              <Eye className="size-4" />
               지문 원문
             </TabsTrigger>
-            <TabsTrigger value="questions" className="gap-2 rounded-lg px-4 text-sm data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-300">
+            <TabsTrigger value="questions" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300 data-[state=active]:shadow-sm">
               <Sparkles className="size-4" />
               변형 문제
-              <span className="ml-1 rounded-md bg-purple-500/20 px-1.5 py-0.5 text-[11px] font-semibold text-purple-400">{questions.length}</span>
+              <span className="ml-1 flex size-5 items-center justify-center rounded-md bg-purple-500/20 text-[10px] font-bold text-purple-400">{questions.length}</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="passage" className="mt-4 flex-1 overflow-hidden">
-            <Card className="h-full overflow-hidden rounded-xl border-border/50 bg-card/60">
+          <TabsContent value="passage" className="mt-5 flex-1 overflow-hidden">
+            <div className="glass-card h-full overflow-hidden rounded-2xl">
               <ScrollArea className="h-full">
-                <div className="p-6">
-                  <div className="mb-4 flex items-center gap-2">
-                    <Badge className="rounded-md border border-purple-500/20 bg-purple-500/10 text-purple-400 text-xs">EBS 수능특강</Badge>
-                    <Badge className="rounded-md border border-border/50 bg-secondary/40 text-muted-foreground text-xs">영어</Badge>
-                    <Badge className="rounded-md border border-border/50 bg-secondary/40 text-muted-foreground text-xs">2024</Badge>
+                <div className="p-7">
+                  <div className="mb-5 flex items-center gap-2">
+                    <span className="pill border border-purple-500/20 bg-purple-500/8 text-purple-400">EBS 수능특강</span>
+                    <span className="pill border border-border/30 bg-muted/20 text-muted-foreground/60">영어</span>
+                    <span className="pill border border-border/30 bg-muted/20 text-muted-foreground/60">2024</span>
                   </div>
-                  <h3 className="mb-5 text-lg font-bold tracking-tight text-foreground">
+                  <h3 className="mb-6 text-xl font-bold tracking-tight text-foreground/90">
                     Cultural Intelligence in a Globalized World
                   </h3>
                   <div className="max-w-none">
                     {samplePassage.split("\n\n").map((paragraph, idx) => (
-                      <p key={idx} className="mb-4 text-sm leading-[1.8] text-foreground/75">
+                      <p key={idx} className="mb-5 text-[13.5px] leading-[1.9] text-foreground/65 selection:bg-purple-500/20">
                         {paragraph}
                       </p>
                     ))}
                   </div>
-                  <div className="mt-8 rounded-xl bg-gradient-to-br from-purple-500/5 to-indigo-500/5 border border-purple-500/10 p-5">
-                    <h4 className="mb-3 text-sm font-semibold text-foreground/80">지문 분석</h4>
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                      <div className="rounded-lg bg-background/40 p-3">
-                        <p className="text-2xl font-bold text-gradient">247</p>
-                        <p className="mt-1 text-[11px] text-muted-foreground">단어 수</p>
-                      </div>
-                      <div className="rounded-lg bg-background/40 p-3">
-                        <p className="text-2xl font-bold text-gradient">12.4</p>
-                        <p className="mt-1 text-[11px] text-muted-foreground">평균 문장 길이</p>
-                      </div>
-                      <div className="rounded-lg bg-background/40 p-3">
-                        <p className="text-2xl font-bold text-gradient">B2</p>
-                        <p className="mt-1 text-[11px] text-muted-foreground">CEFR 레벨</p>
-                      </div>
+                  <div className="mt-10 rounded-2xl bg-gradient-to-br from-purple-500/[0.04] to-indigo-500/[0.04] border border-purple-500/[0.08] p-6">
+                    <h4 className="mb-4 text-[13px] font-bold tracking-wide text-foreground/70">지문 분석</h4>
+                    <div className="grid grid-cols-3 gap-3">
+                      {[
+                        { value: "247", label: "단어 수" },
+                        { value: "12.4", label: "평균 문장 길이" },
+                        { value: "B2", label: "CEFR 레벨" },
+                      ].map((stat) => (
+                        <div key={stat.label} className="rounded-xl bg-background/30 p-4 text-center">
+                          <p className="text-2xl font-extrabold tracking-tight text-gradient">{stat.value}</p>
+                          <p className="mt-1 text-[11px] font-medium text-muted-foreground/50">{stat.label}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
               </ScrollArea>
-            </Card>
+            </div>
           </TabsContent>
 
-          <TabsContent value="questions" className="mt-4 flex-1 overflow-hidden">
+          <TabsContent value="questions" className="mt-5 flex-1 overflow-hidden">
             <ScrollArea className="h-full">
               <div className="flex flex-col gap-4 pb-4">
                 {questions.map((q, index) => (
-                  <Card key={q.id} className="overflow-hidden rounded-xl border-border/50 bg-card/60 transition-smooth hover:border-purple-500/20">
+                  <div key={q.id} className="glass-card hover-lift rounded-2xl overflow-hidden">
                     <div className="flex items-start gap-4 p-5">
-                      <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 text-lg font-bold text-white shadow-lg shadow-purple-500/10">
+                      <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-600 text-lg font-extrabold text-white shadow-lg shadow-purple-500/15">
                         {index + 1}
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="mb-3 flex flex-wrap items-center gap-2">
-                          <Badge className={`rounded-md border text-xs ${getTypeColor(q.type)}`}>{q.type}</Badge>
-                          <Badge className={`rounded-md border text-xs ${getDifficultyColor(q.difficulty)}`}>
-                            난이도 {q.difficulty}
-                          </Badge>
-                          <Badge className="rounded-md border border-border/40 bg-secondary/30 text-xs text-muted-foreground">
+                          <span className={`pill border ${getTypeColor(q.type)}`}>{q.type}</span>
+                          <span className={`pill border ${getDifficultyColor(q.difficulty)}`}>
+                            Lv.{q.difficulty}
+                          </span>
+                          <span className="pill border border-border/20 bg-muted/15 text-muted-foreground/50">
                             {q.grammarPoint}
-                          </Badge>
+                          </span>
                         </div>
-                        <p className="mb-3 text-sm font-medium text-foreground/90">{q.question}</p>
-                        <div className="mb-4 rounded-lg bg-muted/30 border border-border/30 p-4 text-sm leading-[1.8] text-foreground/70">
+                        <p className="mb-3 text-[13px] font-semibold leading-relaxed text-foreground/85">{q.question}</p>
+                        <div className="mb-4 rounded-xl bg-background/30 border border-border/20 p-4 text-[13px] leading-[1.85] text-foreground/60">
                           {q.content}
                         </div>
                         <div className="flex flex-col gap-1.5">
                           {q.options.map((option, optIdx) => (
                             <div
                               key={optIdx}
-                              className={`rounded-lg border px-3.5 py-2 text-sm transition-smooth ${
+                              className={`rounded-xl border px-4 py-2.5 text-[13px] transition-smooth ${
                                 optIdx + 1 === q.answer
-                                  ? "border-purple-500/30 bg-purple-500/10 text-purple-300"
-                                  : "border-border/30 text-foreground/60 hover:bg-muted/30"
+                                  ? "border-purple-500/25 bg-purple-500/[0.07] text-purple-300 font-medium"
+                                  : "border-border/15 text-foreground/50 hover:bg-muted/20 hover:text-foreground/65"
                               }`}
                             >
-                              <span className="mr-2 font-medium">
+                              <span className="mr-2.5 font-semibold text-foreground/30">
                                 {String.fromCharCode(9312 + optIdx)}
                               </span>
                               {option}
@@ -202,24 +204,24 @@ export function MainContent() {
                           ))}
                         </div>
                       </div>
-                      <div className="flex shrink-0 flex-col gap-1">
-                        <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-purple-400 hover:bg-purple-500/10">
-                          <Edit3 className="size-4" />
+                      <div className="flex shrink-0 flex-col gap-0.5">
+                        <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/40 transition-smooth hover:text-purple-400 hover:bg-purple-500/10">
+                          <Edit3 className="size-3.5" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="size-8 text-muted-foreground hover:text-red-400 hover:bg-red-500/10"
+                          className="size-8 rounded-xl text-muted-foreground/40 transition-smooth hover:text-red-400 hover:bg-red-500/10"
                           onClick={() => handleDelete(q.id)}
                         >
-                          <Trash2 className="size-4" />
+                          <Trash2 className="size-3.5" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-indigo-400 hover:bg-indigo-500/10">
-                          <RefreshCw className="size-4" />
+                        <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/40 transition-smooth hover:text-indigo-400 hover:bg-indigo-500/10">
+                          <RefreshCw className="size-3.5" />
                         </Button>
                       </div>
                     </div>
-                  </Card>
+                  </div>
                 ))}
               </div>
             </ScrollArea>
@@ -228,14 +230,15 @@ export function MainContent() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 bg-card/50 p-4">
+      <div className="divider-gradient mx-6" />
+      <footer className="px-7 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <span>총 {questions.length}문항</span>
-            <span className="text-border">|</span>
-            <span>평균 난이도 {(questions.reduce((a, b) => a + b.difficulty, 0) / questions.length).toFixed(1)}</span>
+          <div className="flex items-center gap-3 text-[13px]">
+            <span className="font-medium text-foreground/50">총 {questions.length}문항</span>
+            <span className="size-1 rounded-full bg-muted-foreground/20" />
+            <span className="font-medium text-foreground/50">평균 난이도 {(questions.reduce((a, b) => a + b.difficulty, 0) / questions.length).toFixed(1)}</span>
           </div>
-          <Button className="rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 text-sm font-semibold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:from-purple-500 hover:to-indigo-500" size="lg">
+          <Button className="btn-shine rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-7 py-5 text-[13px] font-bold text-white shadow-xl shadow-purple-500/15 transition-smooth hover:shadow-purple-500/25 hover:brightness-110 active:scale-[0.98]" size="lg">
             <Download className="mr-2 size-4" />
             Word(.docx) 추출
           </Button>
