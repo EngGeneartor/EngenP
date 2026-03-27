@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, Chrome, AlertCircle, CheckCircle2 } from "lucide-react"
+import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle2 } from "lucide-react"
 import { AmbientBackground } from "@/components/ambient-background"
 import { supabase } from "@/lib/supabase"
 
@@ -67,27 +67,6 @@ export default function LoginPage() {
     }
   }
 
-  const handleGoogleLogin = async () => {
-    setError("")
-    setIsLoading(true)
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/EngenP/dashboard/`,
-          queryParams: { prompt: "select_account" },
-        },
-      })
-      if (error) {
-        setError("Google 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.")
-        setIsLoading(false)
-      }
-    } catch {
-      setError("오류가 발생했습니다.")
-      setIsLoading(false)
-    }
-  }
-
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background px-6">
       <AmbientBackground />
@@ -139,23 +118,6 @@ export default function LoginPage() {
               <p className="text-[12.5px] leading-relaxed text-emerald-300">{success}</p>
             </div>
           )}
-
-          {/* Google Login */}
-          <button
-            onClick={handleGoogleLogin}
-            disabled={isLoading}
-            className="mb-6 flex w-full items-center justify-center gap-3 rounded-2xl border border-border/40 bg-muted/20 py-3.5 text-[13px] font-semibold text-foreground/80 transition-smooth hover:bg-muted/40 hover:text-white disabled:opacity-50"
-          >
-            <Chrome className="size-4" />
-            Google로 {isLogin ? "로그인" : "회원가입"}
-          </button>
-
-          {/* Divider */}
-          <div className="mb-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
-            <span className="text-[11px] font-medium text-foreground/35">또는</span>
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
-          </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
