@@ -9,13 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
-
-interface UploadedFile {
-  name: string
-  size: number
-  path: string
-  uploadedAt: Date
-}
+import type { UploadedFile } from "@/lib/types"
 
 const questionTypes = [
   { id: "grammar", label: "어법" },
@@ -39,7 +33,14 @@ function formatFileSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)}MB`
 }
 
-export function LeftSidebar() {
+interface LeftSidebarProps {
+  uploadedFiles: UploadedFile[]
+  setUploadedFiles: React.Dispatch<React.SetStateAction<UploadedFile[]>>
+  selectedFile: UploadedFile | null
+  onFileSelect: (file: UploadedFile | null) => void
+}
+
+export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onFileSelect }: LeftSidebarProps) {
   const [difficulty, setDifficulty] = useState([3])
   const [questionCount, setQuestionCount] = useState([5])
   const [selectedTypes, setSelectedTypes] = useState<string[]>(["grammar", "vocabulary", "blank"])
@@ -48,7 +49,6 @@ export function LeftSidebar() {
     analysis: false,
     options: true,
   })
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [isUploading, setIsUploading] = useState(false)
   const [uploadError, setUploadError] = useState("")
   const [isDragging, setIsDragging] = useState(false)
@@ -99,12 +99,21 @@ export function LeftSidebar() {
         return
       }
 
-      setUploadedFiles(prev => [...prev, {
+      const { data: urlData } = supabase.storage
+        .from("passages")
+        .getPublicUrl(filePath)
+
+      const newFile: UploadedFile = {
         name: file.name,
         size: file.size,
         path: filePath,
+        type: file.type,
         uploadedAt: new Date(),
-      }])
+        publicUrl: urlData.publicUrl,
+      }
+
+      setUploadedFiles(prev => [...prev, newFile])
+      onFileSelect(newFile)
     } catch {
       setUploadError("업로드 중 오류가 발생했습니다.")
     } finally {
@@ -252,7 +261,16 @@ export function LeftSidebar() {
               {uploadedFiles.length > 0 && (
                 <div className="mt-2.5 flex flex-col gap-1.5">
                   {uploadedFiles.map((file) => (
-                    <div key={file.path} className="flex items-center gap-2.5 rounded-xl bg-purple-500/[0.06] border border-purple-500/[0.08] px-3 py-2.5 transition-smooth hover:bg-purple-500/[0.08]">
+                    <div
+                      key={file.path}
+                      onClick={() => onFileSelect(file)}
+                      className={cn(
+                        "flex items-center gap-2.5 rounded-xl border px-3 py-2.5 cursor-pointer transition-smooth",
+                        selectedFile?.path === file.path
+                          ? "bg-purple-500/15 border-purple-500/25"
+                          : "bg-purple-500/[0.06] border-purple-500/[0.08] hover:bg-purple-500/[0.1]"
+                      )}
+                    >
                       <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-purple-500/15">
                         <FileText className="size-3.5 text-purple-400" />
                       </div>
@@ -262,7 +280,7 @@ export function LeftSidebar() {
                       </div>
                       <CheckCircle2 className="size-3.5 shrink-0 text-emerald-400/60" />
                       <button
-                        onClick={() => deleteFile(file)}
+                        onClick={(e) => { e.stopPropagation(); deleteFile(file); if (selectedFile?.path === file.path) onFileSelect(null); }}
                         className="text-[11px] font-medium text-muted-foreground/40 transition-smooth hover:text-red-400"
                       >
                         삭제
