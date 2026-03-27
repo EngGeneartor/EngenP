@@ -89,7 +89,13 @@ export default function LoginPage() {
           router.push("/dashboard/")
         }
       } else {
-        const { error } = await supabase.auth.signUp({ email, password })
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: "https://enggeneartor.github.io/EngenP/auth/callback/",
+          },
+        })
         if (error) {
           if (error.message.includes("already registered")) {
             setError("이미 가입된 이메일입니다.")
