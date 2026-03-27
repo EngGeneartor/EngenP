@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Send, Bot, User, Sparkles, Lightbulb } from "lucide-react"
+import { Send, Bot, User, Sparkles, Lightbulb, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -39,10 +39,10 @@ const initialMessages: Message[] = [
 ]
 
 const quickPrompts = [
-  "전체 난이도를 조금 올려줘",
-  "빈칸 추론 문제 1개 추가",
-  "3번 선택지 더 어렵게",
-  "문법 포인트 설명 추가",
+  { text: "난이도 올려줘", icon: "↑" },
+  { text: "빈칸 추론 1개 추가", icon: "+" },
+  { text: "3번 선택지 더 어렵게", icon: "★" },
+  { text: "문법 설명 추가", icon: "i" },
 ]
 
 export function AIChatSidebar() {
@@ -95,40 +95,50 @@ export function AIChatSidebar() {
   }
 
   return (
-    <aside className="flex h-full w-80 flex-col border-l border-border/50 bg-sidebar">
+    <aside className="relative z-10 flex h-full w-[310px] flex-col bg-sidebar/80 backdrop-blur-sm">
       {/* Header */}
-      <div className="flex items-center gap-3 border-b border-border/50 px-5 py-4">
-        <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 glow-purple">
-          <Bot className="size-4 text-white" />
+      <div className="flex items-center gap-3 px-5 py-5">
+        <div className="relative flex size-10 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-600 glow-md">
+          <MessageCircle className="size-[18px] text-white" strokeWidth={2.5} />
         </div>
         <div className="flex-1">
-          <h3 className="text-sm font-bold text-foreground">AI Co-pilot</h3>
-          <p className="text-[11px] text-muted-foreground">Claude 기반 문제 수정 어시스턴트</p>
+          <h3 className="text-[15px] font-extrabold tracking-tight text-gradient-bright">Co-pilot</h3>
+          <p className="text-[11px] font-medium tracking-wide text-muted-foreground/60">Claude 기반 AI 어시스턴트</p>
         </div>
-        <div className="flex size-2.5 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/50" />
+        <div className="relative">
+          <div className="size-2.5 rounded-full bg-emerald-400" />
+          <div className="absolute inset-0 size-2.5 rounded-full bg-emerald-400 animate-pulse-ring" />
+        </div>
       </div>
 
+      <div className="divider-gradient mx-4" />
+
       {/* Quick Prompts */}
-      <div className="border-b border-border/50 p-4">
-        <div className="mb-2.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
-          <Lightbulb className="size-3 text-amber-400" />
+      <div className="px-4 py-4">
+        <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground/50">
+          <Lightbulb className="size-3 text-amber-400/70" />
           <span>빠른 명령어</span>
         </div>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="grid grid-cols-2 gap-1.5">
           {quickPrompts.map((prompt, idx) => (
             <button
               key={idx}
-              onClick={() => handleQuickPrompt(prompt)}
-              className="rounded-lg border border-border/50 bg-secondary/40 px-2.5 py-1.5 text-[11px] text-foreground/70 transition-smooth hover:border-purple-500/30 hover:bg-purple-500/10 hover:text-purple-300"
+              onClick={() => handleQuickPrompt(prompt.text)}
+              className="group flex items-center gap-1.5 rounded-xl border border-border/30 bg-muted/15 px-2.5 py-2 text-[11px] font-medium text-foreground/50 transition-smooth hover:border-purple-500/25 hover:bg-purple-500/[0.06] hover:text-purple-300"
             >
-              {prompt}
+              <span className="flex size-5 items-center justify-center rounded-md bg-muted/30 text-[10px] font-bold text-muted-foreground/40 transition-smooth group-hover:bg-purple-500/15 group-hover:text-purple-400">
+                {prompt.icon}
+              </span>
+              {prompt.text}
             </button>
           ))}
         </div>
       </div>
 
+      <div className="divider-gradient mx-4" />
+
       {/* Messages */}
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
+      <ScrollArea className="flex-1 px-4 py-4" ref={scrollRef}>
         <div className="flex flex-col gap-4">
           {messages.map((message) => (
             <div
@@ -141,10 +151,10 @@ export function AIChatSidebar() {
               <Avatar className="size-7 shrink-0">
                 <AvatarFallback
                   className={cn(
-                    "text-xs",
+                    "text-xs rounded-xl",
                     message.role === "assistant"
                       ? "bg-gradient-to-br from-violet-500 to-purple-600 text-white"
-                      : "bg-secondary text-secondary-foreground"
+                      : "bg-secondary/60 text-secondary-foreground/70"
                   )}
                 >
                   {message.role === "assistant" ? (
@@ -156,19 +166,19 @@ export function AIChatSidebar() {
               </Avatar>
               <div
                 className={cn(
-                  "max-w-[82%] rounded-xl px-3.5 py-2.5 text-[13px]",
+                  "max-w-[82%] rounded-2xl px-3.5 py-2.5 text-[12.5px]",
                   message.role === "assistant"
-                    ? "bg-muted/50 text-foreground/85"
-                    : "bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
+                    ? "rounded-tl-lg bg-muted/30 text-foreground/75"
+                    : "rounded-tr-lg bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white shadow-lg shadow-purple-500/10"
                 )}
               >
-                <p className="leading-relaxed">{message.content}</p>
+                <p className="leading-[1.7]">{message.content}</p>
                 <p
                   className={cn(
                     "mt-1.5 text-[10px]",
                     message.role === "assistant"
-                      ? "text-muted-foreground"
-                      : "text-white/50"
+                      ? "text-muted-foreground/40"
+                      : "text-white/35"
                   )}
                 >
                   {message.timestamp.toLocaleTimeString("ko-KR", {
@@ -182,14 +192,14 @@ export function AIChatSidebar() {
           {isLoading && (
             <div className="flex gap-2.5">
               <Avatar className="size-7 shrink-0">
-                <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-600 text-white">
+                <AvatarFallback className="rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 text-white">
                   <Sparkles className="size-3" />
                 </AvatarFallback>
               </Avatar>
-              <div className="flex items-center gap-1.5 rounded-xl bg-muted/50 px-4 py-3">
-                <div className="size-1.5 animate-bounce rounded-full bg-purple-400 [animation-delay:-0.3s]" />
-                <div className="size-1.5 animate-bounce rounded-full bg-purple-400 [animation-delay:-0.15s]" />
-                <div className="size-1.5 animate-bounce rounded-full bg-purple-400" />
+              <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-lg bg-muted/30 px-4 py-3">
+                <div className="size-1.5 animate-bounce rounded-full bg-purple-400/60 [animation-delay:-0.3s]" />
+                <div className="size-1.5 animate-bounce rounded-full bg-purple-400/60 [animation-delay:-0.15s]" />
+                <div className="size-1.5 animate-bounce rounded-full bg-purple-400/60" />
               </div>
             </div>
           )}
@@ -197,26 +207,27 @@ export function AIChatSidebar() {
       </ScrollArea>
 
       {/* Input */}
-      <div className="border-t border-border/50 p-4">
+      <div className="divider-gradient mx-4" />
+      <div className="px-4 pb-5 pt-4">
         <div className="relative">
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="문제 수정 요청을 입력하세요..."
-            className="min-h-[76px] resize-none rounded-xl border-border/50 bg-secondary/40 pr-12 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-purple-500/40 focus:ring-purple-500/20"
+            className="min-h-[72px] resize-none rounded-2xl border-border/30 bg-muted/20 pr-12 text-[13px] text-foreground/80 placeholder:text-muted-foreground/35 transition-smooth focus:border-purple-500/30 focus:bg-muted/30 focus:ring-1 focus:ring-purple-500/15"
           />
           <Button
             size="icon"
-            className="absolute bottom-2.5 right-2.5 size-8 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/20 transition-smooth hover:from-purple-500 hover:to-indigo-500 disabled:opacity-30"
+            className="absolute bottom-2.5 right-2.5 size-8 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/20 transition-smooth hover:brightness-110 disabled:opacity-20 disabled:shadow-none"
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
           >
             <Send className="size-3.5" />
           </Button>
         </div>
-        <p className="mt-2 text-center text-[11px] text-muted-foreground/60">
-          Enter로 전송 · Shift+Enter로 줄바꿈
+        <p className="mt-2 text-center text-[10px] text-muted-foreground/35">
+          Enter 전송 · Shift+Enter 줄바꿈
         </p>
       </div>
     </aside>
