@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { LeftSidebar } from "@/components/left-sidebar"
 import { MainContent } from "@/components/main-content"
 import { AIChatSidebar } from "@/components/ai-chat-sidebar"
@@ -16,8 +16,15 @@ export default function Dashboard() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const isDemo = searchParams.get("demo") === "true"
 
   useEffect(() => {
+    if (isDemo) {
+      setLoading(false)
+      return
+    }
+
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) {
         router.push("/login/")
@@ -36,7 +43,7 @@ export default function Dashboard() {
     })
 
     return () => subscription.unsubscribe()
-  }, [router])
+  }, [router, isDemo])
 
   if (loading) {
     return (
