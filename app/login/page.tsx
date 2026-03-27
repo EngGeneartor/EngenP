@@ -1,21 +1,56 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle2 } from "lucide-react"
+import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle2, Check, X } from "lucide-react"
 import { AmbientBackground } from "@/components/ambient-background"
 import { supabase } from "@/lib/supabase"
+import { cn } from "@/lib/utils"
+
+interface PasswordRule {
+  label: string
+  test: (pw: string) => boolean
+}
+
+const passwordRules: PasswordRule[] = [
+  { label: "8자 이상", test: (pw) => pw.length >= 8 },
+  { label: "영문 대문자 포함", test: (pw) => /[A-Z]/.test(pw) },
+  { label: "영문 소문자 포함", test: (pw) => /[a-z]/.test(pw) },
+  { label: "숫자 포함", test: (pw) => /[0-9]/.test(pw) },
+  { label: "특수문자 포함 (!@#$%^&*)", test: (pw) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pw) },
+]
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const router = useRouter()
+
+  const ruleResults = useMemo(() => passwordRules.map((r) => r.test(password)), [password])
+  const passedCount = ruleResults.filter(Boolean).length
+  const allPassed = passedCount === passwordRules.length
+  const passwordsMatch = password === confirmPassword && confirmPassword.length > 0
+
+  const strengthPercent = (passedCount / passwordRules.length) * 100
+  const strengthColor =
+    strengthPercent <= 20 ? "bg-red-500" :
+    strengthPercent <= 40 ? "bg-orange-500" :
+    strengthPercent <= 60 ? "bg-amber-500" :
+    strengthPercent <= 80 ? "bg-yellow-400" :
+    "bg-emerald-500"
+  const strengthLabel =
+    strengthPercent <= 20 ? "매우 약함" :
+    strengthPercent <= 40 ? "약함" :
+    strengthPercent <= 60 ? "보통" :
+    strengthPercent <= 80 ? "강함" :
+    "매우 강함"
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,9 +62,15 @@ export default function LoginPage() {
       return
     }
 
-    if (password.length < 6) {
-      setError("비밀번호는 6자 이상이어야 합니다.")
-      return
+    if (!isLogin) {
+      if (!allPassed) {
+        setError("비밀번호가 모든 조건을 충족하지 않습니다.")
+        return
+      }
+      if (password !== confirmPassword) {
+        setError("비밀번호가 일치하지 않습니다.")
+        return
+      }
     }
 
     setIsLoading(true)
@@ -67,6 +108,14 @@ export default function LoginPage() {
     }
   }
 
+  const switchMode = () => {
+    setIsLogin(!isLogin)
+    setError("")
+    setSuccess("")
+    setPassword("")
+    setConfirmPassword("")
+  }
+
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background px-6">
       <AmbientBackground />
@@ -88,7 +137,7 @@ export default function LoginPage() {
           {/* Tab */}
           <div className="mb-8 flex rounded-2xl bg-muted/30 p-1">
             <button
-              onClick={() => { setIsLogin(true); setError(""); setSuccess(""); }}
+              onClick={() => switchMode()}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
                 isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
@@ -96,7 +145,7 @@ export default function LoginPage() {
               로그인
             </button>
             <button
-              onClick={() => { setIsLogin(false); setError(""); setSuccess(""); }}
+              onClick={() => switchMode()}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
                 !isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
@@ -121,6 +170,7 @@ export default function LoginPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
             <div>
               <label className="mb-2 block text-[12px] font-bold text-foreground/70">이메일</label>
               <div className="relative">
@@ -135,6 +185,7 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* Password */}
             <div>
               <label className="mb-2 block text-[12px] font-bold text-foreground/70">비밀번호</label>
               <div className="relative">
@@ -143,7 +194,7 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={isLogin ? "••••••••" : "6자 이상 입력"}
+                  placeholder={isLogin ? "••••••••" : "8자 이상, 대소문자+숫자+특수문자"}
                   className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-white placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
                 />
                 <button
@@ -154,7 +205,95 @@ export default function LoginPage() {
                   {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                 </button>
               </div>
+
+              {/* Password Strength (signup only) */}
+              {!isLogin && password.length > 0 && (
+                <div className="mt-3 space-y-3">
+                  {/* Strength bar */}
+                  <div>
+                    <div className="mb-1.5 flex items-center justify-between">
+                      <span className="text-[11px] font-medium text-foreground/40">비밀번호 강도</span>
+                      <span className={cn(
+                        "text-[11px] font-bold",
+                        strengthPercent <= 40 ? "text-red-400" :
+                        strengthPercent <= 60 ? "text-amber-400" :
+                        "text-emerald-400"
+                      )}>
+                        {strengthLabel}
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/30">
+                      <div
+                        className={cn("h-full rounded-full transition-all duration-500 ease-out", strengthColor)}
+                        style={{ width: `${strengthPercent}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Rules checklist */}
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                    {passwordRules.map((rule, i) => (
+                      <div key={i} className="flex items-center gap-1.5">
+                        {ruleResults[i] ? (
+                          <Check className="size-3.5 text-emerald-400" strokeWidth={3} />
+                        ) : (
+                          <X className="size-3.5 text-foreground/20" strokeWidth={2} />
+                        )}
+                        <span className={cn(
+                          "text-[11px] transition-smooth",
+                          ruleResults[i] ? "text-emerald-400/80 font-medium" : "text-foreground/30"
+                        )}>
+                          {rule.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* Confirm Password (signup only) */}
+            {!isLogin && (
+              <div>
+                <label className="mb-2 block text-[12px] font-bold text-foreground/70">비밀번호 확인</label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/30" />
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="비밀번호를 다시 입력해주세요"
+                    className={cn(
+                      "w-full rounded-xl border bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-white placeholder:text-foreground/30 transition-smooth focus:bg-muted/30 focus:outline-none focus:ring-1",
+                      confirmPassword.length > 0
+                        ? passwordsMatch
+                          ? "border-emerald-500/40 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                          : "border-red-500/40 focus:border-red-500/50 focus:ring-red-500/20"
+                        : "border-border/40 focus:border-purple-500/50 focus:ring-purple-500/20"
+                    )}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/35 transition-smooth hover:text-foreground/70"
+                  >
+                    {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                  </button>
+                </div>
+                {confirmPassword.length > 0 && (
+                  <p className={cn(
+                    "mt-2 flex items-center gap-1.5 text-[11px] font-medium",
+                    passwordsMatch ? "text-emerald-400" : "text-red-400"
+                  )}>
+                    {passwordsMatch ? (
+                      <><Check className="size-3.5" strokeWidth={3} /> 비밀번호가 일치합니다</>
+                    ) : (
+                      <><X className="size-3.5" strokeWidth={2} /> 비밀번호가 일치하지 않습니다</>
+                    )}
+                  </p>
+                )}
+              </div>
+            )}
 
             {isLogin && (
               <div className="flex justify-end">
@@ -166,8 +305,8 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={isLoading}
-              className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 py-4 text-[14px] font-bold text-white shadow-lg shadow-purple-500/25 transition-smooth hover:shadow-purple-500/35 hover:brightness-110 disabled:opacity-50 active:scale-[0.98]"
+              disabled={isLoading || (!isLogin && (!allPassed || !passwordsMatch))}
+              className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 py-4 text-[14px] font-bold text-white shadow-lg shadow-purple-500/25 transition-smooth hover:shadow-purple-500/35 hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98]"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -188,7 +327,7 @@ export default function LoginPage() {
         <p className="mt-6 text-center text-[12px] text-foreground/40">
           {isLogin ? "계정이 없으신가요?" : "이미 계정이 있으신가요?"}{" "}
           <button
-            onClick={() => { setIsLogin(!isLogin); setError(""); setSuccess(""); }}
+            onClick={switchMode}
             className="font-bold text-purple-400/70 transition-smooth hover:text-purple-300"
           >
             {isLogin ? "회원가입" : "로그인"}
