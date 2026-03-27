@@ -34,7 +34,7 @@ npm install
 npm run dev
 ```
 
-`http://localhost:3000`에서 확인.
+https://github.com/login?return_to=https://github.com/EngGeneartor/EngenP에서 확인.
 
 ### 환경 변수
 
