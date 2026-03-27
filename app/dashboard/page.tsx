@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { LeftSidebar } from "@/components/left-sidebar"
 import { MainContent } from "@/components/main-content"
@@ -10,7 +10,7 @@ import { supabase } from "@/lib/supabase"
 import type { User } from "@supabase/supabase-js"
 import type { UploadedFile } from "@/lib/types"
 
-export default function Dashboard() {
+function DashboardContent() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
@@ -57,7 +57,7 @@ export default function Dashboard() {
     )
   }
 
-  if (!user) return null
+  if (!user && !isDemo) return null
 
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background">
@@ -73,5 +73,21 @@ export default function Dashboard() {
       <div className="divider-v-gradient shrink-0" />
       <AIChatSidebar />
     </div>
+  )
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={
+      <div className="flex h-screen items-center justify-center bg-background">
+        <AmbientBackground />
+        <div className="relative z-10 flex flex-col items-center gap-4">
+          <div className="size-8 animate-spin rounded-full border-3 border-purple-500/20 border-t-purple-500" />
+          <p className="text-[13px] text-foreground/50">로딩 중...</p>
+        </div>
+      </div>
+    }>
+      <DashboardContent />
+    </Suspense>
   )
 }
