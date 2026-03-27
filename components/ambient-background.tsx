@@ -74,7 +74,7 @@ export function AmbientBackground() {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 50%, oklch(0.05 0.02 280 / 0.4) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 55%, oklch(0.1 0.02 275 / 0.3) 100%)',
         }}
       />
     </div>
