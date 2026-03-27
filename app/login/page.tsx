@@ -17,16 +17,15 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    // Demo: just redirect to dashboard after a brief delay
     setTimeout(() => {
-      router.push("/dashboard")
+      router.push("/EngenP/dashboard/")
     }, 800)
   }
 
   const handleGoogleLogin = () => {
     setIsLoading(true)
     setTimeout(() => {
-      router.push("/dashboard")
+      router.push("/EngenP/dashboard/")
     }, 800)
   }
 
@@ -42,26 +41,26 @@ export default function LoginPage() {
           </div>
           <div className="text-center">
             <h1 className="text-2xl font-extrabold tracking-tight text-gradient-bright">EngenP</h1>
-            <p className="mt-1 text-[13px] text-muted-foreground/50">AI 영어 내신 변형 문제 생성기</p>
+            <p className="mt-1 text-[13px] font-medium text-foreground/60">AI 영어 내신 변형 문제 생성기</p>
           </div>
         </Link>
 
         {/* Card */}
         <div className="glass-card gradient-border rounded-3xl p-8">
           {/* Tab */}
-          <div className="mb-8 flex rounded-2xl bg-muted/20 p-1">
+          <div className="mb-8 flex rounded-2xl bg-muted/30 p-1">
             <button
               onClick={() => setIsLogin(true)}
-              className={`flex-1 rounded-xl py-2.5 text-[13px] font-semibold transition-smooth ${
-                isLogin ? "bg-purple-500/15 text-purple-300 shadow-sm" : "text-muted-foreground/50 hover:text-foreground/60"
+              className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
+                isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
             >
               로그인
             </button>
             <button
               onClick={() => setIsLogin(false)}
-              className={`flex-1 rounded-xl py-2.5 text-[13px] font-semibold transition-smooth ${
-                !isLogin ? "bg-purple-500/15 text-purple-300 shadow-sm" : "text-muted-foreground/50 hover:text-foreground/60"
+              className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
+                !isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
             >
               회원가입
@@ -72,7 +71,7 @@ export default function LoginPage() {
           <button
             onClick={handleGoogleLogin}
             disabled={isLoading}
-            className="mb-6 flex w-full items-center justify-center gap-3 rounded-2xl border border-border/30 bg-muted/15 py-3.5 text-[13px] font-semibold text-foreground/70 transition-smooth hover:bg-muted/30 hover:text-foreground/85 disabled:opacity-50"
+            className="mb-6 flex w-full items-center justify-center gap-3 rounded-2xl border border-border/40 bg-muted/20 py-3.5 text-[13px] font-semibold text-foreground/80 transition-smooth hover:bg-muted/40 hover:text-white disabled:opacity-50"
           >
             <Chrome className="size-4" />
             Google로 {isLogin ? "로그인" : "회원가입"}
@@ -80,42 +79,42 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="mb-6 flex items-center gap-4">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/40 to-transparent" />
-            <span className="text-[11px] text-muted-foreground/30">또는</span>
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+            <span className="text-[11px] font-medium text-foreground/35">또는</span>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="mb-2 block text-[12px] font-semibold text-foreground/50">이메일</label>
+              <label className="mb-2 block text-[12px] font-bold text-foreground/70">이메일</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground/30" />
+                <Mail className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/30" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-xl border border-border/30 bg-muted/15 py-3.5 pl-11 pr-4 text-[13px] text-foreground/80 placeholder:text-muted-foreground/25 transition-smooth focus:border-purple-500/30 focus:bg-muted/25 focus:outline-none focus:ring-1 focus:ring-purple-500/15"
+                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-4 text-[13px] text-white placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
                 />
               </div>
             </div>
 
             <div>
-              <label className="mb-2 block text-[12px] font-semibold text-foreground/50">비밀번호</label>
+              <label className="mb-2 block text-[12px] font-bold text-foreground/70">비밀번호</label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground/30" />
+                <Lock className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/30" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full rounded-xl border border-border/30 bg-muted/15 py-3.5 pl-11 pr-12 text-[13px] text-foreground/80 placeholder:text-muted-foreground/25 transition-smooth focus:border-purple-500/30 focus:bg-muted/25 focus:outline-none focus:ring-1 focus:ring-purple-500/15"
+                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-white placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/30 transition-smooth hover:text-foreground/50"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/35 transition-smooth hover:text-foreground/70"
                 >
                   {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                 </button>
@@ -124,7 +123,7 @@ export default function LoginPage() {
 
             {isLogin && (
               <div className="flex justify-end">
-                <button type="button" className="text-[12px] text-purple-400/60 transition-smooth hover:text-purple-300">
+                <button type="button" className="text-[12px] font-medium text-purple-400/70 transition-smooth hover:text-purple-300">
                   비밀번호를 잊으셨나요?
                 </button>
               </div>
@@ -133,7 +132,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 py-4 text-[14px] font-bold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:shadow-purple-500/30 hover:brightness-110 disabled:opacity-50 active:scale-[0.98]"
+              className="btn-shine flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 py-4 text-[14px] font-bold text-white shadow-lg shadow-purple-500/25 transition-smooth hover:shadow-purple-500/35 hover:brightness-110 disabled:opacity-50 active:scale-[0.98]"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -151,17 +150,17 @@ export default function LoginPage() {
         </div>
 
         {/* Bottom text */}
-        <p className="mt-6 text-center text-[11px] text-muted-foreground/25">
+        <p className="mt-6 text-center text-[12px] text-foreground/40">
           {isLogin ? "계정이 없으신가요?" : "이미 계정이 있으신가요?"}{" "}
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="font-semibold text-purple-400/50 transition-smooth hover:text-purple-300"
+            className="font-bold text-purple-400/70 transition-smooth hover:text-purple-300"
           >
             {isLogin ? "회원가입" : "로그인"}
           </button>
         </p>
 
-        <p className="mt-8 text-center text-[10px] text-muted-foreground/20">
+        <p className="mt-8 text-center text-[11px] text-foreground/30">
           계속 진행하면 이용약관 및 개인정보처리방침에 동의하는 것으로 간주됩니다.
         </p>
       </div>

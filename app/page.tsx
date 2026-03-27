@@ -103,9 +103,9 @@ export default function LandingPage() {
             <span className="text-lg font-extrabold tracking-tight text-gradient-bright">EngenP</span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-[13px] font-medium text-foreground/50 transition-smooth hover:text-foreground/80">기능</a>
-            <a href="#how-it-works" className="text-[13px] font-medium text-foreground/50 transition-smooth hover:text-foreground/80">사용 방법</a>
-            <a href="#pricing" className="text-[13px] font-medium text-foreground/50 transition-smooth hover:text-foreground/80">요금</a>
+            <a href="#features" className="text-[13px] font-medium text-foreground/65 transition-smooth hover:text-foreground/80">기능</a>
+            <a href="#how-it-works" className="text-[13px] font-medium text-foreground/65 transition-smooth hover:text-foreground/80">사용 방법</a>
+            <a href="#pricing" className="text-[13px] font-medium text-foreground/65 transition-smooth hover:text-foreground/80">요금</a>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login" className="text-[13px] font-semibold text-foreground/60 transition-smooth hover:text-foreground/90 px-4 py-2">
@@ -139,7 +139,7 @@ export default function LandingPage() {
         </FadeIn>
 
         <FadeIn delay={200}>
-          <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-foreground/45 md:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-foreground/60 md:text-lg">
             모의고사, 교과서, 추가지문을 업로드하면 AI가 분석하여
             <br className="hidden md:block" />
             고품질 변형 문제, 워크북, 동형 모의고사를 자동으로 생성합니다.
@@ -166,7 +166,7 @@ export default function LandingPage() {
         </FadeIn>
 
         <FadeIn delay={450}>
-          <p className="mt-5 text-[12px] text-foreground/25">카드 등록 없이 무료로 시작 · 매월 10회 무료 생성</p>
+          <p className="mt-5 text-[12px] text-foreground/40">카드 등록 없이 무료로 시작 · 매월 10회 무료 생성</p>
         </FadeIn>
 
         {/* Hero Dashboard Preview */}
@@ -191,7 +191,7 @@ export default function LandingPage() {
                   <div className="hidden sm:flex w-[200px] shrink-0 flex-col border-r border-border/15 p-4">
                     <div className="flex items-center gap-2 mb-6">
                       <div className="size-6 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600" />
-                      <span className="text-[11px] font-bold text-foreground/50">EngenP</span>
+                      <span className="text-[11px] font-bold text-foreground/65">EngenP</span>
                     </div>
                     <div className="space-y-2">
                       <div className="rounded-lg bg-purple-500/10 px-3 py-2"><span className="text-[10px] text-purple-300">타겟 지문 업로드</span></div>
@@ -246,7 +246,7 @@ export default function LandingPage() {
                 {stats.map((stat, i) => (
                   <div key={i} className="text-center">
                     <p className="text-3xl font-extrabold tracking-tight text-gradient">{stat.value}</p>
-                    <p className="mt-1 text-[12px] font-medium text-muted-foreground/50">{stat.label}</p>
+                    <p className="mt-1 text-[12px] font-medium text-muted-foreground/70">{stat.label}</p>
                   </div>
                 ))}
               </div>
@@ -263,7 +263,7 @@ export default function LandingPage() {
             <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-foreground/90 md:text-5xl">
               내신 대비의 모든 것을<br /><span className="text-gradient">AI가 해결합니다</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-[15px] text-foreground/40">
+            <p className="mx-auto mt-4 max-w-xl text-[15px] text-foreground/55">
               수동으로 문제를 만드는 시대는 끝났습니다. 지문을 넣기만 하면 됩니다.
             </p>
           </FadeIn>
@@ -276,7 +276,7 @@ export default function LandingPage() {
                     <f.icon className="size-5 text-white" />
                   </div>
                   <h3 className="text-[17px] font-bold text-foreground/85">{f.title}</h3>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-foreground/45">{f.desc}</p>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-foreground/60">{f.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -314,7 +314,7 @@ export default function LandingPage() {
                     </span>
                   </div>
                   <h3 className="text-[16px] font-bold text-foreground/85">{step.title}</h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-foreground/40">{step.desc}</p>
+                  <p className="mt-2 text-[13px] leading-relaxed text-foreground/55">{step.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -331,7 +331,7 @@ export default function LandingPage() {
               <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-foreground/90 md:text-4xl">
                 선생님도, 학생도<br /><span className="text-gradient">더 이상 시간 낭비 없이</span>
               </h2>
-              <p className="mt-4 text-[14px] leading-relaxed text-foreground/40">
+              <p className="mt-4 text-[14px] leading-relaxed text-foreground/55">
                 기존에 몇 시간이 걸리던 변형 문제 제작을 몇 분으로 단축합니다.
                 학생들은 자기 학교 스타일에 맞는 문제로 효율적으로 대비할 수 있습니다.
               </p>
@@ -349,7 +349,7 @@ export default function LandingPage() {
                     </div>
                     <div>
                       <h4 className="text-[14px] font-bold text-foreground/80">{item.title}</h4>
-                      <p className="mt-1 text-[12.5px] text-foreground/40">{item.desc}</p>
+                      <p className="mt-1 text-[12.5px] text-foreground/55">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -373,7 +373,7 @@ export default function LandingPage() {
             {/* Free */}
             <FadeIn delay={0}>
               <div className="glass-card rounded-2xl p-8">
-                <h3 className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/50">Free</h3>
+                <h3 className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/70">Free</h3>
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-4xl font-extrabold text-foreground/90">₩0</span>
                   <span className="text-[13px] text-muted-foreground/40">/월</span>
@@ -427,7 +427,7 @@ export default function LandingPage() {
             <h2 className="text-4xl font-extrabold tracking-tight text-foreground/90 md:text-5xl">
               지금 바로<br /><span className="text-gradient">변형 문제를 만들어보세요</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-lg text-[15px] text-foreground/40">
+            <p className="mx-auto mt-4 max-w-lg text-[15px] text-foreground/55">
               회원가입 후 바로 사용할 수 있습니다. 첫 10회는 완전 무료.
             </p>
             <Link
@@ -450,13 +450,13 @@ export default function LandingPage() {
             </div>
             <span className="text-[14px] font-bold text-gradient-bright">EngenP</span>
           </div>
-          <p className="text-[12px] text-muted-foreground/30">
+          <p className="text-[12px] text-muted-foreground/50">
             © 2026 EngenP. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-[12px] text-muted-foreground/35 transition-smooth hover:text-foreground/60">이용약관</a>
-            <a href="#" className="text-[12px] text-muted-foreground/35 transition-smooth hover:text-foreground/60">개인정보처리방침</a>
-            <a href="#" className="text-[12px] text-muted-foreground/35 transition-smooth hover:text-foreground/60">문의</a>
+            <a href="#" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">이용약관</a>
+            <a href="#" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">개인정보처리방침</a>
+            <a href="#" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">문의</a>
           </div>
         </div>
       </footer>
