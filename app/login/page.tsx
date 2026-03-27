@@ -97,8 +97,8 @@ export default function LoginPage() {
             setError(error.message)
           }
         } else {
-          // 이메일 인증 비활성화 상태: 가입 즉시 로그인 → 완료 페이지로 이동
-          router.push("/dashboard/")
+          // 회원가입 완료 → 환영 페이지 경유 → 대시보드
+          router.push("/auth/callback/?from=signup")
         }
       }
     } catch {
