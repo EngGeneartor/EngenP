@@ -102,8 +102,8 @@ export function AIChatSidebar() {
           <MessageCircle className="size-[18px] text-white" strokeWidth={2.5} />
         </div>
         <div className="flex-1">
-          <h3 className="text-[15px] font-extrabold tracking-tight text-gradient-bright">Co-pilot</h3>
-          <p className="text-[11px] font-medium tracking-wide text-muted-foreground/60">Claude 기반 AI 어시스턴트</p>
+          <h3 className="text-[15px] font-extrabold tracking-tight text-gradient-bright">Abyss AI</h3>
+          <p className="text-[11px] font-medium tracking-wide text-muted-foreground/60">문제 생성 & 수정 어시스턴트</p>
         </div>
         <div className="relative">
           <div className="size-2.5 rounded-full bg-emerald-400" />
