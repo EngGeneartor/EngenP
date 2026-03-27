@@ -86,7 +86,7 @@ export default function LoginPage() {
             setError(error.message)
           }
         } else {
-          router.push("/dashboard/")
+          router.push("/auth/callback/")
         }
       } else {
         const { error } = await supabase.auth.signUp({ email, password })
@@ -97,7 +97,8 @@ export default function LoginPage() {
             setError(error.message)
           }
         } else {
-          setSuccess(`회원가입이 완료되었습니다! ${email}로 인증 메일을 보냈습니다. 메일함에서 인증 링크를 클릭하면 로그인할 수 있습니다.`)
+          // 이메일 인증 비활성화 상태: 가입 즉시 로그인 → 완료 페이지로 이동
+          router.push("/auth/callback/")
         }
       }
     } catch {

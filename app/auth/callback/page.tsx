@@ -14,29 +14,35 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleAuth = async () => {
       try {
-        // Supabase will automatically handle the token from URL hash/params
-        const { data: { session }, error } = await supabase.auth.getSession()
-
-        if (error) {
-          setStatus("error")
+        // Check if already logged in
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          setStatus("success")
           return
         }
 
-        if (session) {
-          setStatus("success")
-        } else {
-          // Try to exchange code if present in URL
-          const params = new URLSearchParams(window.location.search)
-          const code = params.get("code")
-          if (code) {
-            const { error } = await supabase.auth.exchangeCodeForSession(code)
-            if (error) {
-              setStatus("error")
-              return
-            }
+        // Try to exchange code if present in URL (email verification flow)
+        const params = new URLSearchParams(window.location.search)
+        const code = params.get("code")
+        if (code) {
+          const { error } = await supabase.auth.exchangeCodeForSession(code)
+          if (error) {
+            setStatus("error")
+            return
           }
           setStatus("success")
+          return
         }
+
+        // Check hash params (older flow)
+        const hash = window.location.hash
+        if (hash && hash.includes("access_token")) {
+          setStatus("success")
+          return
+        }
+
+        // No session found
+        setStatus("error")
       } catch {
         setStatus("error")
       }
@@ -73,7 +79,7 @@ export default function AuthCallbackPage() {
               <div className="size-8 animate-spin rounded-full border-3 border-purple-500/20 border-t-purple-500" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground/80">인증 확인 중...</h1>
+              <h1 className="text-xl font-bold text-foreground/80">확인 중...</h1>
               <p className="mt-2 text-[13px] text-foreground/45">잠시만 기다려주세요.</p>
             </div>
           </div>
@@ -81,7 +87,6 @@ export default function AuthCallbackPage() {
 
         {status === "success" && (
           <div className="flex flex-col items-center gap-6">
-            {/* Animated check icon */}
             <div className="relative">
               <div className="absolute inset-0 animate-ping rounded-full bg-emerald-500/20" style={{ animationDuration: "1.5s" }} />
               <div className="relative flex size-24 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-green-600 shadow-xl shadow-emerald-500/25">
@@ -91,14 +96,13 @@ export default function AuthCallbackPage() {
 
             <div>
               <h1 className="text-2xl font-extrabold tracking-tight text-foreground/90">
-                인증이 완료되었습니다!
+                로그인 완료!
               </h1>
               <p className="mt-2 text-[14px] text-foreground/50">
                 환영합니다! 이제 Abyss의 모든 기능을 사용할 수 있습니다.
               </p>
             </div>
 
-            {/* Features preview */}
             <div className="glass-card mt-2 flex items-center gap-4 rounded-2xl px-6 py-4">
               <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 glow-sm">
                 <Sparkles className="size-5 text-white" />
@@ -109,7 +113,6 @@ export default function AuthCallbackPage() {
               </div>
             </div>
 
-            {/* Countdown */}
             <div className="mt-4 flex flex-col items-center gap-3">
               <p className="text-[13px] text-foreground/40">
                 <span className="font-bold text-purple-400">{countdown}초</span> 후 대시보드로 이동합니다
