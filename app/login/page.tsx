@@ -15,8 +15,7 @@ interface PasswordRule {
 
 const passwordRules: PasswordRule[] = [
   { label: "8자 이상", test: (pw) => pw.length >= 8 },
-  { label: "영문 대문자 포함", test: (pw) => /[A-Z]/.test(pw) },
-  { label: "영문 소문자 포함", test: (pw) => /[a-z]/.test(pw) },
+  { label: "영문 포함", test: (pw) => /[a-zA-Z]/.test(pw) },
   { label: "숫자 포함", test: (pw) => /[0-9]/.test(pw) },
   { label: "특수문자 포함 (!@#$%^&*)", test: (pw) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pw) },
 ]
