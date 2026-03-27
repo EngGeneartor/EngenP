@@ -94,7 +94,7 @@ export default function AuthCallbackPage() {
                 인증이 완료되었습니다!
               </h1>
               <p className="mt-2 text-[14px] text-foreground/50">
-                환영합니다! 이제 EngenP의 모든 기능을 사용할 수 있습니다.
+                환영합니다! 이제 Abyss의 모든 기능을 사용할 수 있습니다.
               </p>
             </div>
 

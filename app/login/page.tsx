@@ -97,7 +97,7 @@ export default function LoginPage() {
             setError(error.message)
           }
         } else {
-          setSuccess("회원가입 완료! 이메일에서 인증 링크를 클릭해주세요.")
+          setSuccess(`회원가입이 완료되었습니다! ${email}로 인증 메일을 보냈습니다. 메일함에서 인증 링크를 클릭하면 로그인할 수 있습니다.`)
         }
       }
     } catch {
@@ -126,7 +126,7 @@ export default function LoginPage() {
             <Zap className="size-6 text-white" strokeWidth={2.5} />
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-extrabold tracking-tight text-gradient-bright">EngenP</h1>
+            <h1 className="text-2xl font-extrabold tracking-tight text-gradient-bright">Abyss</h1>
             <p className="mt-1 text-[13px] font-medium text-foreground/60">AI 영어 내신 변형 문제 생성기</p>
           </div>
         </Link>
@@ -136,7 +136,7 @@ export default function LoginPage() {
           {/* Tab */}
           <div className="mb-8 flex rounded-2xl bg-muted/30 p-1">
             <button
-              onClick={() => switchMode()}
+              onClick={() => { if (!isLogin) switchMode() }}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
                 isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
@@ -144,7 +144,7 @@ export default function LoginPage() {
               로그인
             </button>
             <button
-              onClick={() => switchMode()}
+              onClick={() => { if (isLogin) switchMode() }}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
                 !isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
