@@ -12,11 +12,11 @@ export default function AuthCallbackPage() {
   const router = useRouter()
 
   useEffect(() => {
-    const handleAuth = async () => {
+    const handleAuth = async (retries = 3) => {
       try {
-        // Check if already logged in
-        const { data: { user } } = await supabase.auth.getUser()
-        if (user) {
+        // Check session (localStorage first, faster than getUser API call)
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session) {
           setStatus("success")
           return
         }
@@ -41,7 +41,13 @@ export default function AuthCallbackPage() {
           return
         }
 
-        // No session found
+        // Retry - session might not be stored yet
+        if (retries > 0) {
+          await new Promise(r => setTimeout(r, 500))
+          return handleAuth(retries - 1)
+        }
+
+        // No session found after retries
         setStatus("error")
       } catch {
         setStatus("error")
