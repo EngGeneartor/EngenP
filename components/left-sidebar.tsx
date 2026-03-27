@@ -160,8 +160,8 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
 
   return (
     <aside className="relative z-10 flex h-full w-[310px] flex-col sidebar-glass">
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-5">
+      {/* Logo - click to go home */}
+      <a href="/EngenP/" className="flex items-center gap-3 px-5 py-5 transition-smooth hover:opacity-80">
         <div className="relative flex size-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 glow-md">
           <Zap className="size-[18px] text-white" strokeWidth={2.5} />
         </div>
@@ -169,7 +169,7 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
           <h1 className="text-[15px] font-extrabold tracking-tight text-gradient-bright">Abyss</h1>
           <p className="text-[11px] font-medium tracking-wide text-muted-foreground/70">AI 내신 변형 문제 생성기</p>
         </div>
-      </div>
+      </a>
 
       <div className="divider-gradient mx-4" />
 

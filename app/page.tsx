@@ -1,10 +1,12 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Zap, Upload, Sparkles, FileDown, ArrowRight, BookOpen, Brain, Target, Shield, Clock, ChevronRight, Star, GraduationCap, BarChart3, MessageCircle } from "lucide-react"
+import { Zap, Upload, Sparkles, FileDown, ArrowRight, BookOpen, Brain, Target, Shield, Clock, ChevronRight, Star, GraduationCap, BarChart3, MessageCircle, User, LogOut } from "lucide-react"
 import { AmbientBackground } from "@/components/ambient-background"
 import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
+import { supabase } from "@/lib/supabase"
 
 function FadeIn({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const { ref, isInView } = useInView(0.1)
@@ -89,6 +91,18 @@ const stats = [
 ]
 
 export default function LandingPage() {
+  const [userEmail, setUserEmail] = useState<string | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUserEmail(session?.user?.email ?? null)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserEmail(session?.user?.email ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
   return (
     <div className="relative min-h-screen bg-background overflow-x-hidden">
       <AmbientBackground />
@@ -108,15 +122,39 @@ export default function LandingPage() {
             <a href="#pricing" className="text-[13px] font-medium text-foreground/65 transition-smooth hover:text-foreground/80">요금</a>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-[13px] font-semibold text-foreground/60 transition-smooth hover:text-foreground/90 px-4 py-2">
-              로그인
-            </Link>
-            <Link
-              href="/login"
-              className="btn-shine rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-5 py-2.5 text-[13px] font-bold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:shadow-purple-500/30 hover:brightness-110"
-            >
-              시작하기
-            </Link>
+            {userEmail ? (
+              <>
+                <div className="flex items-center gap-2 rounded-xl bg-muted/30 px-3 py-2">
+                  <User className="size-3.5 text-purple-400" />
+                  <span className="text-[12px] font-medium text-foreground/60">{userEmail}</span>
+                </div>
+                <Link
+                  href="/dashboard"
+                  className="btn-shine rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-5 py-2.5 text-[13px] font-bold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:shadow-purple-500/30 hover:brightness-110"
+                >
+                  대시보드
+                </Link>
+                <button
+                  onClick={async () => { await supabase.auth.signOut(); setUserEmail(null) }}
+                  className="rounded-lg p-2 text-foreground/30 transition-smooth hover:bg-red-500/10 hover:text-red-400"
+                  title="로그아웃"
+                >
+                  <LogOut className="size-4" />
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="text-[13px] font-semibold text-foreground/60 transition-smooth hover:text-foreground/90 px-4 py-2">
+                  로그인
+                </Link>
+                <Link
+                  href="/login"
+                  className="btn-shine rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-5 py-2.5 text-[13px] font-bold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:shadow-purple-500/30 hover:brightness-110"
+                >
+                  시작하기
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
