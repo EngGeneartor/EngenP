@@ -8,10 +8,13 @@ import { AIChatSidebar } from "@/components/ai-chat-sidebar"
 import { AmbientBackground } from "@/components/ambient-background"
 import { supabase } from "@/lib/supabase"
 import type { User } from "@supabase/supabase-js"
+import type { UploadedFile } from "@/lib/types"
 
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
+  const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -52,9 +55,14 @@ export default function Dashboard() {
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background">
       <AmbientBackground />
-      <LeftSidebar />
+      <LeftSidebar
+        uploadedFiles={uploadedFiles}
+        setUploadedFiles={setUploadedFiles}
+        selectedFile={selectedFile}
+        onFileSelect={setSelectedFile}
+      />
       <div className="divider-v-gradient shrink-0" />
-      <MainContent />
+      <MainContent selectedFile={selectedFile} uploadedFiles={uploadedFiles} />
       <div className="divider-v-gradient shrink-0" />
       <AIChatSidebar />
     </div>
