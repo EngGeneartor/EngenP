@@ -3,8 +3,9 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, Chrome } from "lucide-react"
+import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, Chrome, AlertCircle, CheckCircle2 } from "lucide-react"
 import { AmbientBackground } from "@/components/ambient-background"
+import { supabase } from "@/lib/supabase"
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -12,21 +13,79 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
   const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError("")
+    setSuccess("")
+
+    if (!email || !password) {
+      setError("이메일과 비밀번호를 입력해주세요.")
+      return
+    }
+
+    if (password.length < 6) {
+      setError("비밀번호는 6자 이상이어야 합니다.")
+      return
+    }
+
     setIsLoading(true)
-    setTimeout(() => {
-      router.push("/EngenP/dashboard/")
-    }, 800)
+
+    try {
+      if (isLogin) {
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        if (error) {
+          if (error.message.includes("Invalid login")) {
+            setError("이메일 또는 비밀번호가 올바르지 않습니다.")
+          } else if (error.message.includes("Email not confirmed")) {
+            setError("이메일 인증이 완료되지 않았습니다. 메일함을 확인해주세요.")
+          } else {
+            setError(error.message)
+          }
+        } else {
+          router.push("/dashboard/")
+        }
+      } else {
+        const { error } = await supabase.auth.signUp({ email, password })
+        if (error) {
+          if (error.message.includes("already registered")) {
+            setError("이미 가입된 이메일입니다.")
+          } else {
+            setError(error.message)
+          }
+        } else {
+          setSuccess("회원가입 완료! 이메일에서 인증 링크를 클릭해주세요.")
+        }
+      }
+    } catch {
+      setError("오류가 발생했습니다. 다시 시도해주세요.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
+    setError("")
     setIsLoading(true)
-    setTimeout(() => {
-      router.push("/EngenP/dashboard/")
-    }, 800)
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/EngenP/dashboard/`,
+          queryParams: { prompt: "select_account" },
+        },
+      })
+      if (error) {
+        setError("Google 로그인에 실패했습니다. 잠시 후 다시 시도해주세요.")
+        setIsLoading(false)
+      }
+    } catch {
+      setError("오류가 발생했습니다.")
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -50,7 +109,7 @@ export default function LoginPage() {
           {/* Tab */}
           <div className="mb-8 flex rounded-2xl bg-muted/30 p-1">
             <button
-              onClick={() => setIsLogin(true)}
+              onClick={() => { setIsLogin(true); setError(""); setSuccess(""); }}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
                 isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
@@ -58,7 +117,7 @@ export default function LoginPage() {
               로그인
             </button>
             <button
-              onClick={() => setIsLogin(false)}
+              onClick={() => { setIsLogin(false); setError(""); setSuccess(""); }}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
                 !isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
@@ -66,6 +125,20 @@ export default function LoginPage() {
               회원가입
             </button>
           </div>
+
+          {/* Error / Success Messages */}
+          {error && (
+            <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3">
+              <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-400" />
+              <p className="text-[12.5px] leading-relaxed text-red-300">{error}</p>
+            </div>
+          )}
+          {success && (
+            <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3">
+              <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-400" />
+              <p className="text-[12.5px] leading-relaxed text-emerald-300">{success}</p>
+            </div>
+          )}
 
           {/* Google Login */}
           <button
@@ -108,7 +181,7 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder={isLogin ? "••••••••" : "6자 이상 입력"}
                   className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-white placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
                 />
                 <button
@@ -153,7 +226,7 @@ export default function LoginPage() {
         <p className="mt-6 text-center text-[12px] text-foreground/40">
           {isLogin ? "계정이 없으신가요?" : "이미 계정이 있으신가요?"}{" "}
           <button
-            onClick={() => setIsLogin(!isLogin)}
+            onClick={() => { setIsLogin(!isLogin); setError(""); setSuccess(""); }}
             className="font-bold text-purple-400/70 transition-smooth hover:text-purple-300"
           >
             {isLogin ? "회원가입" : "로그인"}
