@@ -165,12 +165,13 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
               <Eye className="size-4" />
               지문 원문
             </TabsTrigger>
-            {selectedFile && (
-              <TabsTrigger value="viewer" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
-                <Upload className="size-4" />
-                타겟 지문
-              </TabsTrigger>
-            )}
+            <TabsTrigger value="viewer" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
+              <Upload className="size-4" />
+              타겟 지문
+              {uploadedFiles.length > 0 && (
+                <span className="ml-1 flex size-5 items-center justify-center rounded-md bg-emerald-500/20 text-[10px] font-bold text-emerald-400">{uploadedFiles.length}</span>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="questions" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
               <Sparkles className="size-4" />
               변형 문제
@@ -211,21 +212,41 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
           </TabsContent>
 
           {/* ═══ 타겟 지문 (업로드된 파일 뷰어) ═══ */}
-          {selectedFile && (
-            <TabsContent value="viewer" className="mt-5 flex-1 overflow-hidden">
-              <div className="glass-card h-full overflow-hidden rounded-2xl">
-                {selectedFile.type === "application/pdf" && selectedFile.publicUrl && (
-                  <PDFViewer url={selectedFile.publicUrl} />
-                )}
-                {selectedFile.type.startsWith("image/") && selectedFile.publicUrl && (
-                  <ImageViewer url={selectedFile.publicUrl} name={selectedFile.name} />
-                )}
-                {selectedFile.type === "text/plain" && selectedFile.publicUrl && (
-                  <TextViewer url={selectedFile.publicUrl} />
-                )}
-              </div>
-            </TabsContent>
-          )}
+          <TabsContent value="viewer" className="mt-5 flex-1 overflow-hidden">
+            <div className="glass-card h-full overflow-hidden rounded-2xl">
+              {selectedFile ? (
+                <>
+                  {selectedFile.type === "application/pdf" && selectedFile.publicUrl && (
+                    <PDFViewer url={selectedFile.publicUrl} />
+                  )}
+                  {selectedFile.type.startsWith("image/") && selectedFile.publicUrl && (
+                    <ImageViewer url={selectedFile.publicUrl} name={selectedFile.name} />
+                  )}
+                  {selectedFile.type === "text/plain" && selectedFile.publicUrl && (
+                    <TextViewer url={selectedFile.publicUrl} />
+                  )}
+                </>
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
+                  <div className="flex size-20 items-center justify-center rounded-3xl bg-gradient-to-br from-purple-500/10 to-indigo-500/10">
+                    <Upload className="size-9 text-purple-400/40" />
+                  </div>
+                  <div>
+                    <h3 className="text-[17px] font-bold text-foreground/70">지문을 업로드해주세요</h3>
+                    <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/40">
+                      좌측에서 PDF, JPG, PNG, TXT 파일을 업로드하면<br />
+                      여기에서 내용을 확인할 수 있습니다.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {["PDF", "JPG", "PNG", "TXT"].map(ext => (
+                      <span key={ext} className="pill border border-border/30 bg-muted/20 text-muted-foreground/50">{ext}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </TabsContent>
 
           {/* ═══ 변형 문제 ═══ */}
           <TabsContent value="questions" className="mt-5 flex-1 overflow-hidden">
