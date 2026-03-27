@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { Upload, FileText, BarChart3, Settings2, ChevronDown, Zap, Sparkles } from "lucide-react"
+import { Upload, FileText, BarChart3, Settings2, ChevronDown, Zap, Sparkles, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { supabase } from "@/lib/supabase"
 import { Slider } from "@/components/ui/slider"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -262,6 +263,16 @@ export function LeftSidebar() {
         <p className="mt-2 text-center text-[10px] text-muted-foreground/40">
           {selectedTypes.length}개 유형 · {questionCount[0]}문항 · 난이도 {difficulty[0]}
         </p>
+        <button
+          onClick={async () => {
+            await supabase.auth.signOut()
+            window.location.href = "/EngenP/"
+          }}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2 text-[12px] font-medium text-foreground/35 transition-smooth hover:bg-red-500/10 hover:text-red-400"
+        >
+          <LogOut className="size-3.5" />
+          로그아웃
+        </button>
       </div>
     </aside>
   )
