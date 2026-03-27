@@ -143,7 +143,7 @@ export function MainContent() {
                       </p>
                     ))}
                   </div>
-                  <div className="mt-10 rounded-2xl bg-gradient-to-br from-purple-500/[0.04] to-indigo-500/[0.04] border border-purple-500/[0.08] p-6">
+                  <div className="mt-10 rounded-2xl gradient-border bg-gradient-to-br from-purple-500/[0.06] via-indigo-500/[0.03] to-violet-500/[0.06] border border-purple-500/[0.08] p-6">
                     <h4 className="mb-4 text-[13px] font-bold tracking-wide text-foreground/70">지문 분석</h4>
                     <div className="grid grid-cols-3 gap-3">
                       {[
