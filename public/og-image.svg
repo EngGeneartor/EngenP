@@ -1,55 +1,212 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <!-- Background gradient matching site theme -->
     <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#0c0a1a"/>
-      <stop offset="50%" stop-color="#1a1035"/>
-      <stop offset="100%" stop-color="#0c0a1a"/>
+      <stop offset="0%" stop-color="#0d0b1a"/>
+      <stop offset="40%" stop-color="#15102d"/>
+      <stop offset="100%" stop-color="#0d0b1a"/>
     </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#7c3aed"/>
-      <stop offset="100%" stop-color="#4f46e5"/>
+    <!-- Accent gradients -->
+    <linearGradient id="purple-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
     </linearGradient>
-    <radialGradient id="glow1" cx="300" cy="315" r="300" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+    <linearGradient id="logo-grad" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="card-border" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="cta-grad" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9333ea"/>
+      <stop offset="50%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <!-- Ambient orbs -->
+    <radialGradient id="orb1" cx="200" cy="180" r="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.12"/>
       <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="glow2" cx="900" cy="315" r="300" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.1"/>
-      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"/>
+    <radialGradient id="orb2" cx="1000" cy="450" r="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
     </radialGradient>
+    <radialGradient id="orb3" cx="600" cy="100" r="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Glass card filter -->
+    <filter id="glass-blur" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
+    </filter>
+    <!-- Glow -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glow-sm">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
   </defs>
 
-  <!-- Background -->
+  <!-- Base background -->
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect width="1200" height="630" fill="url(#glow1)"/>
-  <rect width="1200" height="630" fill="url(#glow2)"/>
 
-  <!-- Logo icon -->
-  <rect x="520" y="120" width="72" height="72" rx="18" fill="url(#accent)"/>
-  <path d="M560 140l-14 26h10l-5 20 20-28h-12l5-18z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- Ambient orbs -->
+  <rect width="1200" height="630" fill="url(#orb1)"/>
+  <rect width="1200" height="630" fill="url(#orb2)"/>
+  <rect width="1200" height="630" fill="url(#orb3)"/>
 
-  <!-- Brand text -->
-  <text x="600" y="250" text-anchor="middle" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" letter-spacing="-1">Abyss</text>
+  <!-- Subtle grid pattern -->
+  <g opacity="0.03">
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(100,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(200,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(300,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(400,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(500,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(600,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(700,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(800,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(900,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(1000,0)"/>
+    <line x1="0" y1="0" x2="0" y2="630" stroke="white" stroke-width="0.5" transform="translate(1100,0)"/>
+  </g>
 
-  <!-- Tagline -->
-  <text x="600" y="310" text-anchor="middle" fill="#a78bfa" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="600">AI 영어 내신 변형 문제 생성기</text>
+  <!-- ═══ LEFT: Brand + Text ═══ -->
 
-  <!-- Description -->
-  <text x="600" y="370" text-anchor="middle" fill="#8b8b9e" font-family="system-ui, -apple-system, sans-serif" font-size="20">시험 지문을 넣으면 변형 문제가 나온다</text>
+  <!-- Logo -->
+  <g filter="url(#glow-sm)">
+    <rect x="80" y="160" width="56" height="56" rx="16" fill="url(#logo-grad)"/>
+  </g>
+  <path d="M112 174l-12 24h9l-4 18 18-25h-11l4-17z" fill="white" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
 
-  <!-- Feature pills -->
-  <rect x="290" y="420" width="120" height="36" rx="18" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-opacity="0.3"/>
-  <text x="350" y="443" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="600">10+ 문제 유형</text>
+  <!-- Brand name -->
+  <text x="148" y="200" fill="white" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="40" font-weight="800" letter-spacing="-0.5" opacity="0.95">Abyss</text>
 
-  <rect x="440" y="420" width="130" height="36" rx="18" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-opacity="0.3"/>
-  <text x="505" y="443" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="600">5단계 난이도</text>
+  <!-- Main headline -->
+  <text x="80" y="280" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="800" letter-spacing="-1" opacity="0.92">시험 지문을 넣으면</text>
+  <!-- Gradient text effect via purple -->
+  <text x="80" y="340" fill="url(#purple-grad)" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="800" letter-spacing="-1">변형 문제가 나온다</text>
 
-  <rect x="600" y="420" width="130" height="36" rx="18" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-opacity="0.3"/>
-  <text x="665" y="443" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="600">30초 생성</text>
+  <!-- Subtitle -->
+  <text x="80" y="390" fill="#9ca3af" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="500" opacity="0.7">AI 기반 고등학교 영어 내신 변형 문제 자동 생성 서비스</text>
 
-  <rect x="760" y="420" width="150" height="36" rx="18" fill="#7c3aed" fill-opacity="0.15" stroke="#7c3aed" stroke-opacity="0.3"/>
-  <text x="835" y="443" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="600">.docx 추출</text>
+  <!-- CTA button shape -->
+  <rect x="80" y="430" width="200" height="48" rx="14" fill="url(#cta-grad)"/>
+  <text x="180" y="460" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="15" font-weight="700">무료로 시작하기 →</text>
 
-  <!-- Bottom URL -->
-  <text x="600" y="560" text-anchor="middle" fill="#4b4b5e" font-family="system-ui, sans-serif" font-size="16">enggeneartor.github.io/EngenP</text>
+  <!-- Feature pills row -->
+  <g transform="translate(80, 505)">
+    <rect width="100" height="30" rx="15" fill="#7c3aed" fill-opacity="0.12" stroke="#7c3aed" stroke-opacity="0.25" stroke-width="1"/>
+    <text x="50" y="20" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="11" font-weight="600">10+ 유형</text>
+
+    <rect x="112" width="100" height="30" rx="15" fill="#7c3aed" fill-opacity="0.12" stroke="#7c3aed" stroke-opacity="0.25" stroke-width="1"/>
+    <text x="162" y="20" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="11" font-weight="600">5단계 난이도</text>
+
+    <rect x="224" width="100" height="30" rx="15" fill="#7c3aed" fill-opacity="0.12" stroke="#7c3aed" stroke-opacity="0.25" stroke-width="1"/>
+    <text x="274" y="20" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="11" font-weight="600">&lt; 30초 생성</text>
+
+    <rect x="336" width="110" height="30" rx="15" fill="#7c3aed" fill-opacity="0.12" stroke="#7c3aed" stroke-opacity="0.25" stroke-width="1"/>
+    <text x="391" y="20" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="11" font-weight="600">.docx 추출</text>
+  </g>
+
+  <!-- ═══ RIGHT: Dashboard Preview Card ═══ -->
+  <g transform="translate(620, 80)">
+    <!-- Card shadow -->
+    <rect x="4" y="4" width="510" height="470" rx="20" fill="#000" opacity="0.3" filter="url(#glass-blur)"/>
+
+    <!-- Glass card -->
+    <rect width="510" height="470" rx="20" fill="#161230" stroke="url(#card-border)" stroke-width="1"/>
+
+    <!-- Browser chrome bar -->
+    <rect y="0" width="510" height="40" rx="20" fill="#1c1640"/>
+    <rect y="20" width="510" height="20" fill="#1c1640"/>
+    <circle cx="24" cy="20" r="5" fill="#ef4444" opacity="0.5"/>
+    <circle cx="42" cy="20" r="5" fill="#eab308" opacity="0.5"/>
+    <circle cx="60" cy="20" r="5" fill="#22c55e" opacity="0.5"/>
+    <rect x="84" y="12" width="200" height="16" rx="8" fill="#0d0b1a" opacity="0.6"/>
+    <text x="120" y="24" fill="#4b4b5e" font-family="system-ui, sans-serif" font-size="9">app.abyss.kr/dashboard</text>
+
+    <!-- Tab bar -->
+    <g transform="translate(20, 52)">
+      <rect width="80" height="28" rx="8" fill="#7c3aed" fill-opacity="0.15"/>
+      <text x="40" y="18" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="10" font-weight="600">지문 원문</text>
+      <rect x="88" width="72" height="28" rx="8" fill="transparent"/>
+      <text x="124" y="18" text-anchor="middle" fill="#6b6b80" font-family="system-ui, sans-serif" font-size="10">타겟 지문</text>
+      <rect x="168" width="90" height="28" rx="8" fill="transparent"/>
+      <text x="208" y="18" text-anchor="middle" fill="#6b6b80" font-family="system-ui, sans-serif" font-size="10">변형 문제</text>
+      <rect x="247" width="18" height="18" rx="6" y="5" fill="#7c3aed" fill-opacity="0.2"/>
+      <text x="256" y="18" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="9" font-weight="700">3</text>
+    </g>
+
+    <!-- Source tags -->
+    <g transform="translate(20, 95)">
+      <rect width="76" height="22" rx="11" fill="#7c3aed" fill-opacity="0.1" stroke="#7c3aed" stroke-opacity="0.2" stroke-width="0.5"/>
+      <text x="38" y="15" text-anchor="middle" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="9" font-weight="600">EBS 수능특강</text>
+      <rect x="82" width="36" height="22" rx="11" fill="#1a1535" stroke="#2a2545" stroke-width="0.5"/>
+      <text x="100" y="15" text-anchor="middle" fill="#6b6b80" font-family="system-ui, sans-serif" font-size="9">영어</text>
+      <rect x="124" width="38" height="22" rx="11" fill="#1a1535" stroke="#2a2545" stroke-width="0.5"/>
+      <text x="143" y="15" text-anchor="middle" fill="#6b6b80" font-family="system-ui, sans-serif" font-size="9">2024</text>
+    </g>
+
+    <!-- Title -->
+    <text x="20" y="140" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="700" opacity="0.85">Cultural Intelligence in a Globalized World</text>
+
+    <!-- Passage preview lines -->
+    <rect x="20" y="155" width="470" height="8" rx="4" fill="white" opacity="0.06"/>
+    <rect x="20" y="169" width="420" height="8" rx="4" fill="white" opacity="0.04"/>
+    <rect x="20" y="183" width="450" height="8" rx="4" fill="white" opacity="0.06"/>
+    <rect x="20" y="197" width="380" height="8" rx="4" fill="white" opacity="0.04"/>
+
+    <!-- Question cards preview -->
+    <!-- Q1 -->
+    <g transform="translate(20, 220)">
+      <rect width="470" height="72" rx="12" fill="#1a1535" stroke="#252040" stroke-width="0.5"/>
+      <rect x="12" y="12" width="36" height="36" rx="10" fill="url(#cta-grad)"/>
+      <text x="30" y="36" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="800">1</text>
+      <!-- Type badges -->
+      <rect x="58" y="12" width="34" height="18" rx="9" fill="#0ea5e9" fill-opacity="0.1" stroke="#0ea5e9" stroke-opacity="0.25" stroke-width="0.5"/>
+      <text x="75" y="24" text-anchor="middle" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="9" font-weight="600">어법</text>
+      <rect x="98" y="12" width="34" height="18" rx="9" fill="#f59e0b" fill-opacity="0.1" stroke="#f59e0b" stroke-opacity="0.25" stroke-width="0.5"/>
+      <text x="115" y="24" text-anchor="middle" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="9" font-weight="600">Lv.3</text>
+      <!-- Question text placeholder -->
+      <rect x="58" y="38" width="340" height="7" rx="3.5" fill="white" opacity="0.06"/>
+      <rect x="58" y="51" width="260" height="7" rx="3.5" fill="white" opacity="0.04"/>
+    </g>
+
+    <!-- Q2 -->
+    <g transform="translate(20, 300)">
+      <rect width="470" height="72" rx="12" fill="#1a1535" stroke="#252040" stroke-width="0.5"/>
+      <rect x="12" y="12" width="36" height="36" rx="10" fill="url(#cta-grad)"/>
+      <text x="30" y="36" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="800">2</text>
+      <rect x="58" y="12" width="56" height="18" rx="9" fill="#14b8a6" fill-opacity="0.1" stroke="#14b8a6" stroke-opacity="0.25" stroke-width="0.5"/>
+      <text x="86" y="24" text-anchor="middle" fill="#2dd4bf" font-family="system-ui, sans-serif" font-size="9" font-weight="600">빈칸 추론</text>
+      <rect x="120" y="12" width="34" height="18" rx="9" fill="#f43f5e" fill-opacity="0.1" stroke="#f43f5e" stroke-opacity="0.25" stroke-width="0.5"/>
+      <text x="137" y="24" text-anchor="middle" fill="#fb7185" font-family="system-ui, sans-serif" font-size="9" font-weight="600">Lv.4</text>
+      <rect x="58" y="38" width="380" height="7" rx="3.5" fill="white" opacity="0.06"/>
+      <rect x="58" y="51" width="300" height="7" rx="3.5" fill="white" opacity="0.04"/>
+    </g>
+
+    <!-- Q3 -->
+    <g transform="translate(20, 380)">
+      <rect width="470" height="72" rx="12" fill="#1a1535" stroke="#252040" stroke-width="0.5"/>
+      <rect x="12" y="12" width="36" height="36" rx="10" fill="url(#cta-grad)"/>
+      <text x="30" y="36" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="800">3</text>
+      <rect x="58" y="12" width="34" height="18" rx="9" fill="#a855f7" fill-opacity="0.1" stroke="#a855f7" stroke-opacity="0.25" stroke-width="0.5"/>
+      <text x="75" y="24" text-anchor="middle" fill="#c084fc" font-family="system-ui, sans-serif" font-size="9" font-weight="600">어휘</text>
+      <rect x="98" y="12" width="34" height="18" rx="9" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e" stroke-opacity="0.25" stroke-width="0.5"/>
+      <text x="115" y="24" text-anchor="middle" fill="#4ade80" font-family="system-ui, sans-serif" font-size="9" font-weight="600">Lv.2</text>
+      <rect x="58" y="38" width="360" height="7" rx="3.5" fill="white" opacity="0.06"/>
+      <rect x="58" y="51" width="280" height="7" rx="3.5" fill="white" opacity="0.04"/>
+    </g>
+  </g>
+
+  <!-- Bottom bar -->
+  <line x1="0" y1="600" x2="1200" y2="600" stroke="#7c3aed" stroke-opacity="0.15"/>
+  <text x="600" y="620" text-anchor="middle" fill="#4b4b5e" font-family="system-ui, sans-serif" font-size="12" font-weight="500">abyss.kr</text>
 </svg>
