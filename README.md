@@ -33,10 +33,8 @@
 npm install
 npm run dev
 ```
-
-https://github.com/login?return_to=https://github.com/EngGeneartor/EngenP
-
-에서 확인.
+웹 url
+https://enggeneartor.github.io/EngenP/
 
 ### 환경 변수
 
