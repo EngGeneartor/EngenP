@@ -97,8 +97,7 @@ export default function LoginPage() {
             setError(error.message)
           }
         } else {
-          // 회원가입 완료 → 환영 페이지 경유 → 대시보드
-          router.push("/auth/callback/?from=signup")
+          setSuccess(`회원가입이 완료되었습니다! ${email}로 인증 메일을 보냈습니다. 메일함에서 인증 링크를 클릭하면 로그인할 수 있습니다.`)
         }
       }
     } catch {
