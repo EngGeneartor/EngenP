@@ -100,23 +100,16 @@ export default function LoginPage() {
 
     try {
       if (isLogin) {
-        console.log("[login] attempting signInWithPassword...")
         const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-        console.log("[login] result:", { hasSession: !!data?.session, error: error?.message })
         if (error) {
-          if (error.message.includes("Invalid login")) {
-            setError("이메일 또는 비밀번호가 올바르지 않습니다.")
-          } else if (error.message.includes("Email not confirmed")) {
-            setError("이메일 인증이 완료되지 않았습니다. 메일함을 확인해주세요.")
-          } else {
-            setError(error.message || "로그인에 실패했습니다.")
-          }
+          setError(error.message || "로그인에 실패했습니다.")
         } else if (data?.session) {
-          console.log("[login] session obtained, redirecting to /dashboard")
+          // 로그인 성공 — 강제로 대시보드 이동
+          document.cookie = `sb-auth-token=${data.session.access_token}; path=/; max-age=3600`
           window.location.href = "/dashboard"
-          return // prevent finally from setting isLoading=false
+          return
         } else {
-          setError("세션을 생성할 수 없습니다. 다시 시도해주세요.")
+          setError("세션을 생성할 수 없습니다.")
         }
       } else {
         const { error } = await supabase.auth.signUp({
