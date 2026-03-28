@@ -39,8 +39,8 @@ import type {
 /** Path to the directory containing question-type JSON templates */
 const QUESTION_TYPES_DIR = path.join(process.cwd(), 'data', 'question_types')
 
-/** Path to the directory containing system prompts */
-const PROMPTS_DIR = path.join(process.cwd(), 'data', 'prompts')
+/** Path to the directory containing system prompts (reserved for future use) */
+// const PROMPTS_DIR = path.join(process.cwd(), 'data', 'prompts')
 
 /** Maximum validation + regeneration rounds before giving up */
 const MAX_CORRECTION_ROUNDS = 2

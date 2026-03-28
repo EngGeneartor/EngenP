@@ -102,7 +102,7 @@ export function ProjectHistory({ collapsed, onToggle }: ProjectHistoryProps) {
               className={cn(
                 "flex size-9 items-center justify-center rounded-xl text-[11px] font-bold transition-smooth",
                 selectedId === p.id
-                  ? "bg-purple-500/20 text-purple-300"
+                  ? "bg-purple-500/20 text-purple-700 dark:text-purple-300"
                   : "text-foreground/30 hover:bg-muted/30 hover:text-foreground/50"
               )}
               title={p.title}
@@ -170,7 +170,7 @@ export function ProjectHistory({ collapsed, onToggle }: ProjectHistoryProps) {
               <div className="flex items-center justify-between">
                 <span className={cn(
                   "text-[12px] font-semibold truncate pr-2",
-                  selectedId === project.id ? "text-purple-300" : "text-foreground/70"
+                  selectedId === project.id ? "text-purple-700 dark:text-purple-300" : "text-foreground/70"
                 )}>
                   {project.title}
                 </span>
@@ -207,7 +207,7 @@ export function ProjectHistory({ collapsed, onToggle }: ProjectHistoryProps) {
               <div className="flex items-center justify-between">
                 <span className={cn(
                   "text-[12px] font-semibold truncate pr-2",
-                  selectedId === project.id ? "text-purple-300" : "text-foreground/70"
+                  selectedId === project.id ? "text-purple-700 dark:text-purple-300" : "text-foreground/70"
                 )}>
                   {project.title}
                 </span>

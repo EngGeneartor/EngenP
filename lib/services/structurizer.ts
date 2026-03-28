@@ -395,8 +395,8 @@ export async function structurizeFromBase64(
 // -----------------------------------------------------------
 
 export type StructurizeInput =
-  | { fileUrl: string; base64?: never; mediaType?: never }
-  | { base64: string; mediaType: string; fileUrl?: never }
+  | { fileUrl: string; base64?: undefined; mediaType?: undefined }
+  | { base64: string; mediaType: string; fileUrl?: undefined }
 
 /**
  * Unified dispatcher: accepts either a remote file URL or raw base64 + mediaType.
@@ -405,10 +405,12 @@ export type StructurizeInput =
  * @param input  Either `{ fileUrl }` or `{ base64, mediaType }`
  */
 export async function structurizePassage(input: StructurizeInput): Promise<StructuredPassage> {
-  if (input.fileUrl) {
+  if ('fileUrl' in input && input.fileUrl != null) {
     return structurizeFromUrl(input.fileUrl)
   }
-  return structurizeFromBase64(input.base64, input.mediaType)
+  // Discriminated union: fileUrl branch is exhausted, base64 and mediaType are present
+  const { base64, mediaType } = input as { base64: string; mediaType: string }
+  return structurizeFromBase64(base64, mediaType)
 }
 
 // -----------------------------------------------------------

@@ -228,7 +228,7 @@ export default function LandingPage() {
                       <span className="text-[11px] font-bold text-foreground/65">Abyss</span>
                     </div>
                     <div className="space-y-2">
-                      <div className="rounded-lg bg-purple-500/10 px-3 py-2"><span className="text-[10px] text-purple-300">타겟 지문 업로드</span></div>
+                      <div className="rounded-lg bg-purple-500/10 px-3 py-2"><span className="text-[10px] text-purple-600 dark:text-purple-300">타겟 지문 업로드</span></div>
                       <div className="rounded-lg bg-muted/20 px-3 py-2"><span className="text-[10px] text-foreground/30">기출 스타일 분석</span></div>
                       <div className="rounded-lg bg-muted/20 px-3 py-2"><span className="text-[10px] text-foreground/30">출제 옵션</span></div>
                     </div>
@@ -417,7 +417,7 @@ export default function LandingPage() {
                       <p className="text-[12px] font-semibold text-foreground/80 mb-2">밑줄 친 (A), (B)에서 어법에 맞는 표현으로 가장 적절한 것은?</p>
                       <div className="space-y-1">
                         <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">① (A) refers - (B) is</div>
-                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-300 font-medium">② (A) refers - (B) are ✓</div>
+                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-700 dark:text-purple-300 font-medium">② (A) refers - (B) are ✓</div>
                         <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">③ (A) referring - (B) is</div>
                         <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">④ (A) referring - (B) are</div>
                       </div>
@@ -439,7 +439,7 @@ export default function LandingPage() {
                       </div>
                       <p className="text-[12px] font-semibold text-foreground/80 mb-2">다음 빈칸에 들어갈 말로 가장 적절한 것은?</p>
                       <div className="space-y-1">
-                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-300 font-medium">① accumulating information ✓</div>
+                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-700 dark:text-purple-300 font-medium">① accumulating information ✓</div>
                         <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">② avoiding conflicts</div>
                         <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">③ expressing emotions</div>
                         <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">④ maintaining traditions</div>
@@ -467,7 +467,7 @@ export default function LandingPage() {
                         <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">② adapt</span>
                         <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">③ valuable</span>
                         <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">④ lack</span>
-                        <span className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-2.5 py-1 text-[11px] text-purple-300 font-medium">⑤ succeed ✓</span>
+                        <span className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-2.5 py-1 text-[11px] text-purple-700 dark:text-purple-300 font-medium">⑤ succeed ✓</span>
                       </div>
                     </div>
                   </div>

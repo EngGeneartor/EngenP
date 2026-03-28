@@ -177,7 +177,7 @@ Rules:
     ],
   })
 
-  const textBlock = message.content.find((b) => b.type === 'text')
+  const textBlock = message.content.find((b: { type: string }) => b.type === 'text')
   if (!textBlock || textBlock.type !== 'text') {
     throw new AnthropicServiceError(
       'Claude returned no text content for structurize request',
@@ -228,7 +228,7 @@ Description: ${qt.description}
 Difficulty range: ${qt.difficulty_range[0]}–${qt.difficulty_range[1]}
 Instruction template: "${qt.instruction_template}"
 Generation rules:
-${qt.generation_rules.map((r, i) => `  ${i + 1}. ${r}`).join('\n')}
+${qt.generation_rules.map((r: string, i: number) => `  ${i + 1}. ${r}`).join('\n')}
 Output schema fields:
 ${Object.entries(qt.output_schema)
   .map(([k, v]) => `  - ${k}: ${v ?? 'null'}`)
@@ -284,7 +284,7 @@ Return a JSON array of ${options.count} question object(s) following the schemas
     messages: [{ role: 'user', content: userPrompt }],
   })
 
-  const textBlock = message.content.find((b) => b.type === 'text')
+  const textBlock = message.content.find((b: { type: string }) => b.type === 'text')
   if (!textBlock || textBlock.type !== 'text') {
     throw new AnthropicServiceError(
       'Claude returned no text content for generate request',
@@ -373,7 +373,7 @@ Return the ValidationResult JSON.`
     messages: [{ role: 'user', content: userPrompt }],
   })
 
-  const textBlock = message.content.find((b) => b.type === 'text')
+  const textBlock = message.content.find((b: { type: string }) => b.type === 'text')
   if (!textBlock || textBlock.type !== 'text') {
     throw new AnthropicServiceError(
       'Claude returned no text content for validate request',
