@@ -90,7 +90,7 @@ function CallbackContent() {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer)
-          router.push("/dashboard/")
+          window.location.href = "/dashboard"
           return 0
         }
         return prev - 1
