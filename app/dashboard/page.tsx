@@ -2,13 +2,14 @@
 
 import { Suspense, useEffect, useState, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { MessageCircle, X, Star, CheckCircle2, Zap } from "lucide-react"
+import { MessageCircle, X, Star, CheckCircle2, Zap, Settings } from "lucide-react"
 import { LeftSidebar } from "@/components/left-sidebar"
 import { MainContent } from "@/components/main-content"
 import { AIChatSidebar } from "@/components/ai-chat-sidebar"
 import { ProjectHistory } from "@/components/project-history"
 import { AmbientBackground } from "@/components/ambient-background"
 import { UpgradePrompt } from "@/components/upgrade-prompt"
+import { SettingsModal } from "@/components/settings-modal"
 import { supabase } from "@/lib/supabase"
 import { useProject } from "@/lib/hooks/use-project"
 import { cn } from "@/lib/utils"
@@ -29,6 +30,9 @@ function DashboardContent() {
   const [userPlan, setUserPlan] = useState<"free" | "pro">("free")
   const [upgradePromptOpen, setUpgradePromptOpen] = useState(false)
   const [upgradeReason, setUpgradeReason] = useState<string | undefined>(undefined)
+
+  // Settings modal
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   // Pipeline state
   const [structuredPassage, setStructuredPassage] = useState<StructuredPassage | null>(null)
@@ -322,9 +326,9 @@ function DashboardContent() {
         </button>
       )}
 
-      {/* Plan badge — fixed bottom-left */}
+      {/* Bottom-left controls: Plan badge + Settings */}
       {!isDemo && (
-        <div className="fixed bottom-6 left-6 z-40">
+        <div className="fixed bottom-6 left-6 z-40 flex items-center gap-2">
           {userPlan === "pro" ? (
             <div className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-3 py-1.5 shadow-lg shadow-purple-500/30">
               <Star className="size-3 text-white" strokeWidth={2.5} />
@@ -339,6 +343,13 @@ function DashboardContent() {
               <span className="text-[11px] font-semibold">Free</span>
             </button>
           )}
+          <button
+            onClick={() => setSettingsOpen(true)}
+            className="flex size-8 items-center justify-center rounded-xl border border-border/30 bg-background/60 text-foreground/50 shadow-sm backdrop-blur-sm transition-all hover:border-purple-500/30 hover:bg-purple-500/10 hover:text-purple-400"
+            title="설정"
+          >
+            <Settings className="size-3.5" />
+          </button>
         </div>
       )}
 
@@ -359,6 +370,20 @@ function DashboardContent() {
         open={upgradePromptOpen}
         onClose={() => setUpgradePromptOpen(false)}
         reason={upgradeReason}
+      />
+
+      {/* Settings modal */}
+      <SettingsModal
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        userEmail={user?.email}
+        userId={user?.id}
+        userPlan={userPlan}
+        createdAt={user?.created_at}
+        onSignOut={async () => {
+          await supabase.auth.signOut()
+          router.push("/")
+        }}
       />
     </div>
   )
