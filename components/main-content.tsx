@@ -110,7 +110,7 @@ function ProcessingOverlay({ step }: { step: ProcessingStep }) {
       </div>
       <div className="text-center">
         <p className="text-[15px] font-bold text-foreground/70">{label}</p>
-        <p className="mt-1 text-[12px] text-foreground/60">Claude AI가 처리하고 있습니다</p>
+        <p className="mt-1 text-[12px] text-foreground/60">Haean AI가 처리하고 있습니다</p>
       </div>
       <div className="flex gap-1.5">
         {(["structurizing", "generating"] as ProcessingStep[]).map((s) => {

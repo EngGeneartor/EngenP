@@ -43,7 +43,7 @@ const nextConfig = {
               // Fonts: self, data URIs, and Pretendard CDN
               "font-src 'self' data: cdn.jsdelivr.net",
               // iFrames: Toss Payments and Google / Kakao OAuth popups
-              "frame-src js.tosspayments.com accounts.google.com kauth.kakao.com",
+              "frame-src js.tosspayments.com accounts.google.com kauth.kakao.com https://*.supabase.co",
               // Form submissions only go to self or OAuth endpoints
               "form-action 'self' accounts.google.com kauth.kakao.com",
               // Disallow plugins (Flash, etc.)
