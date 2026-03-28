@@ -515,7 +515,7 @@ function buildCoverPage(
     : new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
   const school = options.schoolName ?? ''
 
-  const paras: Paragraph[] = [spacer(24)]
+  const paras: FileChild[] = [spacer(24)]
 
   if (school) {
     paras.push(
@@ -666,13 +666,13 @@ async function buildDocxBuffer(
 ): Promise<Buffer> {
   const coverPage = buildCoverPage(questions, passage, options)
 
-  const questionSection: Paragraph[] = [
+  const questionSection: FileChild[] = [
     sectionHeading('문  제'),
     horizontalRule(),
     ...questions.flatMap(renderQuestion),
   ]
 
-  const answerSection: Paragraph[] = options.includeAnswers
+  const answerSection: FileChild[] = options.includeAnswers
     ? buildAnswerKey(questions, options.includeExplanations)
     : []
 
