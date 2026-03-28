@@ -229,3 +229,33 @@ export async function exportQuestions(
       )
   }
 }
+
+// -----------------------------------------------------------
+// API-route-compatible adapter
+// -----------------------------------------------------------
+
+export interface ExportDocumentInput {
+  questions: GeneratedQuestion[]
+  passage: StructuredPassage
+  format?: 'docx' | 'json' | 'pdf'
+  options?: Partial<ExportOptions>
+}
+
+/**
+ * Thin adapter used by the /api/export route.
+ * Returns an ArrayBuffer (suitable for streaming as a NextResponse body)
+ * rather than an ExportResult Blob, since the route writes the bytes
+ * directly to the HTTP response.
+ *
+ * @param input  Export request payload from the API route
+ */
+export async function exportDocument(input: ExportDocumentInput): Promise<ArrayBuffer> {
+  const { questions, passage, format = 'docx', options = {} } = input
+  const result = await exportQuestions(questions, passage, { ...options, format })
+  return result.blob.arrayBuffer()
+}
+
+// -----------------------------------------------------------
+// Re-export types so the API route can import them from this module
+// -----------------------------------------------------------
+export type { GeneratedQuestion, StructuredPassage, ExportOptions } from '@/lib/types'
