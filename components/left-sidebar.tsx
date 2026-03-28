@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { Upload, FileText, BarChart3, Settings2, ChevronDown, Zap, Sparkles, LogOut, X, Loader2, CheckCircle2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { supabase } from "@/lib/supabase"
@@ -154,6 +154,43 @@ export function LeftSidebar({
   const [isDnaDragging, setIsDnaDragging] = useState(false)
   const dnaFileInputRef = useRef<HTMLInputElement>(null)
 
+  // ─── Load persisted files from DB on mount ─────────────────────────────────
+
+  useEffect(() => {
+    if (!userId) return
+
+    const loadFiles = async () => {
+      const { data, error } = await supabase
+        .from("user_files")
+        .select("*")
+        .order("uploaded_at", { ascending: true })
+
+      if (error || !data) return
+
+      const files: UploadedFile[] = data.map((row: {
+        id: string
+        name: string
+        file_size: number
+        storage_path: string
+        file_type: string
+        uploaded_at: string
+        public_url: string
+      }) => ({
+        id: row.id,
+        name: row.name,
+        size: row.file_size,
+        path: row.storage_path,
+        type: row.file_type,
+        uploadedAt: new Date(row.uploaded_at),
+        publicUrl: row.public_url,
+      }))
+
+      setUploadedFiles(files)
+    }
+
+    loadFiles()
+  }, [userId])
+
   const toggleType = (typeId: string) => {
     setSelectedTypes((prev) =>
       prev.includes(typeId) ? prev.filter((t) => t !== typeId) : [...prev, typeId]
@@ -207,7 +244,29 @@ export function LeftSidebar({
         .from("passages")
         .getPublicUrl(filePath)
 
+      // Persist file metadata to DB so it survives page refresh
+      const { data: dbRow, error: dbError } = await supabase
+        .from("user_files")
+        .insert({
+          user_id: user.id,
+          name: file.name,
+          storage_path: filePath,
+          public_url: urlData.publicUrl,
+          file_type: file.type,
+          file_size: file.size,
+        })
+        .select("id")
+        .single()
+
+      if (dbError) {
+        // Storage upload succeeded but DB write failed — clean up storage
+        await supabase.storage.from("passages").remove([filePath])
+        setUploadError(`파일 정보 저장 실패: ${dbError.message}`)
+        return
+      }
+
       const newFile: UploadedFile = {
+        id: dbRow?.id,
         name: file.name,
         size: file.size,
         path: filePath,
@@ -226,13 +285,18 @@ export function LeftSidebar({
   }, [uploadedFiles])
 
   const deleteFile = async (file: UploadedFile) => {
-    const { error } = await supabase.storage
+    const { error: storageError } = await supabase.storage
       .from("passages")
       .remove([file.path])
 
-    if (!error) {
-      setUploadedFiles(prev => prev.filter(f => f.path !== file.path))
+    if (storageError) return
+
+    // Remove from DB (best-effort — only possible when we have the row id)
+    if (file.id) {
+      await supabase.from("user_files").delete().eq("id", file.id)
     }
+
+    setUploadedFiles(prev => prev.filter(f => f.path !== file.path))
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
