@@ -37,6 +37,20 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Input size validation
+  if (passage.fullText && typeof passage.fullText === 'string' && passage.fullText.length > 50_000) {
+    return NextResponse.json(
+      { error: 'passage.fullText must not exceed 50000 characters' },
+      { status: 400, headers: rateLimitHeaders() }
+    )
+  }
+  if (JSON.stringify(body).length > 500_000) {
+    return NextResponse.json(
+      { error: 'Request body is too large (max 500KB)' },
+      { status: 400, headers: rateLimitHeaders() }
+    )
+  }
+
   try {
     const questions = await generateQuestions(passage, options ?? {}, dnaProfile)
 

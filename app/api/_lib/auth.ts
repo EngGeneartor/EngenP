@@ -60,6 +60,72 @@ export function rateLimitHeaders(): Record<string, string> {
   }
 }
 
+// ---------------------------------------------------------------------------
+// In-memory rate limiter (IP + userId combo, 60 requests per minute)
+// ---------------------------------------------------------------------------
+
+interface RateLimitEntry {
+  count: number
+  resetAt: number // epoch ms
+}
+
+const RATE_LIMIT_WINDOW_MS = 60_000 // 1 minute
+const RATE_LIMIT_MAX = 60
+
+/** Map keyed by "ip:userId" or just "ip" */
+const rateLimitStore = new Map<string, RateLimitEntry>()
+
+/** Periodically prune expired entries to prevent memory leaks. */
+let lastPruneAt = Date.now()
+function pruneExpired() {
+  const now = Date.now()
+  if (now - lastPruneAt < RATE_LIMIT_WINDOW_MS) return
+  lastPruneAt = now
+  for (const [key, entry] of rateLimitStore) {
+    if (entry.resetAt <= now) rateLimitStore.delete(key)
+  }
+}
+
+/**
+ * Check whether a request is within the rate limit.
+ *
+ * @param req  The incoming request (IP is extracted from headers)
+ * @param userId  Optional authenticated user id for per-user tracking
+ * @returns `{ allowed, headers }` — if not allowed the caller should
+ *          return a 429 response with the provided headers.
+ */
+export function checkRateLimit(
+  req: NextRequest,
+  userId?: string
+): { allowed: boolean; headers: Headers } {
+  pruneExpired()
+
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    req.headers.get('x-real-ip') ??
+    'unknown'
+  const key = userId ? `${ip}:${userId}` : ip
+  const now = Date.now()
+
+  let entry = rateLimitStore.get(key)
+  if (!entry || entry.resetAt <= now) {
+    entry = { count: 0, resetAt: now + RATE_LIMIT_WINDOW_MS }
+    rateLimitStore.set(key, entry)
+  }
+
+  entry.count += 1
+  const remaining = Math.max(0, RATE_LIMIT_MAX - entry.count)
+  const allowed = entry.count <= RATE_LIMIT_MAX
+
+  const headers = new Headers({
+    'X-RateLimit-Limit': String(RATE_LIMIT_MAX),
+    'X-RateLimit-Remaining': String(remaining),
+    'X-RateLimit-Reset': String(Math.floor(entry.resetAt / 1000)),
+  })
+
+  return { allowed, headers }
+}
+
 /**
  * Check whether the authenticated user is within their usage limits for the
  * given action. Returns a 429 Response if the limit is exceeded; otherwise

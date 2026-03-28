@@ -32,6 +32,26 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Input size validation
+  if (fileUrl && (typeof fileUrl !== 'string' || fileUrl.length > 2048)) {
+    return NextResponse.json(
+      { error: 'fileUrl must be a string of at most 2048 characters' },
+      { status: 400, headers: rateLimitHeaders() }
+    )
+  }
+  if (base64 && (typeof base64 !== 'string' || base64.length > 10_000_000)) {
+    return NextResponse.json(
+      { error: 'base64 payload must not exceed 10 MB' },
+      { status: 400, headers: rateLimitHeaders() }
+    )
+  }
+  if (mediaType && (typeof mediaType !== 'string' || mediaType.length > 100)) {
+    return NextResponse.json(
+      { error: 'mediaType must be a string of at most 100 characters' },
+      { status: 400, headers: rateLimitHeaders() }
+    )
+  }
+
   try {
     const structured = await structurizePassage(
       fileUrl ? { fileUrl } : { base64: base64!, mediaType: mediaType! }
