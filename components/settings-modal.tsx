@@ -114,7 +114,7 @@ export function SettingsModal({
       const params = new URLSearchParams({
         clientKey,
         orderId,
-        orderName: "Abyss Pro 월간 구독",
+        orderName: "Haean Pro 월간 구독",
         amount: "29900",
         currency: "KRW",
         customerEmail: userEmail ?? "",

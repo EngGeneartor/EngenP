@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       customerKey: body.customerKey,
       amount: PRO_AMOUNT,
       orderId,
-      orderName: 'Abyss Pro 월간 구독',
+      orderName: 'Haean Pro 월간 구독',
       customerEmail: user.email,
     })
 
