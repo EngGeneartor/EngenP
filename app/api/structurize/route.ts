@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireAuth, rateLimitHeaders } from '../_lib/auth'
+import { requireAuth, rateLimitHeaders, checkRateLimit } from '../_lib/auth'
 import { structurizePassage } from '@/lib/services/structurizer'
 import { trackUsage } from '@/lib/services/usage-tracker'
 
@@ -10,6 +10,12 @@ export async function POST(request: NextRequest) {
     user = await requireAuth(request)
   } catch (errorResponse) {
     return errorResponse as Response
+  }
+
+  // Rate limit
+  const { allowed, headers: rlHeaders } = checkRateLimit(request, user.id)
+  if (!allowed) {
+    return NextResponse.json({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' }, { status: 429, headers: Object.fromEntries(rlHeaders) })
   }
 
   // Parse body

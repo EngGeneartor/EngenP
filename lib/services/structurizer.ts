@@ -323,12 +323,27 @@ async function runStructurize(
 /**
  * Structurize a passage from a publicly accessible file URL.
  */
+/** Block SSRF: only allow HTTPS URLs to public hosts */
+function validateUrl(url: string): void {
+  let parsed: URL
+  try { parsed = new URL(url) } catch { throw new StructurizerError('Invalid URL', 'INVALID_URL', false) }
+  if (parsed.protocol !== 'https:') throw new StructurizerError('Only HTTPS URLs are allowed', 'INVALID_URL', false)
+  const hostname = parsed.hostname.toLowerCase()
+  const blocked = ['localhost', '127.0.0.1', '0.0.0.0', '[::1]', '169.254.169.254', 'metadata.google.internal']
+  if (blocked.includes(hostname) || hostname.startsWith('10.') || hostname.startsWith('192.168.') || hostname.startsWith('172.') || hostname.endsWith('.local') || hostname.endsWith('.internal')) {
+    throw new StructurizerError('URL points to a private/internal address', 'SSRF_BLOCKED', false)
+  }
+}
+
 export async function structurizeFromUrl(
   fileUrl: string,
   passageId: string = crypto.randomUUID(),
   sourceFile?: UploadedFile
 ): Promise<StructuredPassage> {
   return withRetry(async () => {
+    // SSRF protection
+    validateUrl(fileUrl)
+
     // Fetch the file
     let response: Response
     try {

@@ -46,6 +46,7 @@ export function SettingsModal({
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState<Tab>("account")
+  const [tabKey, setTabKey] = useState(0)
 
   // Usage stats
   const [usageStats, setUsageStats] = useState<UsageStats | null>(null)
@@ -143,7 +144,7 @@ export function SettingsModal({
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => { setActiveTab(tab.id); setTabKey(k => k + 1) }}
                 className={cn(
                   "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-smooth",
                   activeTab === tab.id
@@ -181,11 +182,34 @@ export function SettingsModal({
 
           <ScrollArea className="h-full">
             <div className="p-6 pr-8">
+             <div key={tabKey} className="tab-content-enter">
 
               {/* ═══ 계정 ═══ */}
               {activeTab === "account" && (
                 <div>
                   <SectionHeader title="계정 정보" />
+
+                  {/* Avatar with initials */}
+                  <div className="mb-5 flex items-center gap-4">
+                    <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 text-lg font-extrabold text-white shadow-lg shadow-purple-500/20">
+                      {userEmail ? userEmail.slice(0, 2).toUpperCase() : "??"}
+                    </div>
+                    <div>
+                      <p className="text-[14px] font-bold text-foreground/85">{userEmail ?? "Unknown"}</p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className={cn(
+                          "inline-flex items-center gap-1 rounded-lg px-2.5 py-0.5 text-[11px] font-bold",
+                          isPro
+                            ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white pro-glow"
+                            : "bg-muted/40 text-foreground/70"
+                        )}>
+                          {isPro && <Sparkles className="size-3" />}
+                          {isPro ? "Pro" : "Free"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="flex flex-col gap-0.5">
                     <InfoRow icon={<Mail className="size-4 text-purple-400" />} label="이메일" value={userEmail ?? "-"} />
                     <InfoRow icon={<Calendar className="size-4 text-indigo-400" />} label="가입일" value={createdAt ? new Date(createdAt).toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" }) : "-"} />
@@ -196,7 +220,7 @@ export function SettingsModal({
                         <span className={cn(
                           "inline-flex items-center gap-1 rounded-lg px-2.5 py-0.5 text-[11px] font-bold",
                           isPro
-                            ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white"
+                            ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white pro-glow"
                             : "bg-muted/40 text-foreground/70"
                         )}>
                           {isPro ? "Pro" : "Free"}
@@ -324,6 +348,7 @@ export function SettingsModal({
                 </div>
               )}
 
+             </div>
             </div>
           </ScrollArea>
         </div>

@@ -25,7 +25,7 @@ export default function Error({
           오류가 발생했습니다
         </h1>
         <p className="mt-4 max-w-sm text-[13px] text-foreground/50">
-          {error.message || "예기치 않은 오류가 발생했습니다. 다시 시도해주세요."}
+          예기치 않은 오류가 발생했습니다. 다시 시도해주세요.
         </p>
 
         <button

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireAuth, rateLimitHeaders, checkUsageLimitMiddleware } from '../_lib/auth'
+import { requireAuth, rateLimitHeaders, checkRateLimit, checkUsageLimitMiddleware } from '../_lib/auth'
 import { generateQuestions } from '@/lib/services/generator'
 import { trackUsage } from '@/lib/services/usage-tracker'
 import type { StructuredPassage, GenerationOptions, SchoolDnaProfile } from '@/lib/services/generator'
@@ -11,6 +11,12 @@ export async function POST(request: NextRequest) {
     user = await requireAuth(request)
   } catch (errorResponse) {
     return errorResponse as Response
+  }
+
+  // Rate limit
+  const { allowed, headers: rlHeaders } = checkRateLimit(request, user.id)
+  if (!allowed) {
+    return NextResponse.json({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' }, { status: 429, headers: Object.fromEntries(rlHeaders) })
   }
 
   // Usage limit check

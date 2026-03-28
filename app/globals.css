@@ -451,3 +451,193 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* ─── Noise texture overlay for glass surfaces (CSS-only) ─── */
+.glass-noise {
+  position: relative;
+}
+.glass-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+.dark .glass-noise::after {
+  opacity: 0.05;
+}
+
+/* ─── Frosted-glass hover state (more translucent) ─── */
+.glass-card-interactive {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-card-interactive:hover {
+  background: oklch(1 0 0 / 0.82);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+}
+.dark .glass-card-interactive:hover {
+  background: oklch(0.18 0.03 275 / 0.72);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+}
+
+/* ─── Animated gradient border for active/selected states ─── */
+@keyframes gradient-rotate {
+  0% { --gradient-angle: 0deg; }
+  100% { --gradient-angle: 360deg; }
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.animated-gradient-border {
+  position: relative;
+}
+.animated-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--gradient-angle),
+    oklch(0.55 0.18 280 / 0.5),
+    oklch(0.45 0.15 320 / 0.3),
+    oklch(0.6 0.2 250 / 0.5),
+    oklch(0.55 0.18 280 / 0.5)
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+  animation: gradient-rotate 4s linear infinite;
+}
+
+.dark .animated-gradient-border::before {
+  background: conic-gradient(
+    from var(--gradient-angle),
+    oklch(0.7 0.18 280 / 0.4),
+    oklch(0.5 0.15 320 / 0.2),
+    oklch(0.65 0.2 250 / 0.4),
+    oklch(0.7 0.18 280 / 0.4)
+  );
+}
+
+/* ─── Hero animated gradient text ─── */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero-gradient-text {
+  background: linear-gradient(
+    270deg,
+    oklch(0.5 0.22 275),
+    oklch(0.45 0.22 310),
+    oklch(0.55 0.2 250),
+    oklch(0.45 0.22 310),
+    oklch(0.5 0.22 275)
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+.dark .hero-gradient-text {
+  background: linear-gradient(
+    270deg,
+    oklch(0.78 0.14 280),
+    oklch(0.72 0.18 310),
+    oklch(0.8 0.16 250),
+    oklch(0.72 0.18 310),
+    oklch(0.78 0.14 280)
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+/* ─── Pricing card hover glow ─── */
+.pricing-card-free {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pricing-card-free:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 1px oklch(0.55 0.18 280 / 0.08) inset,
+    0 16px 48px oklch(0.55 0.18 280 / 0.08),
+    0 4px 12px oklch(0 0 0 / 0.06);
+}
+.dark .pricing-card-free:hover {
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.04) inset,
+    0 16px 48px oklch(0.5 0.16 280 / 0.12),
+    0 4px 12px oklch(0 0 0 / 0.15);
+}
+
+.pricing-card-pro {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pricing-card-pro:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 0 0 1px oklch(0.55 0.18 280 / 0.12) inset,
+    0 20px 60px oklch(0.55 0.18 280 / 0.18),
+    0 8px 24px oklch(0.55 0.18 280 / 0.12),
+    0 0 80px oklch(0.55 0.2 280 / 0.06);
+}
+.dark .pricing-card-pro:hover {
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.05) inset,
+    0 20px 60px oklch(0.65 0.18 280 / 0.2),
+    0 8px 24px oklch(0.65 0.18 280 / 0.12),
+    0 0 80px oklch(0.65 0.18 280 / 0.08);
+}
+
+/* ─── Subtle pulse animation ─── */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+/* ─── Fade in up animation ─── */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out 1.5s both;
+}
+
+/* ─── Settings modal tab transition ─── */
+@keyframes tab-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tab-content-enter {
+  animation: tab-fade-in 0.25s ease-out;
+}
+
+/* ─── Pro badge glow animation ─── */
+@keyframes pro-glow {
+  0%, 100% { box-shadow: 0 0 8px oklch(0.55 0.18 280 / 0.3); }
+  50% { box-shadow: 0 0 20px oklch(0.55 0.18 280 / 0.5), 0 0 40px oklch(0.55 0.18 280 / 0.15); }
+}
+.pro-glow {
+  animation: pro-glow 3s ease-in-out infinite;
+}

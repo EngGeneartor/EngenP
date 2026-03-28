@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import { requireAuth } from '../_lib/auth'
+import { requireAuth, checkRateLimit } from '../_lib/auth'
 import type { StructuredPassage, GeneratedQuestion } from '@/lib/types'
 
 interface ChatMessage {
@@ -61,6 +61,15 @@ export async function POST(request: NextRequest) {
     user = await requireAuth(request)
   } catch (errorResponse) {
     return errorResponse as Response
+  }
+
+  // Rate limit
+  const { allowed, headers: rlHeaders } = checkRateLimit(request, user.id)
+  if (!allowed) {
+    return new Response(JSON.stringify({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json', ...Object.fromEntries(rlHeaders) },
+    })
   }
 
   // Check API key

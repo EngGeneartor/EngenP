@@ -18,7 +18,7 @@
  */
 
 import { NextRequest } from 'next/server'
-import { requireAuth } from '../_lib/auth'
+import { requireAuth, checkRateLimit, checkUsageLimitMiddleware } from '../_lib/auth'
 import { structurizePassage, StructurizerError } from '@/lib/services/structurizer'
 import { generateQuestions, GeneratorError } from '@/lib/services/generator'
 import { AnthropicServiceError } from '@/lib/services/anthropic'
@@ -50,6 +50,19 @@ export async function POST(request: NextRequest) {
   } catch (errorResponse) {
     return errorResponse as Response
   }
+
+  // --- Rate limit ---
+  const { allowed, headers: rlHeaders } = checkRateLimit(request, user.id)
+  if (!allowed) {
+    return new Response(JSON.stringify({ error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json', ...Object.fromEntries(rlHeaders) },
+    })
+  }
+
+  // --- Usage limit ---
+  const limitCheck = await checkUsageLimitMiddleware(user.id, 'generate')
+  if (limitCheck instanceof Response) return limitCheck
 
   // --- Parse body ---
   let body: {
