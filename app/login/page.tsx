@@ -144,7 +144,7 @@ export default function LoginPage() {
             <button
               onClick={() => { if (!isLogin) switchMode() }}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
-                isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
+                isLogin ? "bg-purple-500/20 text-purple-700 dark:text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
             >
               로그인
@@ -152,7 +152,7 @@ export default function LoginPage() {
             <button
               onClick={() => { if (isLogin) switchMode() }}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
-                !isLogin ? "bg-purple-500/20 text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
+                !isLogin ? "bg-purple-500/20 text-purple-700 dark:text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
               }`}
             >
               회원가입
@@ -163,13 +163,13 @@ export default function LoginPage() {
           {error && (
             <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3">
               <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-400" />
-              <p className="text-[12.5px] leading-relaxed text-red-300">{error}</p>
+              <p className="text-[12.5px] leading-relaxed text-red-700 dark:text-red-300">{error}</p>
             </div>
           )}
           {success && (
             <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3">
               <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-400" />
-              <p className="text-[12.5px] leading-relaxed text-emerald-300">{success}</p>
+              <p className="text-[12.5px] leading-relaxed text-emerald-700 dark:text-emerald-300">{success}</p>
             </div>
           )}
 
@@ -269,7 +269,7 @@ export default function LoginPage() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="비밀번호를 다시 입력해주세요"
                     className={cn(
-                      "w-full rounded-xl border bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-white placeholder:text-foreground/30 transition-smooth focus:bg-muted/30 focus:outline-none focus:ring-1",
+                      "w-full rounded-xl border bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-foreground placeholder:text-foreground/30 transition-smooth focus:bg-muted/30 focus:outline-none focus:ring-1",
                       confirmPassword.length > 0
                         ? passwordsMatch
                           ? "border-emerald-500/40 focus:border-emerald-500/50 focus:ring-emerald-500/20"
@@ -302,7 +302,7 @@ export default function LoginPage() {
 
             {isLogin && (
               <div className="flex justify-end">
-                <button type="button" className="text-[12px] font-medium text-purple-400/70 transition-smooth hover:text-purple-300">
+                <button type="button" className="text-[12px] font-medium text-purple-500 dark:text-purple-400/70 transition-smooth hover:text-purple-700 dark:hover:text-purple-300">
                   비밀번호를 잊으셨나요?
                 </button>
               </div>
@@ -333,7 +333,7 @@ export default function LoginPage() {
           {isLogin ? "계정이 없으신가요?" : "이미 계정이 있으신가요?"}{" "}
           <button
             onClick={switchMode}
-            className="font-bold text-purple-400/70 transition-smooth hover:text-purple-300"
+            className="font-bold text-purple-600 dark:text-purple-400/70 transition-smooth hover:text-purple-800 dark:hover:text-purple-300"
           >
             {isLogin ? "회원가입" : "로그인"}
           </button>
