@@ -34,6 +34,7 @@ import {
   convertInchesToTwip,
 } from 'docx'
 import type { GeneratedQuestion, StructuredPassage, ExportOptions } from '@/lib/types'
+import { exportToHwpx } from '@/lib/services/hwpx-exporter'
 
 // ---------------------------------------------------------------------------
 // Error class

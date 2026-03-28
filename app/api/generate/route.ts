@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { requireAuth, rateLimitHeaders } from '../_lib/auth'
+import { requireAuth, rateLimitHeaders, checkUsageLimitMiddleware } from '../_lib/auth'
 import { generateQuestions } from '@/lib/services/generator'
+import { trackUsage } from '@/lib/services/usage-tracker'
 import type { StructuredPassage, GenerationOptions } from '@/lib/services/generator'
 
 export async function POST(request: NextRequest) {
@@ -11,6 +12,10 @@ export async function POST(request: NextRequest) {
   } catch (errorResponse) {
     return errorResponse as Response
   }
+
+  // Usage limit check
+  const limitCheck = await checkUsageLimitMiddleware(user.id, 'generate')
+  if (limitCheck instanceof Response) return limitCheck
 
   // Parse body
   let body: { passage?: StructuredPassage; options?: GenerationOptions }
@@ -35,9 +40,20 @@ export async function POST(request: NextRequest) {
   try {
     const questions = await generateQuestions(passage, options ?? {})
 
+    // Track usage after successful generation (non-blocking)
+    trackUsage(user.id, 'generate', 0)
+
     return NextResponse.json(
       { data: questions },
-      { status: 200, headers: rateLimitHeaders() }
+      {
+        status: 200,
+        headers: {
+          'X-Usage-Used': String(limitCheck.used + 1),
+          'X-Usage-Limit': String(limitCheck.limit),
+          'X-Usage-Plan': limitCheck.plan,
+          ...rateLimitHeaders(),
+        },
+      }
     )
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Question generation failed'

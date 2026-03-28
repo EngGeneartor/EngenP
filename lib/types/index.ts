@@ -180,11 +180,127 @@ export interface DetailedValidationResult {
 }
 
 // -----------------------------------------------------------
+// School DNA Profile types (Exam DNA Analysis)
+// -----------------------------------------------------------
+
+/** Distribution stats for a single question type */
+export interface QuestionTypeStats {
+  total_count: number
+  average_per_exam: number
+  presence_rate: number
+}
+
+/** Grammar focus point */
+export interface GrammarFocusPoint {
+  grammar_point: string
+  grammar_point_ko: string
+  frequency: number
+  recency_weight: number
+}
+
+/** Recommended question type for generated exams */
+export interface RecommendedTypeMix {
+  type: string
+  count: number
+  difficulty_target: number
+}
+
+/** Reliability warning */
+export interface ReliabilityWarning {
+  warning_type: 'INSUFFICIENT_DATA' | 'INCONSISTENT_PATTERN' | 'SINGLE_TEACHER_ASSUMPTION' | 'OTHER'
+  description: string
+  affected_domains: string[]
+}
+
+/**
+ * Full Exam DNA profile extracted from past school exam papers.
+ * This is the rich profile returned by the AI DNA analysis stage.
+ */
+export interface SchoolDnaProfile {
+  profile_id: string
+  school_name?: string
+  school_id?: string
+  grade?: number
+  analysis_basis: {
+    total_exams_analyzed: number
+    total_questions_analyzed: number
+    exam_periods: string[]
+    confidence_level: 'LOW' | 'MEDIUM' | 'HIGH'
+    analysis_date: string
+  }
+  question_type_distribution: Record<string, QuestionTypeStats>
+  preferred_question_types: string[]
+  difficulty_distribution: Record<string, number>
+  average_difficulty: number
+  easy_ratio: number
+  medium_ratio: number
+  hard_ratio: number
+  difficulty_trend: string
+  grammar_focus: {
+    top_grammar_points: GrammarFocusPoint[]
+    grammar_blind_spots: string[]
+    grammar_style_notes: string
+  }
+  vocabulary_testing_style: {
+    antonym_swap_rate: number
+    semantic_field_swap_rate: number
+    positive_negative_contrast_rate: number
+    direction_contrast_rate: number
+    connotation_contrast_rate: number
+    preferred_vocab_themes: string[]
+    difficulty_level: number
+    pos_distribution: Record<string, number>
+    vocab_style_notes: string
+  }
+  wrong_answer_patterns: {
+    passage_word_recycling_rate: number
+    extreme_meaning_rate: number
+    partial_truth_rate: number
+    scope_mismatch_rate: number
+    adjacent_paragraph_confusion_rate: number
+    distractor_sophistication: number
+    distractor_notes: string
+  }
+  subjective_question_patterns: {
+    total_subjective_count: number
+    subjective_score_ratio: number
+    common_subtypes: string[]
+    grammar_points_in_subjective: string[]
+    answer_length_tendency: string
+    korean_to_english_rate: number
+    subjective_notes: string
+  }
+  exam_construction_insights: {
+    total_questions_per_exam: number
+    total_score: number
+    question_numbering_style: string
+    passage_source_preferences: string[]
+    topic_preferences: string[]
+    signature_patterns: string[]
+  }
+  generation_guidelines: {
+    recommended_type_mix: RecommendedTypeMix[]
+    grammar_priority_list: string[]
+    vocab_construction_rule: string
+    distractor_construction_rule: string
+    difficulty_allocation: string
+  }
+  reliability_warnings: ReliabilityWarning[]
+  raw_exam_data: Array<{
+    exam_period: string
+    total_questions: number
+    questions_by_type: Record<string, number>
+    ocr_quality: 'GOOD' | 'FAIR' | 'POOR'
+    notes: string | null
+  }>
+}
+
+// -----------------------------------------------------------
 // Export types
 // -----------------------------------------------------------
 
 export interface ExportOptions {
-  format: 'docx' | 'pdf' | 'json'
+  format: 'docx' | 'pdf' | 'json' | 'hwpx'
   includeAnswers: boolean
   includeExplanations: boolean
   /** Korean school name to appear in the header */
@@ -245,7 +361,7 @@ export interface ExportRow {
   id: string
   exam_id: string
   user_id: string
-  format: ExportOptions['format']
+  format: ExportOptions['format'] // 'docx' | 'pdf' | 'json' | 'hwpx'
   options: ExportOptions | null
   file_path: string | null
   file_url: string | null

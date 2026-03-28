@@ -9,6 +9,28 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { supabase } from "@/lib/supabase"
 import { cn } from "@/lib/utils"
 
+// ---------------------------------------------------------------------------
+// OAuth helpers
+// ---------------------------------------------------------------------------
+
+async function signInWithGoogle() {
+  await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: window.location.origin + "/auth/callback/",
+    },
+  })
+}
+
+async function signInWithKakao() {
+  await supabase.auth.signInWithOAuth({
+    provider: "kakao",
+    options: {
+      redirectTo: window.location.origin + "/auth/callback/",
+    },
+  })
+}
+
 interface PasswordRule {
   label: string
   test: (pw: string) => boolean
@@ -29,6 +51,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isSocialLoading, setIsSocialLoading] = useState<"google" | "kakao" | null>(null)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const router = useRouter()
@@ -122,6 +145,28 @@ export default function LoginPage() {
     setConfirmPassword("")
   }
 
+  const handleGoogleLogin = async () => {
+    setError("")
+    setIsSocialLoading("google")
+    try {
+      await signInWithGoogle()
+    } catch {
+      setError("Google 로그인 중 오류가 발생했습니다.")
+      setIsSocialLoading(null)
+    }
+  }
+
+  const handleKakaoLogin = async () => {
+    setError("")
+    setIsSocialLoading("kakao")
+    try {
+      await signInWithKakao()
+    } catch {
+      setError("카카오 로그인 중 오류가 발생했습니다.")
+      setIsSocialLoading(null)
+    }
+  }
+
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background px-6">
       <AmbientBackground />
@@ -178,7 +223,7 @@ export default function LoginPage() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             {/* Email */}
             <div>
               <label className="mb-2 block text-[12px] font-bold text-foreground/70">이메일</label>
