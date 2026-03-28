@@ -191,7 +191,9 @@ export function LeftSidebar({
         return
       }
 
-      const filePath = `${user.id}/${Date.now()}_${file.name}`
+      const ext = file.name.split('.').pop() || 'bin'
+      const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`
+      const filePath = `${user.id}/${safeName}`
       const { error } = await supabase.storage
         .from("passages")
         .upload(filePath, file)
