@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { MessageCircle, X, Star, CheckCircle2 } from "lucide-react"
+import { MessageCircle, X, Star, CheckCircle2, Zap } from "lucide-react"
 import { LeftSidebar } from "@/components/left-sidebar"
 import { MainContent } from "@/components/main-content"
 import { AIChatSidebar } from "@/components/ai-chat-sidebar"
@@ -25,6 +25,11 @@ function DashboardContent() {
   const [chatOpen, setChatOpen] = useState(true)
   const [historyCollapsed, setHistoryCollapsed] = useState(true)
 
+  // Subscription plan
+  const [userPlan, setUserPlan] = useState<"free" | "pro">("free")
+  const [upgradePromptOpen, setUpgradePromptOpen] = useState(false)
+  const [upgradeReason, setUpgradeReason] = useState<string | undefined>(undefined)
+
   // Pipeline state
   const [structuredPassage, setStructuredPassage] = useState<StructuredPassage | null>(null)
   const [generatedQuestions, setGeneratedQuestions] = useState<GeneratedQuestion[]>([])
@@ -43,6 +48,7 @@ function DashboardContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isDemo = searchParams.get("demo") === "true"
+  const upgraded = searchParams.get("upgraded") === "true"
 
   // ─── Auth ────────────────────────────────────────────────────────────────────
 
@@ -57,6 +63,19 @@ function DashboardContent() {
         router.push("/login/")
       } else {
         setUser(user)
+        // Fetch current subscription plan
+        supabase
+          .from("subscriptions")
+          .select("plan, status")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single()
+          .then(({ data }) => {
+            if (data && (data.status === "active" || data.status === "trialing")) {
+              setUserPlan(data.plan as "free" | "pro")
+            }
+          })
       }
       setLoading(false)
     })
@@ -71,6 +90,18 @@ function DashboardContent() {
 
     return () => subscription.unsubscribe()
   }, [router, isDemo])
+
+  // Mark plan as pro immediately when redirected back after Stripe checkout
+  useEffect(() => {
+    if (upgraded) {
+      setUserPlan("pro")
+    }
+  }, [upgraded])
+
+  const openUpgradePrompt = (reason?: string) => {
+    setUpgradeReason(reason)
+    setUpgradePromptOpen(true)
+  }
 
   // ─── Project hook ─────────────────────────────────────────────────────────────
 
@@ -290,6 +321,45 @@ function DashboardContent() {
           <MessageCircle className="size-6" />
         </button>
       )}
+
+      {/* Plan badge — fixed bottom-left */}
+      {!isDemo && (
+        <div className="fixed bottom-6 left-6 z-40">
+          {userPlan === "pro" ? (
+            <div className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-3 py-1.5 shadow-lg shadow-purple-500/30">
+              <Star className="size-3 text-white" strokeWidth={2.5} />
+              <span className="text-[11px] font-bold text-white">Pro</span>
+            </div>
+          ) : (
+            <button
+              onClick={() => openUpgradePrompt()}
+              className="flex items-center gap-1.5 rounded-xl border border-border/30 bg-background/60 px-3 py-1.5 text-foreground/50 shadow-sm backdrop-blur-sm transition-all hover:border-purple-500/30 hover:bg-purple-500/10 hover:text-purple-400"
+            >
+              <Zap className="size-3" strokeWidth={2.5} />
+              <span className="text-[11px] font-semibold">Free</span>
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Upgrade success notification */}
+      {upgraded && (
+        <div className="pointer-events-none fixed left-1/2 top-6 z-50 -translate-x-1/2 rounded-2xl border border-purple-500/30 bg-purple-500/10 px-5 py-3 shadow-xl shadow-purple-500/10 backdrop-blur-sm">
+          <div className="flex items-center gap-2.5">
+            <Star className="size-4 text-purple-400" strokeWidth={2.5} />
+            <p className="text-[13px] font-semibold text-purple-300">
+              Pro 플랜으로 업그레이드되었습니다!
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Upgrade prompt modal */}
+      <UpgradePrompt
+        open={upgradePromptOpen}
+        onClose={() => setUpgradePromptOpen(false)}
+        reason={upgradeReason}
+      />
     </div>
   )
 }
