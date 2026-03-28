@@ -883,6 +883,80 @@ async function exportToHwpxResult(
 }
 
 /**
+ * Generate a printable HTML document (open in browser → Ctrl+P → Save as PDF)
+ */
+function generatePrintableHtml(
+  questions: GeneratedQuestion[],
+  passage: StructuredPassage,
+  options: Partial<ExportOptions> = {}
+): string {
+  const title = passage.title || 'Haean 변형 문제'
+  const questionHtml = questions.map((q, idx) => {
+    const optionsHtml = q.options?.length
+      ? `<div class="options">${q.options.map((o, i) => `<div class="option">${o}</div>`).join('')}</div>`
+      : ''
+    return `
+      <div class="question">
+        <div class="q-header">
+          <span class="q-num">${idx + 1}</span>
+          <span class="q-type">${q.type_id}</span>
+          <span class="q-diff">난이도 ${q.difficulty}</span>
+        </div>
+        <div class="q-instruction">${q.instruction || ''}</div>
+        <div class="q-passage">${q.passage_text || ''}</div>
+        ${optionsHtml}
+      </div>`
+  }).join('')
+
+  const answerHtml = questions.map((q, idx) => `
+    <div class="answer">
+      <strong>${idx + 1}번 정답:</strong> ${q.answer || ''}
+      ${q.explanation ? `<div class="explanation">${q.explanation}</div>` : ''}
+    </div>
+  `).join('')
+
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>${title}</title>
+<style>
+  @page { margin: 2cm; }
+  body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; font-size: 11pt; line-height: 1.7; color: #1a1a2e; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 18pt; margin-bottom: 8px; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-size: 10pt; }
+  .question { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 16px; page-break-inside: avoid; }
+  .q-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .q-num { background: #7c3aed; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+  .q-type { background: #f3e8ff; color: #7c3aed; padding: 2px 8px; border-radius: 4px; font-size: 10pt; font-weight: 600; }
+  .q-diff { color: #999; font-size: 9pt; }
+  .q-instruction { font-weight: 600; margin-bottom: 8px; }
+  .q-passage { background: #fafafa; padding: 12px; border-radius: 6px; margin-bottom: 8px; font-family: 'Times New Roman', serif; line-height: 1.8; }
+  .options { margin-top: 8px; }
+  .option { padding: 4px 0; }
+  .answer-section { margin-top: 40px; border-top: 2px solid #7c3aed; padding-top: 20px; }
+  .answer-section h2 { color: #7c3aed; }
+  .answer { margin-bottom: 12px; padding: 8px; background: #f9f7ff; border-radius: 6px; }
+  .explanation { color: #555; font-size: 10pt; margin-top: 4px; }
+  @media print { .no-print { display: none; } }
+</style>
+</head>
+<body>
+  <div class="no-print" style="background:#7c3aed;color:white;padding:12px 20px;border-radius:8px;margin-bottom:20px;text-align:center;">
+    Ctrl+P (또는 ⌘+P) 를 눌러 PDF로 저장하세요
+  </div>
+  <h1>${title}</h1>
+  <div class="subtitle">Haean AI 변형 문제 생성기 | ${new Date().toLocaleDateString('ko-KR')}</div>
+  ${questionHtml}
+  <div class="answer-section">
+    <h2>정답 및 해설</h2>
+    ${answerHtml}
+  </div>
+</body>
+</html>`
+}
+
+/**
  * Dispatcher: route to the correct exporter based on options.format.
  *
  * @param questions  Array of validated GeneratedQuestion objects
@@ -903,11 +977,17 @@ export async function exportQuestions(
       return exportToJson(questions, passage, options)
     case 'hwpx':
       return exportToHwpxResult(questions, passage, options)
-    case 'pdf':
-      throw new ExporterError(
-        'PDF export is not yet implemented. Use "docx", "hwpx", or "json" for now.',
-        'PDF_NOT_IMPLEMENTED'
-      )
+    case 'pdf': {
+      // Generate a printable HTML document that can be saved as PDF via browser print
+      const html = generatePrintableHtml(questions, passage, options)
+      const buffer = new TextEncoder().encode(html)
+      return {
+        buffer: buffer.buffer as ArrayBuffer,
+        fileName: `${passage.title || 'haean_export'}.html`,
+        mimeType: 'text/html',
+        sizeBytes: buffer.byteLength,
+      }
+    }
     default:
       throw new ExporterError(
         `Unknown export format: "${format}". Supported formats: docx, hwpx, json`,
