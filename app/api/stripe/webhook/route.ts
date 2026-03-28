@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { upsertSubscription, getUserIdByCustomer } from '@/lib/services/subscription'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-02-24.acacia',
-})
+function getStripe() {
+  if (!process.env.STRIPE_SECRET_KEY) throw new Error('STRIPE_SECRET_KEY is not configured')
+  return new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2025-02-24.acacia' })
+}
 
 /**
  * POST /api/stripe/webhook
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
 
   let event: Stripe.Event
   try {
-    event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret)
+    event = getStripe().webhooks.constructEvent(rawBody, signature, webhookSecret)
   } catch (err) {
     console.error('[stripe/webhook] signature verification failed:', err)
     return NextResponse.json(
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Retrieve the full subscription object
-        const stripeSubscription = await stripe.subscriptions.retrieve(
+        const stripeSubscription = await getStripe().subscriptions.retrieve(
           session.subscription as string
         )
 

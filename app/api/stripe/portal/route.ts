@@ -3,9 +3,10 @@ import Stripe from 'stripe'
 import { requireAuth } from '@/app/api/_lib/auth'
 import { createServerClient } from '@/lib/supabase-server'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-02-24.acacia',
-})
+function getStripe() {
+  if (!process.env.STRIPE_SECRET_KEY) throw new Error('STRIPE_SECRET_KEY is not configured')
+  return new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2025-02-24.acacia' })
+}
 
 /**
  * POST /api/stripe/portal
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
     'http://localhost:3000'
 
   try {
-    const portalSession = await stripe.billingPortal.sessions.create({
+    const portalSession = await getStripe().billingPortal.sessions.create({
       customer: subscription.stripe_customer_id,
       return_url: `${origin}/dashboard`,
     })
