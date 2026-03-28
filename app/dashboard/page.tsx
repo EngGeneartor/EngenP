@@ -18,7 +18,7 @@ function DashboardContent() {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null)
   const [chatOpen, setChatOpen] = useState(true)
-  const [historyCollapsed, setHistoryCollapsed] = useState(false)
+  const [historyCollapsed, setHistoryCollapsed] = useState(true)
   const router = useRouter()
   const searchParams = useSearchParams()
   const isDemo = searchParams.get("demo") === "true"
