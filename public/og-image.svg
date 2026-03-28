@@ -86,7 +86,7 @@
   <path d="M112 174l-12 24h9l-4 18 18-25h-11l4-17z" fill="white" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
 
   <!-- Brand name -->
-  <text x="148" y="200" fill="white" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="40" font-weight="800" letter-spacing="-0.5" opacity="0.95">Abyss</text>
+  <text x="148" y="200" fill="white" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="40" font-weight="800" letter-spacing="-0.5" opacity="0.95">Haean</text>
 
   <!-- Main headline -->
   <text x="80" y="280" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="800" letter-spacing="-1" opacity="0.92">시험 지문을 넣으면</text>
