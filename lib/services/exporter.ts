@@ -16,6 +16,7 @@
 
 import {
   Document,
+  FileChild,
   Packer,
   Paragraph,
   TextRun,
@@ -273,7 +274,7 @@ function instructionParagraph(instruction: string): Paragraph {
         text: instruction,
         font: FONT,
         size: SZ.SMALL,
-        italic: true,
+        italics: true,
         color: COL.GRAY,
       }),
     ],
@@ -368,7 +369,7 @@ function renderSentenceInsertion(q: GeneratedQuestion): Paragraph[] {
             text: insertSentence,
             font: FONT,
             size: SZ.BODY,
-            italic: true,
+            italics: true,
             color: COL.DARK,
           }),
         ],
@@ -503,7 +504,7 @@ function buildCoverPage(
   questions: GeneratedQuestion[],
   passage: StructuredPassage,
   options: ExportOptions
-): Paragraph[] {
+): FileChild[] {
   const title = options.examTitle ?? passage.title ?? '영어 시험지'
   const dateStr = options.examDate
     ? new Date(options.examDate).toLocaleDateString('ko-KR', {

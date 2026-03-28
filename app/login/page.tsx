@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, AlertCircle, CheckCircle2, Check, X } from "lucide-react"
 import { AmbientBackground } from "@/components/ambient-background"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { supabase } from "@/lib/supabase"
 import { cn } from "@/lib/utils"
 
@@ -124,6 +125,9 @@ export default function LoginPage() {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background px-6">
       <AmbientBackground />
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
 
       <div className="relative z-10 w-full max-w-[420px]">
         {/* Logo */}
