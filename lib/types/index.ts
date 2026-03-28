@@ -314,6 +314,8 @@ export interface ExportOptions {
 // -----------------------------------------------------------
 
 export interface UploadedFile {
+  /** DB row ID from user_files table (undefined for legacy in-memory entries) */
+  id?: string
   name: string
   size: number
   path: string
