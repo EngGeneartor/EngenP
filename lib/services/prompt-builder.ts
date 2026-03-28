@@ -25,6 +25,7 @@ import type {
   GenerationOptions,
   TypeContext,
   DetailedValidationResult,
+  SchoolDnaProfile,
 } from '@/lib/types'
 
 // -----------------------------------------------------------
@@ -151,6 +152,99 @@ export async function buildGenerateSystemPrompt(): Promise<string> {
 }
 
 /**
+ * Format a SchoolDnaProfile into a concise prompt section for the generator.
+ */
+function formatDnaProfile(dna: SchoolDnaProfile): string {
+  const lines: string[] = ['## 학교 출제 스타일 (DNA 프로필)']
+
+  // School identity
+  if (dna.school_name) {
+    lines.push(`- 학교: ${dna.school_name}${dna.grade ? ` (${dna.grade}학년)` : ''}`)
+  }
+
+  // Confidence & analysis basis
+  const basis = dna.analysis_basis
+  if (basis) {
+    lines.push(
+      `- 분석 신뢰도: ${basis.confidence_level} ` +
+      `(${basis.total_exams_analyzed}회 시험, ${basis.total_questions_analyzed}문항 기반)`
+    )
+  }
+
+  // Preferred question type distribution
+  if (dna.preferred_question_types && dna.preferred_question_types.length > 0) {
+    const dist = dna.question_type_distribution ?? {}
+    const typeEntries = dna.preferred_question_types
+      .map((t) => {
+        const stats = dist[t]
+        if (!stats) return t
+        return `${t} ${Math.round(stats.presence_rate * 100)}%`
+      })
+      .join(', ')
+    lines.push(`- 선호 유형: ${typeEntries}`)
+  }
+
+  // Difficulty
+  lines.push(`- 평균 난이도: ${dna.average_difficulty}/5 (쉬움 ${Math.round(dna.easy_ratio * 100)}% / 보통 ${Math.round(dna.medium_ratio * 100)}% / 어려움 ${Math.round(dna.hard_ratio * 100)}%)`)
+  if (dna.difficulty_trend) {
+    lines.push(`- 난이도 패턴: ${dna.difficulty_trend}`)
+  }
+
+  // Grammar focus
+  const gf = dna.grammar_focus
+  if (gf?.top_grammar_points && gf.top_grammar_points.length > 0) {
+    const topGrammar = gf.top_grammar_points
+      .slice(0, 5)
+      .map((g) => g.grammar_point_ko)
+      .join(', ')
+    lines.push(`- 문법 집중: ${topGrammar}`)
+  }
+  if (gf?.grammar_style_notes) {
+    lines.push(`- 문법 스타일: ${gf.grammar_style_notes}`)
+  }
+
+  // Vocabulary style
+  const vs = dna.vocabulary_testing_style
+  if (vs) {
+    lines.push(`- 어휘 출제: ${vs.vocab_style_notes ?? ''}`)
+    if (vs.preferred_vocab_themes && vs.preferred_vocab_themes.length > 0) {
+      lines.push(`- 어휘 주제: ${vs.preferred_vocab_themes.join(', ')}`)
+    }
+  }
+
+  // Wrong answer / distractor patterns
+  const wp = dna.wrong_answer_patterns
+  if (wp?.distractor_notes) {
+    lines.push(`- 오답 구성: ${wp.distractor_notes}`)
+  }
+
+  // Signature patterns
+  const insights = dna.exam_construction_insights
+  if (insights?.signature_patterns && insights.signature_patterns.length > 0) {
+    lines.push(`- 시그니처 패턴: ${insights.signature_patterns.join(' / ')}`)
+  }
+
+  // Generation guidelines from the DNA profile
+  const gl = dna.generation_guidelines
+  if (gl) {
+    if (gl.vocab_construction_rule) {
+      lines.push(`- 어휘 문제 구성 원칙: ${gl.vocab_construction_rule}`)
+    }
+    if (gl.distractor_construction_rule) {
+      lines.push(`- 오답 구성 원칙: ${gl.distractor_construction_rule}`)
+    }
+    if (gl.difficulty_allocation) {
+      lines.push(`- 난이도 배분: ${gl.difficulty_allocation}`)
+    }
+    if (gl.grammar_priority_list && gl.grammar_priority_list.length > 0) {
+      lines.push(`- 어법 우선순위: ${gl.grammar_priority_list.join(', ')}`)
+    }
+  }
+
+  return lines.join('\n')
+}
+
+/**
  * Build the dynamic user message for question generation.
  * Assembled with RAG-loaded type contexts, few-shot examples, and options.
  */
@@ -158,13 +252,19 @@ export function buildGenerateUserMessage(
   passage: StructuredPassage,
   typeContexts: TypeContext[],
   fewShotExamples: string,
-  options: GenerationOptions
+  options: GenerationOptions,
+  dnaProfile?: SchoolDnaProfile
 ): string {
   const typeRulesSection = typeContexts
     .map((t) => formatTypeRules(t))
     .join('\n\n---\n\n')
 
   const perTypeCount = Math.max(1, Math.ceil(options.count / typeContexts.length))
+
+  // Build the DNA section if a profile is provided
+  const dnaSection = dnaProfile
+    ? `\n---\n\n${formatDnaProfile(dnaProfile)}\n`
+    : ''
 
   return `## INPUT 1: 구조화된 지문 (Structured Passage)
 
@@ -181,10 +281,10 @@ ${formatPassageForPrompt(passage)}
   "target_difficulty": ${options.difficulty},
   "difficulty_variance": 1,
   "passage_coverage": "full",
-  "school_profile": null
+  "school_profile": ${dnaProfile ? `"${dnaProfile.profile_id}"` : 'null'}
 }
 \`\`\`
-
+${dnaSection}
 ---
 
 ## INPUT 3: 유형별 규칙 및 스키마 (Type Rules & Schemas)
@@ -206,6 +306,7 @@ ${fewShotExamples}
 - 유형 배분: ${typeContexts.map((t) => `${t.typeId} (${t.typeNameKo})`).join(', ')}
 - 설명 언어: ${options.explanationLanguage === 'en' ? 'English' : '한국어 (Korean)'}
 ${options.topicHints?.length ? `- 주제 힌트: ${options.topicHints.join(', ')}` : ''}
+${dnaProfile ? `- DNA 프로필 적용: 위 [학교 출제 스타일] 섹션의 지침을 따라 해당 학교의 출제 스타일에 맞게 문제를 생성하세요.` : ''}
 
 위 지문과 규칙에 따라 ${options.count}개의 변형문제를 JSON 배열로 생성하세요.
 question_number는 1부터 순차적으로 부여하세요.`

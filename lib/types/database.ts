@@ -184,6 +184,48 @@ export type Database = {
       }
 
       // ----------------------------------------------------------
+      // subscriptions
+      // ----------------------------------------------------------
+      subscriptions: {
+        Row: {
+          id: string
+          user_id: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          plan: 'free' | 'pro'
+          status: 'active' | 'canceled' | 'past_due' | 'trialing'
+          current_period_start: string | null
+          current_period_end: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          plan?: 'free' | 'pro'
+          status?: 'active' | 'canceled' | 'past_due' | 'trialing'
+          current_period_start?: string | null
+          current_period_end?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          plan?: 'free' | 'pro'
+          status?: 'active' | 'canceled' | 'past_due' | 'trialing'
+          current_period_start?: string | null
+          current_period_end?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+
+      // ----------------------------------------------------------
       // usage_logs
       // ----------------------------------------------------------
       usage_logs: {
@@ -229,6 +271,7 @@ export type QuestionSet   = Tables<'question_sets'>
 export type Question      = Tables<'questions'>
 export type Export        = Tables<'exports'>
 export type UsageLog      = Tables<'usage_logs'>
+export type Subscription  = Tables<'subscriptions'>
 
 // Insert aliases
 type TablesInsert<T extends keyof Database['public']['Tables']> =
@@ -239,6 +282,7 @@ export type QuestionSetInsert   = TablesInsert<'question_sets'>
 export type QuestionInsert      = TablesInsert<'questions'>
 export type ExportInsert        = TablesInsert<'exports'>
 export type UsageLogInsert      = TablesInsert<'usage_logs'>
+export type SubscriptionInsert  = TablesInsert<'subscriptions'>
 
 // Update aliases
 type TablesUpdate<T extends keyof Database['public']['Tables']> =
@@ -249,3 +293,4 @@ export type QuestionSetUpdate   = TablesUpdate<'question_sets'>
 export type QuestionUpdate      = TablesUpdate<'questions'>
 export type ExportUpdate        = TablesUpdate<'exports'>
 export type UsageLogUpdate      = TablesUpdate<'usage_logs'>
+export type SubscriptionUpdate  = TablesUpdate<'subscriptions'>

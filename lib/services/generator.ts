@@ -37,6 +37,7 @@ import type {
   DetailedValidationResult,
   TypeContext,
   QuestionTypeId,
+  SchoolDnaProfile,
 } from '@/lib/types'
 
 // -----------------------------------------------------------
@@ -270,12 +271,14 @@ function checkPassageFairness(
  * @param typeContexts    RAG-loaded type contexts (pre-loaded by caller or loaded here)
  * @param fewShotExamples Formatted few-shot examples string
  * @param options         Generation options
+ * @param dnaProfile      Optional school DNA profile to bias generation style
  */
 async function generateWithCorrection(
   passage: StructuredPassage,
   typeContexts: TypeContext[],
   fewShotExamples: string,
-  options: GenerationOptions
+  options: GenerationOptions,
+  dnaProfile?: SchoolDnaProfile
 ): Promise<GeneratedQuestion[]> {
   // --- Step 1: Build prompts ---
   const systemPrompt = await buildGenerateSystemPrompt()
@@ -283,7 +286,8 @@ async function generateWithCorrection(
     passage,
     typeContexts,
     fewShotExamples,
-    options
+    options,
+    dnaProfile
   )
 
   // --- Step 2: Initial generation ---
@@ -411,13 +415,15 @@ const DEFAULT_GENERATION_OPTIONS: GenerationOptions = {
  *  5. Self-Correction: Re-generate failed questions with validation feedback
  *  6. Fairness Check: Ensure all passage parts are utilized
  *
- * @param passage   The structured passage to generate questions for
- * @param options   Generation options (types, difficulty, count, ...); can be partial
- * @returns         Array of validated GeneratedQuestion objects
+ * @param passage     The structured passage to generate questions for
+ * @param options     Generation options (types, difficulty, count, ...); can be partial
+ * @param dnaProfile  Optional school DNA profile to bias generation style
+ * @returns           Array of validated GeneratedQuestion objects
  */
 export async function generateQuestions(
   passage: StructuredPassage,
-  options: Partial<GenerationOptions> = {}
+  options: Partial<GenerationOptions> = {},
+  dnaProfile?: SchoolDnaProfile
 ): Promise<GeneratedQuestion[]> {
   // Merge caller-supplied options with defaults
   const resolvedOptions: GenerationOptions = {
@@ -434,7 +440,8 @@ export async function generateQuestions(
 
   console.info(
     `[generator] RAG loaded: ${typeContexts.length} type context(s), ` +
-      `few-shot examples for [${resolvedOptions.types.join(', ')}]`
+      `few-shot examples for [${resolvedOptions.types.join(', ')}]` +
+      (dnaProfile ? ` | DNA profile: ${dnaProfile.profile_id}` : '')
   )
 
   // --- Run the generation pipeline with self-correction ---
@@ -442,7 +449,8 @@ export async function generateQuestions(
     passage,
     typeContexts,
     fewShotExamples,
-    resolvedOptions
+    resolvedOptions,
+    dnaProfile
   )
 }
 
@@ -455,4 +463,5 @@ export type {
   GenerationOptions,
   DetailedValidationResult,
   QuestionTypeId,
+  SchoolDnaProfile,
 } from '@/lib/types'
