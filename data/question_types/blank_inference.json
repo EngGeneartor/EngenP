@@ -1,0 +1,47 @@
+{
+  "type_id": "blank_inference",
+  "type_name_ko": "빈칸 추론",
+  "type_name_en": "Blank Inference",
+  "description": "지문 내 한 개 또는 두 개의 빈칸에 들어갈 가장 적절한 단어 또는 표현을 5개의 보기 중에서 고르는 문제. 수능 및 내신 최고 난도 유형으로 글의 논리적 흐름과 핵심 주장 파악 능력을 요구한다.",
+  "difficulty_range": [3, 5],
+  "instruction_template_single": "다음 글의 빈칸에 들어갈 말로 가장 적절한 것은?",
+  "instruction_template_double": "다음 글의 빈칸 (A), (B)에 들어갈 말로 가장 적절한 것은?",
+  "output_schema": {
+    "question_number": "number",
+    "difficulty": "number (1-5)",
+    "instruction": "string",
+    "passage_with_markers": "string (passage with '________' for single blank, or '(A) ________' and '(B) ________' for double blank)",
+    "choices": "array of 5 strings (single blank: 5 word/phrase options; double blank: 5 pairs formatted as '(A) word — (B) word')",
+    "answer": "string (e.g. '②' or '④')",
+    "explanation": "string (Korean explanation: why the correct answer fits and why distractors are wrong)",
+    "test_point": "string (what inferential/logical skill is tested, in Korean)"
+  },
+  "generation_rules": [
+    "지문은 170~230 단어의 완결된 논리적 단락으로 작성한다. 빈칸은 글의 핵심 주장 또는 논리적 결론 위치에 배치한다.",
+    "단일 빈칸의 경우, 빈칸은 주제문 또는 결론문에 위치시키는 것이 원칙이다. 지엽적 세부 사항에 빈칸을 두지 않는다.",
+    "이중 빈칸의 경우, (A)와 (B)는 서로 논리적 대비 또는 유사 관계를 이루도록 구성하고, 두 빈칸이 글의 핵심 논리 구조를 동시에 테스트해야 한다.",
+    "보기 5개는 품사와 문법 구조가 동일해야 하며, 모두 빈칸의 문장 구조에 문법적으로 맞아야 한다.",
+    "정답은 글 전체의 논리적 흐름을 이해해야만 선택할 수 있어야 한다. 빈칸 주변 한두 문장만 읽어도 답이 보이는 문제는 피한다.",
+    "오답 보기는 매력적인 오답(attractive distractors)으로 구성해야 한다. 지문에 등장하는 단어를 활용하거나 부분적으로 맞지만 전체 논리에는 어긋나는 표현을 사용한다.",
+    "빈칸 앞뒤의 연결어(however, therefore, in contrast 등)를 단서로 활용하되, 해당 연결어가 정답을 직접 노출시키지 않도록 주의한다.",
+    "단어 빈칸과 어구 빈칸을 다양하게 구성한다. 어구 빈칸은 3~7 단어 이내로 한다.",
+    "explanation은 한국어로 작성하며, 정답의 논거와 각 오답이 틀린 이유를 함께 서술한다.",
+    "test_point는 빈칸의 논리적 역할을 명시한다 (예: '역접 관계를 통한 핵심 주장 추론', '인과 관계 완성')."
+  ],
+  "examples": [
+    {
+      "instruction": "다음 글의 빈칸에 들어갈 말로 가장 적절한 것은?",
+      "passage_with_markers": "In many competitive fields, the most successful individuals are not necessarily those with the highest raw talent. Research on expert performance consistently shows that what separates great performers from average ones is not an innate gift but rather the quality and quantity of deliberate practice. Deliberate practice is not mere repetition; it involves constantly pushing beyond one's current comfort zone, seeking specific feedback, and systematically correcting errors. A talented but complacent person who never challenges themselves will almost always be surpassed by a less gifted individual who practices with focused intensity. This suggests that in the long run, ________ is a more reliable path to excellence than natural ability alone.",
+      "choices": [
+        "① genetic inheritance",
+        "② social networking",
+        "③ structured, effortful practice",
+        "④ innate creativity",
+        "⑤ academic credentials"
+      ],
+      "answer": "③",
+      "explanation": "글 전체가 재능보다 '의도적 연습(deliberate practice)'이 성공의 핵심임을 주장한다. 마지막 문장의 빈칸은 이 논지의 결론으로, '체계적이고 노력이 필요한 연습'을 의미하는 ③ 'structured, effortful practice'가 가장 적절하다. ①④는 글이 부정하는 타고난 능력에 해당하고, ②⑤는 지문에서 전혀 언급되지 않은 개념이다.",
+      "test_point": "글 전체의 논지를 요약하는 결론 문장의 핵심어 추론"
+    }
+  ]
+}
