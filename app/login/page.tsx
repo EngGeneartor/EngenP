@@ -100,17 +100,19 @@ export default function LoginPage() {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) {
           if (error.message.includes("Invalid login")) {
             setError("이메일 또는 비밀번호가 올바르지 않습니다.")
           } else if (error.message.includes("Email not confirmed")) {
             setError("이메일 인증이 완료되지 않았습니다. 메일함을 확인해주세요.")
           } else {
-            setError(error.message)
+            setError(error.message || "로그인에 실패했습니다.")
           }
+        } else if (data?.session) {
+          window.location.replace("/dashboard")
         } else {
-          window.location.href = "/dashboard"
+          setError("로그인에 실패했습니다. 다시 시도해주세요.")
         }
       } else {
         const { error } = await supabase.auth.signUp({
