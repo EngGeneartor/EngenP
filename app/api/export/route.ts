@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth, rateLimitHeaders } from '../_lib/auth'
 import { exportDocument } from '@/lib/services/exporter'
+import { trackUsage } from '@/lib/services/usage-tracker'
 import type { GeneratedQuestion, StructuredPassage } from '@/lib/services/exporter'
 
 export async function POST(request: NextRequest) {
@@ -16,7 +17,7 @@ export async function POST(request: NextRequest) {
   let body: {
     questions?: GeneratedQuestion[]
     passage?: StructuredPassage
-    format?: 'docx'
+    format?: 'docx' | 'hwpx'
   }
   try {
     body = await request.json()
@@ -43,9 +44,9 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  if (format !== 'docx') {
+  if (format !== 'docx' && format !== 'hwpx') {
     return NextResponse.json(
-      { error: `Unsupported format "${format}". Supported formats: docx` },
+      { error: `Unsupported format "${format}". Supported formats: docx, hwpx` },
       { status: 400, headers: rateLimitHeaders() }
     )
   }
@@ -55,7 +56,11 @@ export async function POST(request: NextRequest) {
 
     const mimeTypes: Record<string, string> = {
       docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      hwpx: 'application/hwp+zip',
     }
+
+    // Track usage after successful export (non-blocking)
+    trackUsage(user.id, 'export', 0)
 
     return new NextResponse(fileBuffer, {
       status: 200,

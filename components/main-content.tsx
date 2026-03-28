@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ThemeToggle } from "@/components/theme-toggle"
 import type { UploadedFile, StructuredPassage, GeneratedQuestion } from "@/lib/types"
-import { exportDocx } from "@/lib/api-client"
+import { exportDocx, exportHwpx } from "@/lib/api-client"
 import type { ProcessingStep } from "@/app/dashboard/page"
 
 interface MainContentProps {
@@ -138,7 +138,7 @@ export function MainContent({
 }: MainContentProps) {
   const [activeTab, setActiveTab] = useState("passage")
   const [localQuestions, setLocalQuestions] = useState<GeneratedQuestion[]>([])
-  const [isExporting, setIsExporting] = useState(false)
+  const [isExporting, setIsExporting] = useState<false | 'docx' | 'hwpx'>(false)
   const [exportError, setExportError] = useState<string | null>(null)
 
   // Keep local questions in sync with incoming generated questions
@@ -166,15 +166,17 @@ export function MainContent({
     setLocalQuestions(prev => prev.filter(q => q.question_number !== questionNumber))
   }
 
-  const handleExport = async () => {
+  const handleExport = async (format: 'docx' | 'hwpx') => {
     if (!structuredPassage || localQuestions.length === 0) return
-    setIsExporting(true)
+    setIsExporting(format)
     setExportError(null)
     try {
-      const filename = structuredPassage.title
-        ? `${structuredPassage.title}.docx`
-        : "exam-questions.docx"
-      await exportDocx(localQuestions, structuredPassage, filename)
+      const base = structuredPassage.title ?? "exam-questions"
+      if (format === 'docx') {
+        await exportDocx(localQuestions, structuredPassage, `${base}.docx`)
+      } else {
+        await exportHwpx(localQuestions, structuredPassage, `${base}.hwpx`)
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : "내보내기에 실패했습니다."
       setExportError(msg)
@@ -490,28 +492,55 @@ export function MainContent({
             <span className="size-1 rounded-full bg-muted-foreground/20" />
             <span className="font-medium text-foreground/50">평균 난이도 {avgDifficulty}</span>
           </div>
-          <Button
-            onClick={handleExport}
-            disabled={isExporting || displayQuestions.length === 0 || !structuredPassage}
-            className={`btn-shine rounded-2xl px-7 py-5 text-[13px] font-bold text-white shadow-xl transition-smooth active:scale-[0.98] ${
-              displayQuestions.length > 0 && structuredPassage && !isExporting
-                ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 shadow-purple-500/15 hover:shadow-purple-500/25 hover:brightness-110"
-                : "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
-            }`}
-            size="lg"
-          >
-            {isExporting ? (
-              <>
-                <Loader2 className="mr-2 size-4 animate-spin" />
-                내보내는 중...
-              </>
-            ) : (
-              <>
-                <Download className="mr-2 size-4" />
-                Word(.docx) 추출
-              </>
-            )}
-          </Button>
+          <div className="flex items-center gap-2">
+            {/* .docx download */}
+            <Button
+              onClick={() => handleExport('docx')}
+              disabled={!!isExporting || displayQuestions.length === 0 || !structuredPassage}
+              className={`btn-shine rounded-2xl px-5 py-5 text-[13px] font-bold text-white shadow-xl transition-smooth active:scale-[0.98] ${
+                displayQuestions.length > 0 && structuredPassage && !isExporting
+                  ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 shadow-purple-500/15 hover:shadow-purple-500/25 hover:brightness-110"
+                  : "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
+              }`}
+              size="lg"
+            >
+              {isExporting === 'docx' ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  내보내는 중...
+                </>
+              ) : (
+                <>
+                  <Download className="mr-2 size-4" />
+                  Word (.docx)
+                </>
+              )}
+            </Button>
+
+            {/* .hwpx download */}
+            <Button
+              onClick={() => handleExport('hwpx')}
+              disabled={!!isExporting || displayQuestions.length === 0 || !structuredPassage}
+              className={`btn-shine rounded-2xl px-5 py-5 text-[13px] font-bold text-white shadow-xl transition-smooth active:scale-[0.98] ${
+                displayQuestions.length > 0 && structuredPassage && !isExporting
+                  ? "bg-gradient-to-r from-teal-600 via-emerald-600 to-green-600 shadow-teal-500/15 hover:shadow-teal-500/25 hover:brightness-110"
+                  : "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
+              }`}
+              size="lg"
+            >
+              {isExporting === 'hwpx' ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  내보내는 중...
+                </>
+              ) : (
+                <>
+                  <Download className="mr-2 size-4" />
+                  한글 (.hwpx)
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </footer>
     </main>

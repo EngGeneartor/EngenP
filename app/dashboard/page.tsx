@@ -1,16 +1,19 @@
 "use client"
 
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useEffect, useState, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { MessageCircle, X } from "lucide-react"
+import { MessageCircle, X, Star, CheckCircle2 } from "lucide-react"
 import { LeftSidebar } from "@/components/left-sidebar"
 import { MainContent } from "@/components/main-content"
 import { AIChatSidebar } from "@/components/ai-chat-sidebar"
 import { ProjectHistory } from "@/components/project-history"
 import { AmbientBackground } from "@/components/ambient-background"
+import { UpgradePrompt } from "@/components/upgrade-prompt"
 import { supabase } from "@/lib/supabase"
+import { useProject } from "@/lib/hooks/use-project"
+import { cn } from "@/lib/utils"
 import type { User } from "@supabase/supabase-js"
-import type { UploadedFile, StructuredPassage, GeneratedQuestion } from "@/lib/types"
+import type { UploadedFile, StructuredPassage, GeneratedQuestion, SchoolDnaProfile } from "@/lib/types"
 
 export type ProcessingStep = "idle" | "structurizing" | "generating" | "exporting" | "done"
 
@@ -29,9 +32,19 @@ function DashboardContent() {
   const [processingStep, setProcessingStep] = useState<ProcessingStep>("idle")
   const [pipelineError, setPipelineError] = useState<string | null>(null)
 
+  // DNA profile state
+  const [dnaProfile, setDnaProfile] = useState<SchoolDnaProfile | null>(null)
+
+  // DB project state
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
+  // Track the current passage row being worked on (set after first save)
+  const [currentPassageId, setCurrentPassageId] = useState<string | null>(null)
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const isDemo = searchParams.get("demo") === "true"
+
+  // ─── Auth ────────────────────────────────────────────────────────────────────
 
   useEffect(() => {
     if (isDemo) {
@@ -59,6 +72,112 @@ function DashboardContent() {
     return () => subscription.unsubscribe()
   }, [router, isDemo])
 
+  // ─── Project hook ─────────────────────────────────────────────────────────────
+
+  const {
+    projects,
+    isLoading: projectsLoading,
+    isSaving,
+    savedAt,
+    loadProjects,
+    createProject,
+    savePassage,
+    saveQuestionSet,
+    loadProject,
+    deleteProject,
+    renameProject,
+  } = useProject(user?.id)
+
+  // Load project list once user is known
+  useEffect(() => {
+    if (user?.id) {
+      loadProjects()
+    }
+  }, [user?.id, loadProjects])
+
+  // ─── Auto-save: after structurization ─────────────────────────────────────────
+
+  const handleStructuredPassage = useCallback(
+    async (passage: StructuredPassage) => {
+      setStructuredPassage(passage)
+      if (user?.id) {
+        const passageId = await savePassage(
+          passage,
+          selectedFile?.name,
+          selectedFile?.publicUrl,
+          currentPassageId ?? undefined,
+        )
+        if (passageId) {
+          setCurrentPassageId(passageId)
+        }
+      }
+    },
+    [user?.id, savePassage, selectedFile, currentPassageId],
+  )
+
+  // ─── Auto-save: after question generation ─────────────────────────────────────
+
+  const handleGeneratedQuestions = useCallback(
+    async (questions: GeneratedQuestion[]) => {
+      setGeneratedQuestions(questions)
+      if (user?.id && currentPassageId && questions.length > 0) {
+        await saveQuestionSet(currentPassageId, questions, {
+          types: questions.map((q) => q.type_id),
+          count: questions.length,
+        })
+      }
+    },
+    [user?.id, currentPassageId, saveQuestionSet],
+  )
+
+  // ─── Load project from sidebar ────────────────────────────────────────────────
+
+  const handleSelectProject = useCallback(
+    async (passageId: string) => {
+      setSelectedProjectId(passageId)
+      if (!user?.id) return
+      const loaded = await loadProject(passageId)
+      if (loaded) {
+        setCurrentPassageId(passageId)
+        if (loaded.structuredPassage) {
+          setStructuredPassage(loaded.structuredPassage)
+        }
+        if (loaded.generatedQuestions.length > 0) {
+          setGeneratedQuestions(loaded.generatedQuestions)
+          setProcessingStep("done")
+        }
+      }
+    },
+    [user?.id, loadProject],
+  )
+
+  // ─── Create new blank project ──────────────────────────────────────────────────
+
+  const handleCreateProject = useCallback(async () => {
+    if (!user?.id) return
+    const newId = await createProject()
+    if (newId) {
+      setSelectedProjectId(newId)
+      setCurrentPassageId(newId)
+      setStructuredPassage(null)
+      setGeneratedQuestions([])
+      setProcessingStep("idle")
+      setPipelineError(null)
+      setUploadedFiles([])
+      setSelectedFile(null)
+    }
+  }, [user?.id, createProject])
+
+  // ─── File select: detach from current passage row ─────────────────────────────
+
+  const handleFileSelect = useCallback((file: UploadedFile | null) => {
+    setSelectedFile(file)
+    // When user picks a new file, clear the current passage so a new DB row is created
+    if (file) setCurrentPassageId(null)
+  }, [])
+
+  // ─── Loading screen ───────────────────────────────────────────────────────────
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
@@ -76,22 +195,35 @@ function DashboardContent() {
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background">
       <AmbientBackground />
-      <ProjectHistory collapsed={historyCollapsed} onToggle={() => setHistoryCollapsed(!historyCollapsed)} />
+      <ProjectHistory
+        collapsed={historyCollapsed}
+        onToggle={() => setHistoryCollapsed(!historyCollapsed)}
+        projects={projects}
+        isLoading={projectsLoading}
+        selectedId={selectedProjectId}
+        onSelectProject={handleSelectProject}
+        onCreateProject={handleCreateProject}
+        onDeleteProject={deleteProject}
+        onRenameProject={renameProject}
+      />
       <div className="divider-v-gradient shrink-0" />
       <LeftSidebar
         uploadedFiles={uploadedFiles}
         setUploadedFiles={setUploadedFiles}
         selectedFile={selectedFile}
-        onFileSelect={setSelectedFile}
+        onFileSelect={handleFileSelect}
         isDemo={isDemo}
         isProcessing={isProcessing}
         processingStep={processingStep}
         pipelineError={pipelineError}
-        onStructuredPassage={setStructuredPassage}
-        onGeneratedQuestions={setGeneratedQuestions}
+        onStructuredPassage={handleStructuredPassage}
+        onGeneratedQuestions={handleGeneratedQuestions}
         onIsProcessing={setIsProcessing}
         onProcessingStep={setProcessingStep}
         onPipelineError={setPipelineError}
+        dnaProfile={dnaProfile}
+        onDnaProfile={setDnaProfile}
+        userId={user?.id}
       />
       <div className="divider-v-gradient shrink-0" />
       <MainContent
@@ -103,6 +235,31 @@ function DashboardContent() {
         processingStep={processingStep}
         isDemo={isDemo}
       />
+
+      {/* 저장됨 indicator — shown during save and briefly after */}
+      {(isSaving || savedAt) && !isDemo && (
+        <div
+          className={cn(
+            "fixed bottom-24 left-1/2 z-50 -translate-x-1/2 flex items-center gap-2 rounded-xl border bg-background/90 px-4 py-2 text-[12px] font-medium shadow-lg backdrop-blur-sm transition-all duration-300",
+            isSaving
+              ? "border-purple-500/20 text-purple-400"
+              : "border-emerald-500/20 text-emerald-400",
+          )}
+        >
+          {isSaving ? (
+            <>
+              <div className="size-3 animate-spin rounded-full border-2 border-purple-500/30 border-t-purple-500" />
+              저장 중...
+            </>
+          ) : (
+            <>
+              <CheckCircle2 className="size-3.5" />
+              저장됨
+            </>
+          )}
+        </div>
+      )}
+
       {chatOpen ? (
         <>
           <div className="divider-v-gradient shrink-0" />

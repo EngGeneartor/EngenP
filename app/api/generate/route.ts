@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth, rateLimitHeaders, checkUsageLimitMiddleware } from '../_lib/auth'
 import { generateQuestions } from '@/lib/services/generator'
 import { trackUsage } from '@/lib/services/usage-tracker'
-import type { StructuredPassage, GenerationOptions } from '@/lib/services/generator'
+import type { StructuredPassage, GenerationOptions, SchoolDnaProfile } from '@/lib/services/generator'
 
 export async function POST(request: NextRequest) {
   // Auth
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   if (limitCheck instanceof Response) return limitCheck
 
   // Parse body
-  let body: { passage?: StructuredPassage; options?: GenerationOptions }
+  let body: { passage?: StructuredPassage; options?: GenerationOptions; dnaProfile?: SchoolDnaProfile }
   try {
     body = await request.json()
   } catch {
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const { passage, options } = body
+  const { passage, options, dnaProfile } = body
 
   if (!passage) {
     return NextResponse.json(
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const questions = await generateQuestions(passage, options ?? {})
+    const questions = await generateQuestions(passage, options ?? {}, dnaProfile)
 
     // Track usage after successful generation (non-blocking)
     trackUsage(user.id, 'generate', 0)

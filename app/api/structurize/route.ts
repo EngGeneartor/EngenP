@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth, rateLimitHeaders } from '../_lib/auth'
 import { structurizePassage } from '@/lib/services/structurizer'
+import { trackUsage } from '@/lib/services/usage-tracker'
 
 export async function POST(request: NextRequest) {
   // Auth
@@ -35,6 +36,9 @@ export async function POST(request: NextRequest) {
     const structured = await structurizePassage(
       fileUrl ? { fileUrl } : { base64: base64!, mediaType: mediaType! }
     )
+
+    // Track usage after successful structurization (non-blocking)
+    trackUsage(user.id, 'structurize', 0)
 
     return NextResponse.json(
       { data: structured },
