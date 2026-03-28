@@ -297,7 +297,7 @@ function DashboardContent() {
           <div className="relative">
             <button
               onClick={() => setChatOpen(false)}
-              className="absolute right-3 top-3 z-20 rounded-lg p-1.5 text-foreground/30 transition-smooth hover:bg-muted/30 hover:text-foreground/60"
+              className="absolute right-3 top-3 z-20 rounded-lg p-1.5 text-foreground/50 transition-smooth hover:bg-muted/30 hover:text-foreground/60"
               title="채팅 닫기"
             >
               <X className="size-4" />

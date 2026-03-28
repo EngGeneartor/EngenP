@@ -451,7 +451,7 @@ export function LeftSidebar({
                 )}
                 <ChevronDown
                   className={cn(
-                    "size-4 text-muted-foreground/50 transition-transform duration-300",
+                    "size-4 text-muted-foreground/70 transition-transform duration-300",
                     sectionsOpen.upload && "rotate-180"
                   )}
                 />
@@ -534,12 +534,12 @@ export function LeftSidebar({
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="truncate text-[11px] font-medium text-foreground/70">{file.name}</p>
-                        <p className="text-[10px] text-muted-foreground/50">{formatFileSize(file.size)}</p>
+                        <p className="text-[10px] text-muted-foreground/70">{formatFileSize(file.size)}</p>
                       </div>
                       <CheckCircle2 className="size-3.5 shrink-0 text-emerald-400/60" />
                       <button
                         onClick={(e) => { e.stopPropagation(); deleteFile(file); if (selectedFile?.path === file.path) onFileSelect(null); }}
-                        className="text-[11px] font-medium text-muted-foreground/40 transition-smooth hover:text-red-400"
+                        className="text-[11px] font-medium text-muted-foreground/65 transition-smooth hover:text-red-400"
                       >
                         삭제
                       </button>
@@ -568,7 +568,7 @@ export function LeftSidebar({
                 )}
                 <ChevronDown
                   className={cn(
-                    "size-4 text-muted-foreground/50 transition-transform duration-300",
+                    "size-4 text-muted-foreground/70 transition-transform duration-300",
                     sectionsOpen.analysis && "rotate-180"
                   )}
                 />
@@ -619,7 +619,7 @@ export function LeftSidebar({
                     <p className="mt-0.5 text-[11px] text-muted-foreground/60">
                       JPG, PNG, WEBP (복수 선택 가능)
                     </p>
-                    <p className="mt-1 text-[10px] text-muted-foreground/40">
+                    <p className="mt-1 text-[10px] text-muted-foreground/65">
                       이미지가 많을수록 분석 정확도 향상
                     </p>
                   </>
@@ -646,7 +646,7 @@ export function LeftSidebar({
                     </div>
                     <button
                       onClick={() => { onDnaProfile?.(null); setDnaError("") }}
-                      className="text-[10px] text-muted-foreground/40 hover:text-red-400 transition-smooth"
+                      className="text-[10px] text-muted-foreground/65 hover:text-red-400 transition-smooth"
                     >
                       초기화
                     </button>
@@ -664,7 +664,7 @@ export function LeftSidebar({
                     )}>
                       신뢰도: {dnaProfile.analysis_basis.confidence_level}
                     </span>
-                    <span className="text-[10px] text-muted-foreground/50">
+                    <span className="text-[10px] text-muted-foreground/70">
                       {dnaProfile.analysis_basis.total_exams_analyzed}회 시험 · {dnaProfile.analysis_basis.total_questions_analyzed}문항
                     </span>
                   </div>
@@ -724,7 +724,7 @@ export function LeftSidebar({
               </div>
               <ChevronDown
                 className={cn(
-                  "size-4 text-muted-foreground/50 transition-transform duration-300",
+                  "size-4 text-muted-foreground/70 transition-transform duration-300",
                   sectionsOpen.options && "rotate-180"
                 )}
               />
@@ -773,7 +773,7 @@ export function LeftSidebar({
                     step={1}
                     className="w-full"
                   />
-                  <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground/50">
+                  <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground/70">
                     <span>1</span>
                     <span>10</span>
                     <span>20</span>
@@ -784,7 +784,7 @@ export function LeftSidebar({
                 <div className="rounded-2xl bg-muted/20 p-4">
                   <div className="mb-3 flex items-center justify-between">
                     <Label className="text-xs font-semibold text-foreground/70">문제 유형</Label>
-                    <span className="text-[11px] text-muted-foreground/50">{selectedTypes.length}개 선택</span>
+                    <span className="text-[11px] text-muted-foreground/70">{selectedTypes.length}개 선택</span>
                   </div>
                   <div className="grid grid-cols-2 gap-1.5">
                     {questionTypes.map((type) => (
@@ -831,7 +831,7 @@ export function LeftSidebar({
           className={cn(
             "btn-shine w-full rounded-2xl py-6 text-[13px] font-bold tracking-wide text-white shadow-xl transition-smooth active:scale-[0.98]",
             (!isDemo && uploadedFiles.length === 0) || isGenerating
-              ? "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
+              ? "bg-muted/30 text-foreground/50 shadow-none cursor-not-allowed"
               : "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 shadow-purple-500/15 hover:shadow-purple-500/25 hover:brightness-110"
           )}
           size="lg"
@@ -853,7 +853,7 @@ export function LeftSidebar({
             </>
           )}
         </Button>
-        <p className="mt-2 text-center text-[10px] text-muted-foreground/40">
+        <p className="mt-2 text-center text-[10px] text-muted-foreground/65">
           {(isDemo || uploadedFiles.length > 0)
             ? `${isDemo ? "데모 모드" : `${uploadedFiles.length}개 파일`} · ${selectedTypes.length}개 유형 · ${questionCount[0]}문항 · 난이도 ${difficulty[0]}`
             : "파일을 업로드하면 문제를 생성할 수 있습니다"
@@ -863,7 +863,7 @@ export function LeftSidebar({
         {/* Usage indicator — only shown for logged-in non-demo users */}
         {userId && !isDemo && (
           <div className="mt-4 rounded-2xl border border-border/20 bg-muted/10 px-3 py-3">
-            <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-foreground/30">이번 달 사용량</p>
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-foreground/50">이번 달 사용량</p>
             <UsageIndicator
               userId={userId}
               onUpgradeClick={() => window.location.href = "/pricing/"}
@@ -876,7 +876,7 @@ export function LeftSidebar({
             await supabase.auth.signOut()
             window.location.href = "/EngenP/"
           }}
-          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2 text-[12px] font-medium text-foreground/35 transition-smooth hover:bg-red-500/10 hover:text-red-400"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2 text-[12px] font-medium text-foreground/55 transition-smooth hover:bg-red-500/10 hover:text-red-400"
         >
           <LogOut className="size-3.5" />
           로그아웃

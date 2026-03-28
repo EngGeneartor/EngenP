@@ -74,7 +74,7 @@ export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarPr
         <div className="px-5 pt-4 pb-2">
           <div className="flex items-center gap-2 rounded-xl bg-muted/20 px-3 py-2">
             <User className="size-3.5 shrink-0 text-purple-400" />
-            <span className="text-[11px] font-medium text-foreground/55 truncate">{userEmail}</span>
+            <span className="text-[11px] font-medium text-foreground/70 truncate">{userEmail}</span>
           </div>
         </div>
       )}
@@ -92,7 +92,7 @@ export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarPr
           <button
             onClick={clearMessages}
             title="대화 초기화"
-            className="rounded-lg p-1.5 text-foreground/25 transition-smooth hover:bg-muted/30 hover:text-foreground/50"
+            className="rounded-lg p-1.5 text-foreground/50 transition-smooth hover:bg-muted/30 hover:text-foreground/70"
           >
             <Trash2 className="size-3.5" />
           </button>
@@ -107,7 +107,7 @@ export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarPr
 
       {/* Quick Prompts */}
       <div className="px-4 py-4">
-        <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground/50">
+        <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground/70">
           <Lightbulb className="size-3 text-amber-400/70" />
           <span>빠른 명령어</span>
         </div>
@@ -117,9 +117,9 @@ export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarPr
               key={idx}
               onClick={() => handleQuickPrompt(prompt.text)}
               disabled={isLoading}
-              className="group flex items-center gap-1.5 rounded-xl border border-border/30 bg-muted/15 px-2.5 py-2 text-[11px] font-medium text-foreground/50 transition-smooth hover:border-purple-500/25 hover:bg-purple-500/[0.06] hover:text-purple-700 dark:hover:text-purple-300 disabled:cursor-not-allowed disabled:opacity-40"
+              className="group flex items-center gap-1.5 rounded-xl border border-border/30 bg-muted/15 px-2.5 py-2 text-[11px] font-medium text-foreground/65 transition-smooth hover:border-purple-500/25 hover:bg-purple-500/[0.06] hover:text-purple-700 dark:hover:text-purple-300 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <span className="flex size-5 items-center justify-center rounded-md bg-muted/30 text-[10px] font-bold text-muted-foreground/40 transition-smooth group-hover:bg-purple-500/15 group-hover:text-purple-400">
+              <span className="flex size-5 items-center justify-center rounded-md bg-muted/30 text-[10px] font-bold text-muted-foreground/60 transition-smooth group-hover:bg-purple-500/15 group-hover:text-purple-400">
                 {prompt.icon}
               </span>
               {prompt.text}
@@ -170,8 +170,8 @@ export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarPr
                   className={cn(
                     "mt-1.5 text-[10px]",
                     message.role === "assistant"
-                      ? "text-muted-foreground/40"
-                      : "text-white/35"
+                      ? "text-muted-foreground/60"
+                      : "text-white/50"
                   )}
                 >
                   {message.timestamp.toLocaleTimeString("ko-KR", {
@@ -217,7 +217,7 @@ export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarPr
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="문제 수정 요청을 입력하세요..."
-            className="min-h-[72px] resize-none rounded-2xl border-border/30 bg-muted/20 pr-12 text-[13px] text-foreground/80 placeholder:text-muted-foreground/35 transition-smooth focus:border-purple-500/30 focus:bg-muted/30 focus:ring-1 focus:ring-purple-500/15"
+            className="min-h-[72px] resize-none rounded-2xl border-border/30 bg-muted/20 pr-12 text-[13px] text-foreground/80 placeholder:text-muted-foreground/60 transition-smooth focus:border-purple-500/30 focus:bg-muted/30 focus:ring-1 focus:ring-purple-500/15"
           />
           <Button
             size="icon"
@@ -228,7 +228,7 @@ export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarPr
             <Send className="size-3.5" />
           </Button>
         </div>
-        <p className="mt-2 text-center text-[10px] text-muted-foreground/35">
+        <p className="mt-2 text-center text-[10px] text-muted-foreground/60">
           Enter 전송 · Shift+Enter 줄바꿈
         </p>
       </div>

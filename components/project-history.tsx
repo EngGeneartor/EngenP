@@ -143,7 +143,7 @@ export function ProjectHistory({
                   "flex size-9 items-center justify-center rounded-xl text-[11px] font-bold transition-smooth",
                   selectedId === p.id
                     ? "bg-purple-500/20 text-purple-700 dark:text-purple-300"
-                    : "text-foreground/30 hover:bg-muted/30 hover:text-foreground/50"
+                    : "text-foreground/50 hover:bg-muted/30 hover:text-foreground/50"
                 )}
                 title={p.title ?? "프로젝트"}
               >
@@ -167,14 +167,14 @@ export function ProjectHistory({
         <div className="flex items-center gap-1">
           <button
             onClick={onCreateProject}
-            className="flex size-7 items-center justify-center rounded-lg text-foreground/40 transition-smooth hover:bg-purple-500/10 hover:text-purple-400"
+            className="flex size-7 items-center justify-center rounded-lg text-foreground/60 transition-smooth hover:bg-purple-500/10 hover:text-purple-400"
             title="새 프로젝트"
           >
             <Plus className="size-4" />
           </button>
           <button
             onClick={onToggle}
-            className="flex size-7 items-center justify-center rounded-lg text-foreground/40 transition-smooth hover:bg-muted/30 hover:text-foreground/60"
+            className="flex size-7 items-center justify-center rounded-lg text-foreground/60 transition-smooth hover:bg-muted/30 hover:text-foreground/60"
             title="접기"
           >
             <ChevronLeft className="size-4" />
@@ -223,19 +223,19 @@ export function ProjectHistory({
         {isLoading ? (
           <div className="flex flex-col items-center gap-3 py-8">
             <Loader2 className="size-5 animate-spin text-purple-400/50" />
-            <p className="text-[11px] text-muted-foreground/40">불러오는 중...</p>
+            <p className="text-[11px] text-muted-foreground/60">불러오는 중...</p>
           </div>
         ) : projects.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-8 text-center">
-            <FileText className="size-8 text-muted-foreground/20" />
-            <p className="text-[12px] font-medium text-muted-foreground/40">프로젝트가 없습니다</p>
-            <p className="text-[11px] text-muted-foreground/30">새 프로젝트를 만들어보세요</p>
+            <FileText className="size-8 text-muted-foreground/60" />
+            <p className="text-[12px] font-medium text-muted-foreground/60">프로젝트가 없습니다</p>
+            <p className="text-[11px] text-muted-foreground/55">새 프로젝트를 만들어보세요</p>
           </div>
         ) : (
           <>
             {todayProjects.length > 0 && (
               <div className="mb-2">
-                <p className="px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/40">오늘</p>
+                <p className="px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">오늘</p>
                 {todayProjects.map((project) => (
                   <ProjectItem
                     key={project.id}
@@ -264,7 +264,7 @@ export function ProjectHistory({
 
             {olderProjects.length > 0 && (
               <div className="mb-2">
-                <p className="px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/40">이전</p>
+                <p className="px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">이전</p>
                 {olderProjects.map((project) => (
                   <ProjectItem
                     key={project.id}
@@ -390,7 +390,7 @@ function ProjectItem({
               {isHovered && (
                 <button
                   onClick={(e) => { e.stopPropagation(); onMenuToggle() }}
-                  className="flex size-5 shrink-0 items-center justify-center rounded text-foreground/30 hover:text-foreground/60"
+                  className="flex size-5 shrink-0 items-center justify-center rounded text-foreground/50 hover:text-foreground/60"
                 >
                   <MoreHorizontal className="size-3.5" />
                 </button>
@@ -401,7 +401,7 @@ function ProjectItem({
         {!isRenaming && (
           <>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] text-muted-foreground/45 truncate">
+              <span className="text-[10px] text-muted-foreground/60 truncate">
                 {project.source ?? "지문"}
               </span>
             </div>
@@ -414,12 +414,12 @@ function ProjectItem({
               {project.types.slice(0, 2).map((t) => (
                 <span
                   key={t}
-                  className="pill border border-border/15 bg-muted/15 text-muted-foreground/40 text-[9px] py-0 px-1.5"
+                  className="pill border border-border/15 bg-muted/15 text-muted-foreground/60 text-[9px] py-0 px-1.5"
                 >
                   {t}
                 </span>
               ))}
-              <span className="text-[9px] text-muted-foreground/35 ml-auto">
+              <span className="text-[9px] text-muted-foreground/55 ml-auto">
                 {formatRelativeTime(project.createdAt)}
               </span>
             </div>
