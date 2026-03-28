@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useCallback } from "react"
-import { Upload, FileText, BarChart3, Settings2, ChevronDown, Zap, Sparkles, LogOut, X, Loader2, CheckCircle2 } from "lucide-react"
+import { Upload, FileText, BarChart3, Settings2, ChevronDown, Zap, Sparkles, LogOut, X, Loader2, CheckCircle2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { supabase } from "@/lib/supabase"
 import { Slider } from "@/components/ui/slider"
@@ -9,7 +9,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
-import type { UploadedFile } from "@/lib/types"
+import type { UploadedFile, StructuredPassage, GeneratedQuestion } from "@/lib/types"
+import { structurizeFile, generateQuestions, mapSidebarTypes } from "@/lib/api-client"
+import type { ProcessingStep } from "@/app/dashboard/page"
 
 const questionTypes = [
   { id: "grammar", label: "어법" },
@@ -33,14 +35,96 @@ function formatFileSize(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)}MB`
 }
 
+/** Sample demo data returned when no API key is configured */
+const DEMO_PASSAGE: StructuredPassage = {
+  id: "demo-passage",
+  title: "Cultural Intelligence in a Globalized World",
+  paragraphs: [
+    {
+      index: 0,
+      rawText: `The concept of "cultural intelligence" has emerged as a critical competency in our increasingly globalized world. Unlike traditional measures of intelligence, cultural intelligence (CQ) refers to an individual's capability to function effectively across various cultural contexts.`,
+      sentences: [
+        { index: 0, text: `The concept of "cultural intelligence" has emerged as a critical competency in our increasingly globalized world.` },
+        { index: 1, text: `Unlike traditional measures of intelligence, cultural intelligence (CQ) refers to an individual's capability to function effectively across various cultural contexts.` },
+      ],
+    },
+    {
+      index: 1,
+      rawText: `The development of cultural intelligence involves four key components: cognitive, metacognitive, motivational, and behavioral.`,
+      sentences: [
+        { index: 2, text: `The development of cultural intelligence involves four key components: cognitive, metacognitive, motivational, and behavioral.` },
+      ],
+    },
+  ],
+  keyVocab: [
+    { word: "competency", pos: "noun", definition: "the ability to do something successfully", definitionKo: "역량", sentenceIndex: 0 },
+    { word: "metacognitive", pos: "adjective", definition: "relating to awareness of one's own thought processes", definitionKo: "메타인지의", sentenceIndex: 2 },
+    { word: "behavioral", pos: "adjective", definition: "relating to behavior", definitionKo: "행동적인", sentenceIndex: 2 },
+  ],
+  fullText: `The concept of "cultural intelligence" has emerged as a critical competency in our increasingly globalized world. Unlike traditional measures of intelligence, cultural intelligence (CQ) refers to an individual's capability to function effectively across various cultural contexts. The development of cultural intelligence involves four key components: cognitive, metacognitive, motivational, and behavioral.`,
+  wordCount: 247,
+  estimatedDifficulty: 3,
+  topics: ["culture", "education", "psychology"],
+  structurizedAt: new Date().toISOString(),
+}
+
+const DEMO_QUESTIONS: GeneratedQuestion[] = [
+  {
+    question_number: 1,
+    type_id: "grammar_choice",
+    difficulty: 3,
+    instruction: "밑줄 친 (A), (B)에서 어법에 맞는 표현으로 가장 적절한 것은?",
+    passage_with_markers: `The concept of "cultural intelligence" has (A) [emerged / emerging] as a critical competency. Unlike traditional measures, CQ (B) [refers / referring] to an individual's capability.`,
+    choices: ["emerged – refers", "emerged – referring", "emerging – refers", "emerging – referring"],
+    answer: "① emerged – refers",
+    explanation: "(A)는 현재완료의 동사 자리이므로 과거분사 emerged가 맞습니다. (B)는 주어 CQ에 대한 본동사 자리이므로 refers가 맞습니다.",
+    test_point: "현재완료 / 주어-동사 수일치",
+  },
+  {
+    question_number: 2,
+    type_id: "blank_inference",
+    difficulty: 4,
+    instruction: "다음 빈칸에 들어갈 말로 가장 적절한 것은?",
+    passage_with_markers: `The development of cultural intelligence involves four key components. This suggests that cultural intelligence is not just about ____________, but also about how we process and apply that knowledge.`,
+    choices: ["accumulating information", "avoiding conflicts", "expressing emotions", "maintaining traditions", "building relationships"],
+    answer: "① accumulating information",
+    explanation: "빈칸 앞에서 인지적·메타인지적 요소를 언급하고 있으므로, 단순히 정보를 축적하는 것 이상이라는 내용이 자연스럽습니다.",
+    test_point: "글의 흐름 파악 / 빈칸 추론",
+  },
+]
+
 interface LeftSidebarProps {
   uploadedFiles: UploadedFile[]
   setUploadedFiles: React.Dispatch<React.SetStateAction<UploadedFile[]>>
   selectedFile: UploadedFile | null
   onFileSelect: (file: UploadedFile | null) => void
+  // Pipeline state (from Dashboard)
+  isDemo?: boolean
+  isProcessing?: boolean
+  processingStep?: ProcessingStep
+  pipelineError?: string | null
+  onStructuredPassage?: (passage: StructuredPassage) => void
+  onGeneratedQuestions?: (questions: GeneratedQuestion[]) => void
+  onIsProcessing?: (v: boolean) => void
+  onProcessingStep?: (step: ProcessingStep) => void
+  onPipelineError?: (err: string | null) => void
 }
 
-export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onFileSelect }: LeftSidebarProps) {
+export function LeftSidebar({
+  uploadedFiles,
+  setUploadedFiles,
+  selectedFile,
+  onFileSelect,
+  isDemo = false,
+  isProcessing = false,
+  processingStep = "idle",
+  pipelineError = null,
+  onStructuredPassage,
+  onGeneratedQuestions,
+  onIsProcessing,
+  onProcessingStep,
+  onPipelineError,
+}: LeftSidebarProps) {
   const [difficulty, setDifficulty] = useState([3])
   const [questionCount, setQuestionCount] = useState([5])
   const [selectedTypes, setSelectedTypes] = useState<string[]>(["grammar", "vocabulary", "blank"])
@@ -61,6 +145,8 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
   }
 
   const difficultyLabels = ["", "매우 쉬움", "쉬움", "보통", "어려움", "매우 어려움"]
+
+  // ─── Upload ────────────────────────────────────────────────────────────────
 
   const uploadFile = useCallback(async (file: File) => {
     setUploadError("")
@@ -157,6 +243,73 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
     e.preventDefault()
     setIsDragging(false)
   }
+
+  // ─── Generate Pipeline ─────────────────────────────────────────────────────
+
+  const handleGenerate = async () => {
+    if (isProcessing) return
+
+    // Demo mode: return sample data immediately
+    if (isDemo) {
+      onIsProcessing?.(true)
+      onProcessingStep?.("structurizing")
+      onPipelineError?.(null)
+      await new Promise(r => setTimeout(r, 800))
+      onStructuredPassage?.(DEMO_PASSAGE)
+      onProcessingStep?.("generating")
+      await new Promise(r => setTimeout(r, 800))
+      onGeneratedQuestions?.(DEMO_QUESTIONS)
+      onProcessingStep?.("done")
+      onIsProcessing?.(false)
+      return
+    }
+
+    const targetFile = selectedFile ?? uploadedFiles[0]
+    if (!targetFile?.publicUrl) {
+      onPipelineError?.("처리할 파일이 없습니다.")
+      return
+    }
+
+    onIsProcessing?.(true)
+    onPipelineError?.(null)
+
+    try {
+      // Step 1: Structurize
+      onProcessingStep?.("structurizing")
+      const passage = await structurizeFile(targetFile.publicUrl)
+      onStructuredPassage?.(passage)
+
+      // Step 2: Generate questions
+      onProcessingStep?.("generating")
+      const mappedTypes = mapSidebarTypes(selectedTypes)
+      const questions = await generateQuestions(passage, {
+        types: mappedTypes.length > 0 ? mappedTypes : undefined,
+        difficulty: difficulty[0],
+        count: questionCount[0],
+      })
+      onGeneratedQuestions?.(questions)
+      onProcessingStep?.("done")
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "오류가 발생했습니다."
+      onPipelineError?.(msg)
+      onProcessingStep?.("idle")
+    } finally {
+      onIsProcessing?.(false)
+    }
+  }
+
+  // ─── Processing label ──────────────────────────────────────────────────────
+
+  const processingLabel =
+    processingStep === "structurizing" ? "지문 분석 중..." :
+    processingStep === "generating"    ? "문제 생성 중..." :
+    processingStep === "exporting"     ? "내보내는 중..."  :
+    processingStep === "done"          ? "완료!"           :
+    uploadedFiles.length > 0           ? "문제 생성하기"   : "지문을 먼저 업로드하세요"
+
+  const isGenerating = processingStep === "structurizing" || processingStep === "generating"
+
+  // ─── Render ────────────────────────────────────────────────────────────────
 
   return (
     <aside className="relative z-10 flex h-full w-[310px] flex-col sidebar-glass">
@@ -432,22 +585,46 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
       {/* Generate Button */}
       <div className="px-4 pb-5 pt-2">
         <div className="divider-gradient mb-4" />
+
+        {/* Pipeline error */}
+        {pipelineError && (
+          <div className="mb-3 flex items-start gap-2 rounded-xl bg-red-500/10 border border-red-500/15 px-3 py-2.5">
+            <AlertCircle className="size-3.5 shrink-0 mt-0.5 text-red-400" />
+            <p className="text-[11px] leading-relaxed text-red-700 dark:text-red-300">{pipelineError}</p>
+          </div>
+        )}
+
         <Button
-          disabled={uploadedFiles.length === 0}
+          disabled={(!isDemo && uploadedFiles.length === 0) || isGenerating}
+          onClick={handleGenerate}
           className={cn(
             "btn-shine w-full rounded-2xl py-6 text-[13px] font-bold tracking-wide text-white shadow-xl transition-smooth active:scale-[0.98]",
-            uploadedFiles.length > 0
-              ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 shadow-purple-500/15 hover:shadow-purple-500/25 hover:brightness-110"
-              : "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
+            (!isDemo && uploadedFiles.length === 0) || isGenerating
+              ? "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
+              : "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 shadow-purple-500/15 hover:shadow-purple-500/25 hover:brightness-110"
           )}
           size="lg"
         >
-          <Sparkles className="mr-2 size-4" />
-          {uploadedFiles.length > 0 ? "문제 생성하기" : "지문을 먼저 업로드하세요"}
+          {isGenerating ? (
+            <>
+              <Loader2 className="mr-2 size-4 animate-spin" />
+              {processingLabel}
+            </>
+          ) : processingStep === "done" ? (
+            <>
+              <CheckCircle2 className="mr-2 size-4" />
+              {processingLabel}
+            </>
+          ) : (
+            <>
+              <Sparkles className="mr-2 size-4" />
+              {processingLabel}
+            </>
+          )}
         </Button>
         <p className="mt-2 text-center text-[10px] text-muted-foreground/40">
-          {uploadedFiles.length > 0
-            ? `${uploadedFiles.length}개 파일 · ${selectedTypes.length}개 유형 · ${questionCount[0]}문항 · 난이도 ${difficulty[0]}`
+          {(isDemo || uploadedFiles.length > 0)
+            ? `${isDemo ? "데모 모드" : `${uploadedFiles.length}개 파일`} · ${selectedTypes.length}개 유형 · ${questionCount[0]}문항 · 난이도 ${difficulty[0]}`
             : "파일을 업로드하면 문제를 생성할 수 있습니다"
           }
         </p>

@@ -115,7 +115,24 @@ export interface GeneratedQuestion {
 }
 
 // -----------------------------------------------------------
-// Validation types
+// RAG / Prompt Builder types
+// -----------------------------------------------------------
+
+/** Context loaded from a question type template for RAG injection */
+export interface TypeContext {
+  typeId: QuestionTypeId
+  typeName: string
+  typeNameKo: string
+  description: string
+  difficultyRange: [number, number]
+  instructionTemplate: string
+  generationRules: string[]
+  outputSchema: Record<string, string | null>
+  examples: GeneratedQuestion[]
+}
+
+// -----------------------------------------------------------
+// Validation types (enhanced with per-check granularity)
 // -----------------------------------------------------------
 
 /** Result of validating a single question */
@@ -132,6 +149,34 @@ export interface ValidationResult {
   issues: QuestionValidationIssue[]
   /** Questions that failed validation and need to be regenerated */
   invalidQuestionNumbers: number[]
+}
+
+/** Verdict for a single validation check */
+export type CheckVerdict = 'PASS' | 'WARN' | 'FAIL' | 'SKIP'
+
+/** Per-check detail from the enhanced validator */
+export interface ValidationCheckDetail {
+  verdict: CheckVerdict
+  details: string
+  [key: string]: unknown
+}
+
+/** Enhanced per-question validation result from the Stage 3 prompt */
+export interface DetailedValidationResult {
+  validation_id: string
+  passage_id: string
+  question_number: number
+  question_type: string
+  overall_verdict: 'PASS' | 'WARN' | 'FAIL'
+  corrective_action: 'REGENERATE' | 'PATCH' | 'ESCALATE' | null
+  checks: Record<string, ValidationCheckDetail>
+  patch_suggestions: Array<{
+    field: string
+    issue: string
+    suggested_fix: string
+  }>
+  quality_score: number
+  validator_notes: string
 }
 
 // -----------------------------------------------------------
