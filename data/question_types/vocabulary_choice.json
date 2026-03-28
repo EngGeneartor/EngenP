@@ -35,6 +35,22 @@
       "answer": "③",
       "explanation": "③ accelerate(가속화하다)는 문맥상 적절하지 않다. 숲이 이산화탄소를 흡수하고 산소를 방출함으로써 지구 온도 상승을 '완화(slow down / mitigate)'하는 것이 맞으므로, accelerate는 반의어인 'slow' 또는 'mitigate'로 바꾸어야 한다.",
       "test_point": "동사의 방향성(가속 vs. 완화) 문맥 파악"
+    },
+    {
+      "instruction": "다음 글의 밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?",
+      "passage_with_markers": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise ①regularly because it offers ②countless benefits. You can have more new experiences and complete more challenging tasks with ③decreased energy. The benefits are not limited to physical strength; exercise also ④boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will ⑤strengthen your body, mind, and spirit.",
+      "choices": null,
+      "answer": "③",
+      "explanation": "③ decreased(감소된)는 문맥상 적절하지 않다. 규칙적인 운동이 새로운 경험을 하고 더 도전적인 과업을 완수하는 데 도움이 되려면 에너지가 '증가(increased)'해야 하므로, decreased는 'increased'로 바꾸어야 한다.",
+      "test_point": "운동 효과의 방향성(에너지 증가 vs. 감소) 문맥 파악"
+    },
+    {
+      "instruction": "다음 글의 밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?",
+      "passage_with_markers": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, ①excessive reliance on technology can ②exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more ③productive you can be when not ④glued to a screen.",
+      "choices": null,
+      "answer": "③",
+      "explanation": "문맥상 원래 지문에서는 화면에서 벗어나면 더 생산적(productive)이 될 수 있다는 의미로 적절하다. 이 변형 문제에서는 ③을 'unproductive'로 교체하여 출제한다고 가정하면, 기기에서 벗어남으로써 '비생산적'이 된다는 것은 글의 전체 논지와 반대이다. — 참고: 이 예시는 워크북 어휘 선택 데이터셋에서 유사 유형(spark/spank, courtesy/curiosity 등 혼동쌍 선택)의 출제 패턴을 반영한 것이다.",
+      "test_point": "기술 사용과 생산성 간 관계에서 긍정/부정 방향 판단"
     }
   ]
 }

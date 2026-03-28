@@ -60,6 +60,39 @@
       "answer": "too / for",
       "explanation": "'so ~ that + 주어 + cannot + 동사' 구문은 'too ~ for + 목적어 + to + 동사원형' 구문으로 전환할 수 있다. 따라서 'too heavy for him to lift'가 올바른 변환이다.",
       "test_point": "so ~ that 구문을 too ~ to 구문으로 전환하는 구문 변환 능력"
+    },
+    {
+      "instruction": "다음 영어 설명에 해당하는 단어를 지문에서 찾아 쓰시오.",
+      "subtype": "definition_fill",
+      "source_text": "the quality or state of being strong again after something bad happens; the ability to become successful or happy after a difficult situation",
+      "passage_context": "Forests play an indispensable role in regulating the Earth's climate. Through the process of photosynthesis, trees absorb vast amounts of carbon dioxide and release oxygen, helping to slow the rise in global temperatures. In addition, forests act as natural water filters, purifying rainfall as it passes through the soil. The roots of trees also stabilize the ground, preventing soil erosion during heavy rains. Without forests, many ecosystems would lose their resilience and collapse entirely.",
+      "target_sentence": null,
+      "choices": null,
+      "answer": "resilience",
+      "explanation": "'나쁜 일이 일어난 후 다시 강해지는 자질, 어려운 상황 후 성공적이거나 행복해지는 능력'은 resilience(회복 탄력성)의 정의이다. 지문 마지막 문장 'many ecosystems would lose their resilience'에서 해당 단어를 찾을 수 있다.",
+      "test_point": "영영 정의를 통한 지문 내 핵심 어휘 식별 능력"
+    },
+    {
+      "instruction": "다음 우리말과 같은 의미가 되도록 주어진 단어를 배열하시오.",
+      "subtype": "korean_to_english",
+      "source_text": "고등학교는 호기심과 열정을 불러일으키기에 가장 좋은 시기이다.",
+      "passage_context": null,
+      "target_sentence": null,
+      "choices": null,
+      "answer": "High school is the best time to spark your curiosity and passion.",
+      "explanation": "'~하기에 가장 좋은 시기'는 'the best time to + 동사원형' 구문으로 표현한다. spark는 '불러일으키다'의 의미이며, curiosity and passion은 '호기심과 열정'이다.",
+      "test_point": "to부정사의 형용사적 용법(명사 수식) 및 한영 전환 능력"
+    },
+    {
+      "instruction": "다음 두 문장이 같은 의미가 되도록 빈칸에 알맞은 말을 쓰시오.",
+      "subtype": "paraphrase_fill",
+      "source_text": "It is important to exercise regularly because it offers countless benefits.",
+      "passage_context": null,
+      "target_sentence": "Exercising regularly is important ___ it offers countless benefits.",
+      "choices": null,
+      "answer": "because",
+      "explanation": "원문의 가주어(It) 구문을 동명사 주어(Exercising regularly) 구문으로 전환한 것이다. 이유를 나타내는 접속사 because는 그대로 유지된다.",
+      "test_point": "가주어-진주어 구문을 동명사 주어 구문으로 전환하는 구문 변환 능력"
     }
   ]
 }

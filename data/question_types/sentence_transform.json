@@ -75,6 +75,40 @@
       "scoring_rubric": "3점: 문법과 의미 모두 완전 정답 / 2점: 의미는 맞으나 관계사 선택 오류(who 사용 등) / 1점: 내용을 포함했으나 구조적 오류 있음 / 0점: 미작성 또는 전혀 다른 문장",
       "explanation": "두 번째 문장의 주어 'The discovery'가 첫 번째 문장의 목적어 'a groundbreaking discovery'를 가리키므로, 사물을 선행사로 하는 관계대명사 that 또는 which를 사용하여 두 문장을 연결한다.",
       "test_point": "사물 선행사에 대한 목적격/주격 관계대명사(that/which) 활용"
+    },
+    {
+      "instruction": "다음 문장에서 어법상 틀린 부분을 찾아 바르게 고쳐 쓰시오.",
+      "subtype": "error_correction",
+      "source_sentences": [
+        "High school is the best time sparking your curiosity and passion. You can explore, try new things, and learn more about yourself. The three years pass quickly, so use this time wisely to set you up for the future."
+      ],
+      "given_words": null,
+      "target_sentence_frame": null,
+      "conditions": [
+        "어법상 틀린 부분을 모두 찾아 올바르게 고쳐 쓸 것"
+      ],
+      "answer": "sparking -> to spark, you -> yourself",
+      "answer_variants": [],
+      "scoring_rubric": "각 1점씩 총 2점. sparking → to spark: 명사 time을 수식하는 형용사적 용법의 to부정사. you → yourself: 주어와 목적어가 동일인물일 때 재귀대명사 사용.",
+      "explanation": "'the best time'을 수식하는 형용사적 용법의 to부정사가 필요하므로 sparking은 to spark로 고쳐야 한다. 'set yourself up for the future'에서 주어(you)와 목적어가 동일인물이므로 you를 재귀대명사 yourself로 고쳐야 한다.",
+      "test_point": "to부정사 형용사적 용법 + 재귀대명사 사용 규칙"
+    },
+    {
+      "instruction": "다음 문장에서 어법상 틀린 부분을 찾아 바르게 고쳐 쓰시오.",
+      "subtype": "error_correction",
+      "source_sentences": [
+        "Making time for exercise with a busy schedule is not easy. However, it's important exercised regularly because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increasing energy. The benefits are not limited to physical strength; exercise also boosts confidence and foster a positive attitude."
+      ],
+      "given_words": null,
+      "target_sentence_frame": null,
+      "conditions": [
+        "어법상 틀린 부분을 모두 찾아 올바르게 고쳐 쓸 것"
+      ],
+      "answer": "exercised -> to exercise, increasing -> increased, foster -> fosters",
+      "answer_variants": [],
+      "scoring_rubric": "각 1점씩 총 3점. 하나만 맞추면 1점 부분 점수.",
+      "explanation": "(1) 'it's important to exercise': 가주어 it 뒤에 진주어로 to부정사가 와야 한다. (2) 'increased energy': 에너지가 증가된 상태를 나타내는 과거분사(수동/완료 의미). (3) 'fosters': 주어 exercise가 3인칭 단수이므로 동사에 -s를 붙여야 한다.",
+      "test_point": "가주어-진주어 구문(to부정사) / 현재분사 vs. 과거분사 / 주어-동사 수 일치"
     }
   ]
 }
