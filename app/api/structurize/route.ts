@@ -65,10 +65,10 @@ export async function POST(request: NextRequest) {
       { status: 200, headers: rateLimitHeaders() }
     )
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Structurization failed'
-    console.error('[/api/structurize] Error for user', user.id, err)
+    const message = err instanceof Error ? err.message : 'unknown'
+    console.error('[/api/structurize] Error:', message)
     return NextResponse.json(
-      { error: message },
+      { error: '지문 분석 중 오류가 발생했습니다.' },
       { status: 500, headers: rateLimitHeaders() }
     )
   }
