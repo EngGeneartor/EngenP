@@ -17,3 +17,4 @@ out/
 .DS_Store
 .claude/b_*
 archiv/
+tsconfig.tsbuildinfo
