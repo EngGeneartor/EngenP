@@ -253,7 +253,7 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
               {uploadError && (
                 <div className="mt-2 flex items-center gap-2 rounded-xl bg-red-500/10 border border-red-500/15 px-3 py-2">
                   <X className="size-3.5 shrink-0 text-red-400" />
-                  <p className="text-[11px] text-red-300">{uploadError}</p>
+                  <p className="text-[11px] text-red-700 dark:text-red-300">{uploadError}</p>
                 </div>
               )}
 
