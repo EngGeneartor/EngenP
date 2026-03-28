@@ -3,20 +3,15 @@
  * Low-level wrapper around the Anthropic SDK.
  * All functions in this module are server-side only.
  *
- * Three primary request builders:
- *   createStructurizeRequest  – sends an image to Claude Vision and returns a StructuredPassage JSON
- *   createGenerateRequest     – sends a passage + question-type rules to Claude and returns questions
- *   createValidateRequest     – asks Claude to validate a batch of generated questions
+ * This module provides thin request builders that accept pre-assembled
+ * prompts (built by prompt-builder.ts) and return raw text + usage stats.
+ *
+ * Primary request builders:
+ *   callClaude            – generic: send system + user prompt, get raw text
+ *   callClaudeWithVision  – vision: send system prompt + image, get raw text
  */
 
 import Anthropic from '@anthropic-ai/sdk'
-import type {
-  StructuredPassage,
-  GeneratedQuestion,
-  GenerationOptions,
-  ValidationResult,
-  QuestionTypeTemplate,
-} from '@/lib/types'
 
 // -----------------------------------------------------------
 // Constants
@@ -29,6 +24,20 @@ const VALIDATION_MODEL = 'claude-sonnet-4-6-20250514'
 const MAX_TOKENS_STRUCTURIZE = 4096
 const MAX_TOKENS_GENERATE = 8192
 const MAX_TOKENS_VALIDATE = 4096
+
+export type TaskType = 'structurize' | 'generate' | 'validate'
+
+const MODEL_MAP: Record<TaskType, string> = {
+  structurize: STRUCTURIZE_MODEL,
+  generate: GENERATION_MODEL,
+  validate: VALIDATION_MODEL,
+}
+
+const MAX_TOKENS_MAP: Record<TaskType, number> = {
+  structurize: MAX_TOKENS_STRUCTURIZE,
+  generate: MAX_TOKENS_GENERATE,
+  validate: MAX_TOKENS_VALIDATE,
+}
 
 // -----------------------------------------------------------
 // Client singleton (created lazily so env var is read at runtime)
@@ -68,6 +77,15 @@ export class AnthropicServiceError extends Error {
 }
 
 // -----------------------------------------------------------
+// Response types
+// -----------------------------------------------------------
+
+export interface ClaudeRawResponse {
+  raw: string
+  usage: { input_tokens: number; output_tokens: number }
+}
+
+// -----------------------------------------------------------
 // Helper: parse JSON from a Claude text response
 // -----------------------------------------------------------
 
@@ -82,77 +100,83 @@ function extractJsonFromText(text: string): unknown {
 }
 
 // -----------------------------------------------------------
-// 1. createStructurizeRequest
-//    Sends a base64-encoded image to Claude Vision and returns
-//    the raw text Claude produced (to be parsed upstream).
+// Helper: extract text from Claude response content blocks
 // -----------------------------------------------------------
 
-export interface StructurizeRawResponse {
-  raw: string
-  usage: { input_tokens: number; output_tokens: number }
+function extractTextFromContent(
+  content: Anthropic.Messages.ContentBlock[]
+): string {
+  const textBlock = content.find((b) => b.type === 'text')
+  if (!textBlock || textBlock.type !== 'text') {
+    throw new AnthropicServiceError(
+      'Claude returned no text content',
+      'EMPTY_RESPONSE'
+    )
+  }
+  return textBlock.text
 }
+
+// -----------------------------------------------------------
+// 1. callClaude
+//    Generic text-only request: system prompt + user message.
+//    Used by generator (Stage 2) and validator (Stage 3).
+// -----------------------------------------------------------
 
 /**
- * Ask Claude to analyse an image of a reading passage and return
- * structured JSON matching the StructuredPassage interface.
+ * Send a system prompt and user message to Claude, returning the raw text.
  *
- * @param imageBase64  Base64-encoded image data (no data-URL prefix)
- * @param mediaType    MIME type of the image, e.g. "image/jpeg"
- * @param passageId    ID to embed in the returned JSON
+ * @param systemPrompt  Static system instructions (from prompt-builder)
+ * @param userMessage   Dynamic user message with RAG-injected content
+ * @param task          Task type to select model and token limits
  */
-export async function createStructurizeRequest(
-  imageBase64: string,
-  mediaType: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
-  passageId: string = crypto.randomUUID()
-): Promise<StructurizeRawResponse> {
+export async function callClaude(
+  systemPrompt: string,
+  userMessage: string,
+  task: TaskType = 'generate'
+): Promise<ClaudeRawResponse> {
   const client = getClient()
 
-  const systemPrompt = `You are an expert English reading passage analyser for Korean high-school exam preparation (수능 / 내신).
-Your task is to extract and structure the reading passage visible in the image into a precise JSON object.
+  const message = await client.messages.create({
+    model: MODEL_MAP[task],
+    max_tokens: MAX_TOKENS_MAP[task],
+    system: systemPrompt,
+    messages: [{ role: 'user', content: userMessage }],
+  })
 
-Return ONLY valid JSON — no prose, no markdown fences. The JSON must conform exactly to this TypeScript interface:
-
-{
-  "id": string,
-  "title": string | null,
-  "paragraphs": [
-    {
-      "index": number,         // 0-based paragraph index
-      "sentences": [
-        {
-          "index": number,     // 0-based sentence index within the paragraph
-          "text": string,      // exact sentence text as it appears in the image
-          "marker": string     // circled number "①"–"⑤" if present, else omit
-        }
-      ],
-      "rawText": string        // full paragraph text joined from sentences
-    }
-  ],
-  "keyVocab": [
-    {
-      "word": string,
-      "pos": string,           // "noun" | "verb" | "adjective" | "adverb" | "other"
-      "definition": string,    // concise English definition
-      "definitionKo": string,  // Korean definition
-      "sentenceIndex": number  // 0-based index in the flattened sentence list
-    }
-  ],
-  "fullText": string,          // complete passage text
-  "wordCount": number,
-  "estimatedDifficulty": number, // 1 (easy) – 5 (very hard), 수능 scale
-  "topics": string[],          // 2-5 topic tags in English, e.g. ["environment","science"]
-  "structurizedAt": string     // ISO 8601 timestamp
+  return {
+    raw: extractTextFromContent(message.content),
+    usage: {
+      input_tokens: message.usage.input_tokens,
+      output_tokens: message.usage.output_tokens,
+    },
+  }
 }
 
-Rules:
-- Preserve the exact original spelling and punctuation from the image.
-- Identify 5-10 key vocabulary items per passage.
-- Set "id" to the value "${passageId}".
-- Set "structurizedAt" to the current UTC time.`
+// -----------------------------------------------------------
+// 2. callClaudeWithVision
+//    Vision request: system prompt + image + optional text.
+//    Used by structurizer (Stage 1).
+// -----------------------------------------------------------
+
+/**
+ * Send a system prompt and an image to Claude Vision, returning raw text.
+ *
+ * @param systemPrompt  The structurize system prompt (from prompt-builder)
+ * @param imageBase64   Base64-encoded image data (no data-URL prefix)
+ * @param mediaType     MIME type of the image
+ * @param userText      Optional user text to accompany the image
+ */
+export async function callClaudeWithVision(
+  systemPrompt: string,
+  imageBase64: string,
+  mediaType: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
+  userText: string = 'Please analyse this reading passage image and return the structured JSON as instructed.'
+): Promise<ClaudeRawResponse> {
+  const client = getClient()
 
   const message = await client.messages.create({
-    model: STRUCTURIZE_MODEL,
-    max_tokens: MAX_TOKENS_STRUCTURIZE,
+    model: MODEL_MAP.structurize,
+    max_tokens: MAX_TOKENS_MAP.structurize,
     system: systemPrompt,
     messages: [
       {
@@ -168,219 +192,15 @@ Rules:
           },
           {
             type: 'text',
-            text: 'Please analyse this reading passage image and return the structured JSON as instructed.',
+            text: userText,
           },
         ],
       },
     ],
   })
 
-  const textBlock = message.content.find((b: { type: string }) => b.type === 'text')
-  if (!textBlock || textBlock.type !== 'text') {
-    throw new AnthropicServiceError(
-      'Claude returned no text content for structurize request',
-      'EMPTY_RESPONSE'
-    )
-  }
-
   return {
-    raw: textBlock.text,
-    usage: {
-      input_tokens: message.usage.input_tokens,
-      output_tokens: message.usage.output_tokens,
-    },
-  }
-}
-
-// -----------------------------------------------------------
-// 2. createGenerateRequest
-//    Sends a structured passage + question-type rules to Claude
-//    and returns the raw text to be parsed upstream.
-// -----------------------------------------------------------
-
-export interface GenerateRawResponse {
-  raw: string
-  usage: { input_tokens: number; output_tokens: number }
-}
-
-/**
- * Ask Claude to generate exam questions based on a structured passage.
- *
- * @param passage        Structured passage produced by the structurizer
- * @param questionTypes  Loaded question-type templates from data/question_types/
- * @param options        Generation options (count, difficulty, …)
- */
-export async function createGenerateRequest(
-  passage: StructuredPassage,
-  questionTypes: QuestionTypeTemplate[],
-  options: GenerationOptions
-): Promise<GenerateRawResponse> {
-  const client = getClient()
-
-  // Build a compact representation of each question type's rules
-  const typeDescriptions = questionTypes
-    .map(
-      (qt) => `
-### Question type: ${qt.type_id} (${qt.type_name_en} / ${qt.type_name_ko})
-Description: ${qt.description}
-Difficulty range: ${qt.difficulty_range[0]}–${qt.difficulty_range[1]}
-Instruction template: "${qt.instruction_template}"
-Generation rules:
-${qt.generation_rules.map((r: string, i: number) => `  ${i + 1}. ${r}`).join('\n')}
-Output schema fields:
-${Object.entries(qt.output_schema)
-  .map(([k, v]) => `  - ${k}: ${v ?? 'null'}`)
-  .join('\n')}
-Example:
-${JSON.stringify(qt.examples[0], null, 2)}
-`
-    )
-    .join('\n---\n')
-
-  const systemPrompt = `You are an expert Korean high-school English exam question writer (수능 / 내신 준비).
-You generate high-quality, authentic exam questions from English reading passages.
-
-Follow ALL generation rules for each question type exactly.
-Return ONLY a valid JSON array of question objects — no prose, no markdown fences.
-Each object must include every field listed in the output schema for its type.
-Assign sequential question_number values starting from 1.`
-
-  const userPrompt = `## Reading Passage
-
-Title: ${passage.title ?? '(untitled)'}
-Word count: ${passage.wordCount}
-Estimated difficulty: ${passage.estimatedDifficulty}/5
-Topics: ${passage.topics.join(', ')}
-
-Full text:
-"""
-${passage.fullText}
-"""
-
----
-
-## Question Types to Generate
-
-${typeDescriptions}
-
----
-
-## Generation Instructions
-
-- Target difficulty: ${options.difficulty}/5
-- Total questions to generate: ${options.count}
-- Distribute evenly across the ${questionTypes.length} type(s): ${questionTypes.map((t) => t.type_id).join(', ')}
-- Explanation language: ${options.explanationLanguage ?? 'Korean (한국어)'}
-${options.topicHints?.length ? `- Topic hints: ${options.topicHints.join(', ')}` : ''}
-
-Return a JSON array of ${options.count} question object(s) following the schemas above.`
-
-  const message = await client.messages.create({
-    model: GENERATION_MODEL,
-    max_tokens: MAX_TOKENS_GENERATE,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-  })
-
-  const textBlock = message.content.find((b: { type: string }) => b.type === 'text')
-  if (!textBlock || textBlock.type !== 'text') {
-    throw new AnthropicServiceError(
-      'Claude returned no text content for generate request',
-      'EMPTY_RESPONSE'
-    )
-  }
-
-  return {
-    raw: textBlock.text,
-    usage: {
-      input_tokens: message.usage.input_tokens,
-      output_tokens: message.usage.output_tokens,
-    },
-  }
-}
-
-// -----------------------------------------------------------
-// 3. createValidateRequest
-//    Asks Claude to review generated questions and report issues.
-// -----------------------------------------------------------
-
-export interface ValidateRawResponse {
-  raw: string
-  usage: { input_tokens: number; output_tokens: number }
-}
-
-/**
- * Ask Claude to validate a set of generated questions against a passage.
- *
- * @param questions  Questions to validate
- * @param passage    The passage the questions are based on
- */
-export async function createValidateRequest(
-  questions: GeneratedQuestion[],
-  passage: StructuredPassage
-): Promise<ValidateRawResponse> {
-  const client = getClient()
-
-  const systemPrompt = `You are a senior English exam quality-control specialist.
-Your job is to review generated exam questions and identify any errors or issues.
-
-Return ONLY a valid JSON object — no prose, no markdown fences — that matches:
-{
-  "valid": boolean,
-  "issues": [
-    {
-      "questionNumber": number,
-      "field": string,          // e.g. "answer", "passage_with_markers", "explanation"
-      "severity": "error" | "warning",
-      "message": string         // concise description of the problem in English
-    }
-  ],
-  "invalidQuestionNumbers": number[]  // question_numbers that have at least one "error"-severity issue
-}`
-
-  const userPrompt = `## Original Passage
-
-${passage.fullText}
-
----
-
-## Questions to Validate
-
-${JSON.stringify(questions, null, 2)}
-
----
-
-## Validation Criteria
-
-For each question check:
-1. The answer is factually correct and supported by the passage.
-2. All circled-number markers (①–⑤) in passage_with_markers are present and match the answer.
-3. The instruction matches the question type template.
-4. The explanation correctly identifies why the answer is correct/incorrect.
-5. Difficulty is appropriate for the content and complexity.
-6. No answer choices are obviously wrong or duplicate.
-7. Korean text (explanations, test_point) is grammatically correct.
-8. The passage_with_markers text matches the original passage with only markers added.
-
-Return the ValidationResult JSON.`
-
-  const message = await client.messages.create({
-    model: VALIDATION_MODEL,
-    max_tokens: MAX_TOKENS_VALIDATE,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-  })
-
-  const textBlock = message.content.find((b: { type: string }) => b.type === 'text')
-  if (!textBlock || textBlock.type !== 'text') {
-    throw new AnthropicServiceError(
-      'Claude returned no text content for validate request',
-      'EMPTY_RESPONSE'
-    )
-  }
-
-  return {
-    raw: textBlock.text,
+    raw: extractTextFromContent(message.content),
     usage: {
       input_tokens: message.usage.input_tokens,
       output_tokens: message.usage.output_tokens,
