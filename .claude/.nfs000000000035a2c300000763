@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \"^\\\\.$\")",
+      "Bash(grep -v \"^\\\\.\\\\.$\")"
+    ],
+    "additionalDirectories": [
+      "/mnt/home3/yhgil99/.claude/projects/-mnt-home3-yhgil99-etc-sng-engenp/memory"
+    ]
+  }
+}

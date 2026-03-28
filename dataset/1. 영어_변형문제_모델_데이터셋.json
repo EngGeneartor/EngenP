@@ -1,0 +1,964 @@
+[
+  {
+    "유형": "대의파악",
+    "문항번호": 1,
+    "출처": "본문 01",
+    "발문": "다음 글의 목적으로 가장 적절한 것은?",
+    "지문": "High school is the best time to spark your curiosity and passion. You can explore, try new things, and learn more about yourself. The three years pass quickly, so use this time wisely to set yourself up for the future. Here are a few ways to do just that.",
+    "선지": [
+      "① To analyze the role of curiosity in learning.",
+      "② To describe the high school curriculum.",
+      "③ To suggest ways for high schoolers to prepare for the future.",
+      "④ To stress the importance of academic performance.",
+      "⑤ To compare different educational philosophies."
+    ],
+    "정답": "③",
+    "해설": "고등학교는 호기심과 열정을 불태우고, 탐험하고, 새로운 것을 시도하며, 자신에 대해 더 많이 배울 수 있는 최고의 시기이다. 이 3년은 빠르게 지나가므로, 미래를 위해 현명하게 이 시간을 사용해야 한다고 말하며, 이를 위한 몇 가지 방법을 제시하고 있다. 따라서 글의 목적으로 가장 적절한 것은 ③이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 2,
+    "출처": "본문 04",
+    "발문": "다음 글의 목적으로 가장 적절한 것은?",
+    "지문": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "선지": [
+      "① To analyze teenagers' technology usage patterns.",
+      "② To establish legal regulations for the use of electronic devices.",
+      "③ To introduce the latest features of electronic devices.",
+      "④ To explain various ways to enrich one's life.",
+      "⑤ To recommend balancing technology use for improved well-being."
+    ],
+    "정답": "⑤",
+    "해설": "이 글은 십대들의 과도한 기술 사용이 정신 에너지를 소모할 수 있음을 지적하며, 중요한 일에 집중하고 생산성을 높이기 위해 기기 사용 시간을 제한하고 균형 잡힌 기술 사용을 권고하는 내용이다. 즉, '향상된 행복을 위해 기술 사용의 균형을 맞출 것을 권고하려고' 하는 것이 글의 목적으로 가장 적절하다. 따라서 정답은 ⑤이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 3,
+    "출처": "본문 04",
+    "발문": "다음 글의 주장으로 가장 적절한 것은?",
+    "지문": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "선지": [
+      "① Teenagers should abandon technology for their well-being.",
+      "② Computer games are the main cause of poor grades.",
+      "③ Technology use should be limited to weekdays only.",
+      "④ Watching videos online is the worst use of time.",
+      "⑤ Set aside devices to avoid mental exhaustion from excessive technology."
+    ],
+    "정답": "⑤",
+    "해설": "요즘 십대들이 스마트폰과 컴퓨터 화면을 너무 많이 보며 정신적 에너지를 소모하고 있으므로, 중요한 일에 집중하기 위해 기기를 잠시 치워두고 주말에는 모든 것을 끄는 것이 좋다는 내용이다. 이를 통해 친구, 가족, 그리고 자신과 연결될 시간을 찾고 생산성을 높일 수 있다. 정답 선택지는 '과도한 기술 사용으로 인한 정신적 소모를 피하기 위해 기기를 치워두라.'이다. 따라서 필자가 주장하는 바로 가장 적절한 것은 ⑤이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 4,
+    "출처": "본문 05",
+    "발문": "다음 글의 주제로 가장 적절한 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "선지": [
+      "① How to overcome challenges during high school",
+      "② The benefits of writing a letter to your future self.",
+      "③ The importance of setting long-term life goals",
+      "④ Ways to preserve memories from your youth",
+      "⑤ The positive effects of journaling on personal growth"
+    ],
+    "정답": "②",
+    "해설": "현재의 모습이 미래를 말해주지만 시간이 지나면 현재의 관심사와 관점은 희미해질 수 있으므로, 미래의 자신에게 편지를 써보는 것이 좋다는 내용이다. 미래의 자신에게 편지를 쓰는 것은 현재의 자신을 성찰하고, 나중에 과거의 자신을 상기시키며, 더 의미 있는 삶을 살 힘을 줄 수 있다는 이점을 설명한다. 또한 고등학교 시절의 어려움 속에서도 다양한 것을 시도하고 즐거운 시간을 보내는 것이 중요하다고 조언한다. 따라서 글의 주제로 가장 적절한 것은 ②이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 5,
+    "출처": "본문 02",
+    "발문": "다음 글의 제목으로 가장 적절한 것은?",
+    "지문": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "선지": [
+      "① Fitting Exercise into a Busy Schedule",
+      "② The Physical Benefits of Regular Exercise",
+      "③ Choosing the Right Exercise for You",
+      "④ Strengthening Body, Mind, and Spirit with a Regular Exercise Routine",
+      "⑤ How Exercise Boosts Self-Confidence"
+    ],
+    "정답": "④",
+    "해설": "이 글은 바쁜 일정 속에서도 규칙적인 운동을 하는 것이 중요하며, 운동이 신체적 강화를 넘어 새로운 경험을 위한 에너지 증가, 자신감 향상, 긍정적인 태도 함양 등 몸, 마음, 정신을 모두 강화하는 수많은 이점을 제공한다고 설명한다. 따라서 글의 제목으로 가장 적절한 것은 ④이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 6,
+    "출처": "본문 03",
+    "발문": "다음 글의 제목으로 가장 적절한 것은?",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+    "선지": [
+      "① The Importance of Mentorship in High School",
+      "② Learning from Famous Athletes and Artists",
+      "③ Personal vs. Public Figures as Role Models",
+      "④ The Power of Role Models in Career Guidance",
+      "⑤ A Guide to Choosing Your Career Path"
+    ],
+    "정답": "④",
+    "해설": "진로 선택은 중요한 결정이며, 롤모델은 꿈을 이루는 데 강력한 도구가 될 수 있다. 롤모델은 개인적으로 아는 사람일 수도 있고, 유명인일 수도 있다. 롤모델에게 직접 조언을 구하거나 그들의 행동과 전략을 연구함으로써 배움을 얻을 수 있으며, 이는 고등학교 재학 중뿐만 아니라 그 이후에도 도움이 된다는 내용이다. 따라서 글의 제목으로 가장 적절한 것은 ④이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 7,
+    "출처": "본문 04",
+    "발문": "다음 글의 제목으로 가장 적절한 것은?",
+    "지문": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "선지": [
+      "① The Dangers of Late-Night Computer Games for Teenagers",
+      "② Unplugging From Technology to Enhance Teen Focus and Productivity",
+      "③ How Technology Can Enrich the Lives of Teenagers",
+      "④ The Importance of Connecting With Friends and Family",
+      "⑤ Balancing Online Entertainment and Important Tasks"
+    ],
+    "정답": "②",
+    "해설": "요즘 많은 십대들이 스마트폰과 컴퓨터 화면을 너무 많이 본다. 이러한 기기들이 삶을 풍요롭게 하는 한 괜찮지만, 과도한 기술 의존은 정신 에너지를 고갈시킬 수 있다. 중요한 일에 집중하기 쉽게 하려면 기기를 잠시 치워두는 것이 좋다. 예를 들어, 주중에는 인터넷 서핑, 비디오 시청, 인스턴트 메시지 전송을 마치고 주말에는 모든 것을 끄는 것이 좋다. 새로 생긴 시간을 친구, 가족, 그리고 자신과 연결하는 데 사용할 수 있으며, 화면에 붙어있지 않을 때 얼마나 더 생산적이 될 수 있는지에 놀랄 것이다. 이 글은 기술로부터 벗어나 청소년의 집중력과 생산성을 향상시키는 방법에 대해 다루고 있다. 따라서 글의 제목으로 가장 적절한 것은 ②이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 8,
+    "출처": "본문 05",
+    "발문": "다음 글의 제목으로 가장 적절한 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "선지": [
+      "① The Importance of Having Fun in High School",
+      "② Setting Concrete Goals for Your Future Self",
+      "③ How to Live a More Meaningful Life",
+      "④ The Fading of Interests and Perspectives Over Time",
+      "⑤ Writing a Letter to Your Future Self for Reflection"
+    ],
+    "정답": "⑤",
+    "해설": "현재의 자신이 미래의 자신에게 어떤 영향을 미치는지, 그리고 시간이 지나면서 현재의 관심사와 관점이 변할 수 있음을 언급하며, 미래의 자신에게 편지를 쓰는 행위의 중요성을 강조한다. 이 편지는 현재의 자신을 성찰하고, 나아갈 방향과 중요한 가치를 되새기게 하며, 미래에는 과거의 자신을 상기시키고 더 의미 있는 삶을 살 힘을 줄 수 있다고 말한다. 또한 고등학교 시절의 어려움 속에서도 다양한 경험을 하고 즐거움을 잊지 말라고 조언한다. 따라서 글의 제목으로 가장 적절한 것은 ⑤이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 9,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 제목으로 가장 적절한 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "선지": [
+      "① A Comparison of International Student Hobbies",
+      "② The Benefits of Joining an After-School Club",
+      "③ An Introduction to the Hampton Chess Club",
+      "④ Robotics and Design Skills in Indian Schools",
+      "⑤ A Global Look at Various Student Club Activities"
+    ],
+    "정답": "⑤",
+    "해설": "이 글은 영국, 호주, 인도, 일본, 미국 등 다양한 국가의 학생들이 각자의 방과 후 동아리 활동(체스, 서핑, 로봇 공학, 야구, 드라마)을 소개하는 내용이다. 각 학생은 동아리에서 하는 활동과 그 활동을 즐기는 이유를 설명한다. 따라서 글의 제목으로 가장 적절한 것은 '다양한 학생 동아리 활동에 대한 세계적인 시각'이다. 정답은 ⑤이다."
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 10,
+    "출처": "본문 02",
+    "발문": "다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B) 에 들어갈 말로 가장 적절한 것은?",
+    "지문": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "요약문": "(A) physical exertion results in widespread (B) effects on one's entire being.",
+    "선지": [
+      "① (A) Consistent — (B) positive",
+      "② (A) Sustained — (B) productive",
+      "③ (A) Daily — (B) physical",
+      "④ (A) Vigorous — (B) advantageous",
+      "⑤ (A) Repeated — (B) noticeable"
+    ],
+    "정답": "①",
+    "해설": "해설 내용이 PDF에 별도 기재되지 않음 (정답표 기준 ①)"
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 11,
+    "출처": "본문 03",
+    "발문": "다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B) 에 들어갈 말로 가장 적절한 것은?",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+    "요약문": "Emulating the conduct of (A) people can offer (B) direction for achieving life's ambitions.",
+    "선지": [
+      "① (A) influential — (B) personal",
+      "② (A) prominent — (B) helpful",
+      "③ (A) famous — (B) direct",
+      "④ (A) successful — (B) practical",
+      "⑤ (A) exemplary — (B) substantial"
+    ],
+    "정답": "⑤",
+    "해설": "해설 내용이 PDF에 별도 기재되지 않음 (정답표 기준 ⑤)"
+  },
+  {
+    "유형": "대의파악",
+    "문항번호": 12,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B) 에 들어갈 말로 가장 적절한 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "요약문": "Adolescents from diverse cultural settings commit to a wide array of organized extracurricular activities, allowing them to (A) unique interests and thereby reap considerable (B) rewards.",
+    "선지": [
+      "① (A) seek — (B) social",
+      "② (A) explore — (B) academic",
+      "③ (A) practice — (B) cultural",
+      "④ (A) pursue — (B) personal",
+      "⑤ (A) develop — (B) professional"
+    ],
+    "정답": "④",
+    "해설": "해설 내용이 PDF에 별도 기재되지 않음 (정답표 기준 ④)"
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 13,
+    "출처": "본문 03",
+    "발문": "본문의 내용과 일치하는 것을 고르시오.",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+    "선지": [
+      "① 존경하는 인물로부터 영감을 얻기 위해서는 그들의 행동과 전략을 연구해야 한다.",
+      "② 롤모델은 개인적으로 아는 사람이나 유명인 모두가 될 수 있다.",
+      "③ 유명한 운동선수나 예술가를 롤모델로 선택하면, 그 사람에게 직접적인 조언을 구할 수 있다.",
+      "④ 직접 만날 수 없는 롤모델의 경우, 그들에게 직접적인 지도를 요청할 수 있다.",
+      "⑤ 롤모델로부터 배운 점은 고등학교 재학 중에만 도움이 된다."
+    ],
+    "정답": "②",
+    "해설": "선택지②는 롤모델이 개인적으로 아는 사람이나 유명인 모두가 될 수 있다고 말한다. 지문의 'Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist.'에서 이 내용이 확인된다. 따라서 정답은 ②이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 14,
+    "출처": "본문 04",
+    "발문": "본문의 내용과 일치하는 것을 고르시오.",
+    "지문": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "선지": [
+      "① 기술에 대한 과도한 의존은 생산성을 향상시킨다.",
+      "② 전자기기에 대한 과도한 의존은 정신적 에너지를 보충하는 데 도움이 된다.",
+      "③ 주중에 모든 전자기기를 끄는 것은 기기를 잠시 내려놓는 좋은 방법 중 하나이다.",
+      "④ 전자기기를 사용하지 않음으로써 확보된 시간은 친구, 가족, 자신과 소통하는 데 사용될 수 있다.",
+      "⑤ 주말에 전자기기를 끄면 친구 및 가족과 소통할 시간이 줄어든다."
+    ],
+    "정답": "④",
+    "해설": "선택지④는 전자기기를 사용하지 않아 확보된 시간을 친구, 가족, 자신과 소통하는 데 쓸 수 있다는 내용이다. 지문의 'You can use your newly found time to connect with friends, family, and yourself.'는 새롭게 얻은 시간을 친구, 가족, 자신과 소통하는 데 사용할 수 있음을 나타낸다. 따라서 정답은 ④이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 15,
+    "출처": "Inside Culture",
+    "발문": "본문의 내용과 일치하는 것을 고르시오.",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "선지": [
+      "① Luke Martin은 초등학교 때부터 체스 대회를 개최해왔다.",
+      "② Emily는 방과 후 활동으로 서핑을 즐긴다.",
+      "③ Rajesh Singh은 로봇 동아리에서 다른 회원들에게 로봇 제작 기술을 가르친다.",
+      "④ Luke는 지역 고등학교 스포츠 축제를 준비하기 위해 방과 후 시간을 보낸다.",
+      "⑤ Janice는 연극 동아리 활동에서 다양한 감정을 표현하는 것을 어려워한다."
+    ],
+    "정답": "②",
+    "해설": "선택지②는 Emily가 방과 후 활동으로 서핑을 즐긴다는 의미이다. 지문의 문장 'I enjoy surfing, and I do it as an extracurricular activity.'에서 Emily가 서핑을 방과 후 활동으로 한다고 언급한다. 따라서 정답은 ②이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 16,
+    "출처": "본문 02",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "선지": [
+      "① 규칙적인 운동의 이점은 신체적 힘을 기르는 것에 국한된다.",
+      "② 운동을 통해 증진된 에너지는 더 도전적인 과업을 완수하는 데 도움이 된다.",
+      "③ 운동의 이점은 신체적 힘의 강화에만 국한되지 않는다.",
+      "④ 운동은 자신감을 높이고 긍정적인 태도를 형성하는 데 기여한다.",
+      "⑤ 운동 루틴을 정하고 꾸준히 지키는 것은 신체, 정신, 영혼을 강화시킨다."
+    ],
+    "정답": "①",
+    "해설": "선택지①는 규칙적인 운동의 이점이 신체적 힘을 기르는 것에 국한된다는 의미이다. 하지만 지문의 'The benefits are not limited to physical strength'에서 이점이 신체적 힘에만 국한되지 않는다고 명시한다. 따라서 지문의 내용과 일치하지 않는 것은 ①이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 17,
+    "출처": "본문 03",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+    "선지": [
+      "① 존경하는 인물의 삶을 들여다보는 것만으로도 영감을 얻을 수 있다.",
+      "② 롤모델은 개인적으로 아는 사람이나 유명인 모두가 될 수 있다.",
+      "③ 자신의 사회적 관계망 안에 있는 사람을 롤모델로 선택하면, 그 사람에게 직접적인 조언을 구할 수 있다.",
+      "④ 직접 만날 수 없는 롤모델의 경우, 그들에게 직접적인 지도를 요청할 수 있다.",
+      "⑤ 롤모델로부터 배운 점은 고등학교 재학 중은 물론 졸업 후에도 도움이 된다."
+    ],
+    "정답": "④",
+    "해설": "선택지④는 직접 만날 수 없는 롤모델에게 직접 지도를 요청할 수 있다는 의미이다. 지문은 'If it is someone you can't meet in person, you can study their actions and observe their strategies.'에서 직접 만날 수 없는 롤모델은 행동 연구 및 전략 관찰을 해야 한다고 말한다. 따라서 이 선택지는 지문과 일치하지 않는다. 정답은 ④이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 18,
+    "출처": "본문 04",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "선지": [
+      "① 기술에 대한 과도한 의존은 정신적 에너지를 고갈시킬 수 있다.",
+      "② 전자기기에 대한 과도한 의존은 정신적 에너지를 보충하는 데 도움이 된다.",
+      "③ 주말에 모든 전자기기를 끄는 것은 기기를 잠시 내려놓는 좋은 방법 중 하나이다.",
+      "④ 전자기기를 사용하지 않음으로써 확보된 시간은 친구, 가족, 자신과 소통하는 데 사용될 수 있다.",
+      "⑤ 전자기기 화면에 몰두하지 않으면 생산성이 더 높아질 수 있다."
+    ],
+    "정답": "②",
+    "해설": "선택지②는 전자기기에 대한 과도한 의존이 정신적 에너지를 보충하는 데 도움이 된다는 의미이다. 지문의 문장 'excessive reliance on technology can exhaust your mental energy.'에서 기술에 대한 과도한 의존이 정신적 에너지를 고갈시킬 수 있다고 언급한다. 따라서 정답은 ②이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 19,
+    "출처": "본문 05",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "선지": [
+      "① 미래의 자신에게 편지를 쓰는 것은 현재의 삶을 더 의미 있게 살아갈 새로운 힘을 얻게 해준다.",
+      "② 미래의 자신에게 쓴 편지는 나이가 들어 과거의 자신을 기억하게 하는 역할을 할 수 있다.",
+      "③ 미래의 자신에게 쓴 편지는 더 의미 있는 삶을 살아갈 새로운 힘을 줄 수도 있다.",
+      "④ 고등학교 시절은 때로 힘들 수 있지만, 모든 과정에서 완벽할 필요는 없다.",
+      "⑤ 고등학교 시절에는 다양한 것을 시도하며 자신에게 맞는 것을 찾고, 그 과정에서 즐거움을 느끼는 것이 중요하다."
+    ],
+    "정답": "①",
+    "해설": "선택지①는 미래의 자신에게 편지를 쓰는 것이 현재의 삶을 더 의미 있게 살 힘을 준다고 말한다. 지문 'It might even give you a new sense of strength to live a more meaningful life.'는 나이가 들어 더 의미 있는 삶을 살 힘을 줄 수 있다고 언급하여, 현재의 삶에 대한 내용과 일치하지 않는다. 정답은 ①이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 20,
+    "출처": "Inside Culture",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "선지": [
+      "① Luke Martin은 초등학교 때부터 체스 대회를 개최해왔다.",
+      "② Emily는 방과 후 활동으로 서핑을 즐긴다.",
+      "③ Rajesh Singh은 로봇 동아리에서 로봇 제작에 필요한 다양한 기술들을 배운다.",
+      "④ Yuto는 지역 고등학교 스포츠 축제를 준비하기 위해 방과 후 시간을 보낸다.",
+      "⑤ Janice는 연극 동아리 활동을 통해 다른 사람이 되어보는 경험을 특별하게 여긴다."
+    ],
+    "정답": "①",
+    "해설": "선택지①는 Luke Martin이 초등학교 때부터 체스 대회를 개최해왔다는 의미이다. 지문에서 Luke는 초등학교 때 체스를 배웠고, 올해 체스 대회를 개최할 계획이라고 언급한다. 따라서 초등학교 때부터 대회를 개최해왔다는 내용은 지문과 일치하지 않는다. 정답은 ①이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 21,
+    "출처": "본문 02",
+    "발문": "본문의 내용과 일치하는 것을 고르시오.",
+    "지문": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "선지": [
+      "① Making time for exercise is easy for people with a busy schedule.",
+      "② Regular exercise is important because it offers benefits to physical strength.",
+      "③ Increased energy from exercise allows one to have more new experiences and complete more challenging tasks.",
+      "④ The benefits of exercise are mainly physical strength, which in turn boosts confidence and fosters a positive attitude.",
+      "⑤ Lifting weights at the gym strengthens the body, mind, and spirit."
+    ],
+    "정답": "③",
+    "해설": "운동으로 증가된 에너지는 새로운 경험과 도전적인 과제 완수를 돕는다. 지문의 문장 'You can have more new experiences and complete more challenging tasks with increased energy.'에서 증가된 에너지로 새로운 경험과 도전적인 과제 완수가 가능함을 알 수 있다. 따라서 정답은 ③이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 22,
+    "출처": "본문 03",
+    "발문": "본문의 내용과 일치하는 것을 고르시오.",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+    "선지": [
+      "① Choosing your career path can be a powerful tool for realizing one's dreams.",
+      "② A role model can be a personal acquaintance or a famous individual.",
+      "③ One can directly seek guidance from a role model who is a famous athlete or artist.",
+      "④ For a role model one cannot meet in person, it is possible to learn by directly asking for their guidance.",
+      "⑤ The lessons learned from a role model can be beneficial only during high school."
+    ],
+    "정답": "②",
+    "해설": "선택지②는 롤모델이 개인적인 지인이거나 유명한 사람일 수 있다는 의미이다. 지문에서 'Your role model can be someone you know personally... or someone you admire...'라고 언급하여 롤모델이 개인적인 지인이나 유명인일 수 있음을 알 수 있다. 따라서 정답은 ②이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 23,
+    "출처": "본문 04",
+    "발문": "본문의 내용과 일치하는 것을 고르시오.",
+    "지문": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "선지": [
+      "① Playing computer games and watching videos late at night is one way some teenagers enrich their lives.",
+      "② An over-dependence on technology can deplete a person's mental energy.",
+      "③ To better concentrate on important matters, it is advised to use devices to enrich your life.",
+      "④ One can use the time away from devices to finish surfing the Internet, watching videos, and sending instant messages.",
+      "⑤ A person can be surprisingly more exhausted when not constantly looking at a screen."
+    ],
+    "정답": "②",
+    "해설": "선택지②는 기술에 대한 과도한 의존이 사람의 정신적 에너지를 고갈시킬 수 있다는 의미이다. 지문의 문장 'However, excessive reliance on technology can exhaust your mental energy.'에서 기술에 대한 과도한 의존이 정신적 에너지를 고갈시킬 수 있음을 알 수 있다. 따라서 정답은 ②이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 24,
+    "출처": "본문 05",
+    "발문": "본문의 내용과 일치하는 것을 고르시오.",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "선지": [
+      "① Writing a letter to your future self allows you to reflect on the person you used to be and what is important to you.",
+      "② A letter written to your future self can serve as a reminder of the person you're heading towards becoming.",
+      "③ A letter to your future self might provide a new sense of strength to live a more meaningful life.",
+      "④ It is necessary to be perfect throughout the high school years.",
+      "⑤ During high school, it is important to try different things and be perfect."
+    ],
+    "정답": "③",
+    "해설": "미래의 자신에게 보내는 편지는 더 의미 있는 삶을 살 새로운 힘을 제공할 수도 있다는 의미이다. 지문의 문장 'It might even give you a new sense of strength to live a more meaningful life.'에서 미래의 자신에게 보내는 편지가 더 의미 있는 삶을 살 새로운 힘을 줄 수도 있음을 알 수 있다. 따라서 정답은 ③이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 25,
+    "출처": "Inside Culture",
+    "발문": "본문의 내용과 일치하는 것을 고르시오.",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "선지": [
+      "① Yuto is planning to organize a chess competition this year.",
+      "② Emily is a member of the chess club in New South Wales, Australia.",
+      "③ Rajesh Singh learns skills such as electronics and programming to prepare for the regional high school sports festival.",
+      "④ Yuto is preparing for the regional high school sports festival as a member of the baseball club.",
+      "⑤ Janice enjoys expressing a wide range of emotions as a member of the robotics club."
+    ],
+    "정답": "④",
+    "해설": "선택지④는 유토가 야구부원으로서 지역 고등학교 스포츠 축제를 준비하고 있다는 의미이다. 지문의 문장 'These days, I spend all my time after school preparing for the regional high school sports festival.'에서 유토가 지역 고등학교 스포츠 축제를 준비하고 있음을 알 수 있다. 따라서 정답은 ④이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 26,
+    "출처": "본문 02",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "선지": [
+      "① Exercising on a regular basis is important because of the many benefits it yields.",
+      "② A person can have more new experiences and finish more challenging tasks with the energy gained from exercise.",
+      "③ The advantages of exercise extend beyond just physical strength.",
+      "④ A busy schedule helps to boost confidence and cultivate a positive attitude.",
+      "⑤ Adhering to an exercise routine, whether it's lifting weights or jogging, strengthens the body, mind, and spirit."
+    ],
+    "정답": "④",
+    "해설": "선택지④는 바쁜 일정이 자신감을 높이고 긍정적인 태도를 기르는 데 도움이 된다는 의미이다. 지문에서는 운동이 자신감을 높이고 긍정적인 태도를 기른다고 언급한다. 따라서 바쁜 일정이 이러한 효과를 준다는 내용은 지문과 일치하지 않는다. 그러므로 정답은 ④이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 27,
+    "출처": "본문 03",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+    "선지": [
+      "① Looking into the lives of people you admire can be a source of inspiration.",
+      "② A role model can be a person you know, like a teacher, or a famous individual, like an athlete.",
+      "③ If you choose a role model from your social circle, you can study their actions and observe their strategies.",
+      "④ For a role model you cannot meet personally, you can learn by studying their actions and observing their strategies.",
+      "⑤ The knowledge gained from a role model is beneficial both during and long after high school."
+    ],
+    "정답": "③",
+    "해설": "선택지③는 사회생활 범위 내 롤모델의 행동을 연구하고 전략을 관찰할 수 있다고 말한다. 지문은 사회생활 범위 내 롤모델에게는 직접 지도를 요청하고, 만날 수 없는 롤모델에게 행동 연구 및 전략 관찰을 적용한다. 따라서 선택지는 지문 내용과 일치하지 않는다. 정답은 ③이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 28,
+    "출처": "본문 04",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "선지": [
+      "① Playing computer games and watching videos late at night is one way some teenagers use their devices.",
+      "② An over-dependence on technology can deplete a person's mental energy.",
+      "③ To better concentrate on important matters, it is advised to put devices away for a while.",
+      "④ One can use the time away from devices to finish surfing the Internet, watching videos, and sending instant messages.",
+      "⑤ A person can be surprisingly more productive when not constantly looking at a screen."
+    ],
+    "정답": "④",
+    "해설": "선택지④는 기기에서 벗어난 시간을 인터넷 서핑, 비디오 시청, 인스턴트 메시지 전송을 마치는 데 사용할 수 있다는 의미이다. 지문에서는 주중에 이러한 활동을 마치고 주말에는 기기를 끄라고 조언한다. 기기에서 벗어난 시간은 친구, 가족, 자신과 연결하는 데 사용하라고 언급하므로, 선택지는 지문의 내용과 일치하지 않는다. 따라서 정답은 ④이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 29,
+    "출처": "본문 05",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "선지": [
+      "① With the passage of time, some of one's present interests and perspectives may disappear.",
+      "② The act of writing to one's future self facilitates reflection on one's current life, future path, and what matters now.",
+      "③ A letter written to oneself can later provide the strength to live a more meaningful life.",
+      "④ High school can be overwhelming, but perfection is a requirement during this period.",
+      "⑤ Trying various activities and remembering to have fun are recommended during high school."
+    ],
+    "정답": "④",
+    "해설": "선택지④는 고등학교 시절은 힘들 수 있지만, 이 시기에는 완벽함이 필수요건이라고 말한다. 그러나 지문의 'you don't have to be perfect every step of the way'에서 모든 단계에서 완벽할 필요는 없다고 언급한다. 따라서 선택지는 지문의 내용과 일치하지 않는다. 정답은 ④이다."
+  },
+  {
+    "유형": "내용일치/불일치",
+    "문항번호": 30,
+    "출처": "Inside Culture",
+    "발문": "본문의 내용과 일치하지 않는 것을 고르시오.",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "선지": [
+      "① Having learned chess in elementary school, Luke Martin considers it an important part of his life.",
+      "② Emily's extracurricular activity involves going to the beach to enjoy the ocean and waves with her surfing club.",
+      "③ Members of Yuto's baseball club in Japan study a variety of subjects required for building robots.",
+      "④ Yuto, a member of the baseball club in Japan, is currently focused on preparing for a major regional sports event.",
+      "⑤ Janice from the USA believes that the chance to act as another person is a unique aspect of being in the drama club."
+    ],
+    "정답": "③",
+    "해설": "선택지③는 일본 Yuto의 야구 동아리 회원들이 로봇 제작 과목을 공부한다는 내용이다. 지문에서 Yuto는 야구 동아리 소속으로 스포츠 축제를 준비한다. 로봇 제작 과목은 Rajesh Singh의 로봇 동아리 활동이므로, 이 선택지는 지문 내용과 일치하지 않는다. 따라서 정답은 ③이다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 31,
+    "출처": "본문 01",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "High school is the best time ① to spark your curiosity and passion. You can ② to explore, try new things, and ③ learning more about yourself. The three years pass quickly, so use this time wisely ④ setting yourself up for the future. Here are a few ways ⑤ doing just that.",
+    "밑줄_친_부분": ["① to spark", "② to explore", "③ learning", "④ setting", "⑤ doing"],
+    "정답": "①",
+    "해설": "to부정사구 'to spark your curiosity and passion'은 앞의 명사 'the best time'을 수식하는 형용사적 용법으로 올바르게 사용되었다. 따라서 정답은 ①이다. ② 조동사 can 다음에는 동사원형이 와야 하므로 to explore는 explore로 고쳐야 한다. ③ and에 의해 explore, try와 병렬 구조를 이루어야 하므로, learning은 동사원형 learn으로 고쳐야 한다. ④ '미래를 위해 자신을 준비하기 위해'라는 목적의 의미를 나타내야 하므로, setting은 to부정사인 to set으로 고쳐야 한다. ⑤ 앞의 명사 a few ways를 수식하는 형용사적 용법의 to부정사가 와야 하므로, doing은 to do로 고쳐야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 32,
+    "출처": "본문 02",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "① Make time for exercise with a busy schedule is not ② easily. However, it's important to exercise ③ regular because it offers countless ④ benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not ⑤ limiting to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "밑줄_친_부분": ["① Make", "② easily", "③ regular", "④ benefits", "⑤ limiting"],
+    "정답": "④",
+    "해설": "형용사 countless는 '셀 수 없이 많은'이라는 의미로, 뒤에 복수 명사가 와야 한다. benefits는 '이점들'이라는 의미의 복수 명사이므로 어법상 옳다. 따라서 정답은 ④이다. ① 문장의 주어 역할을 해야 하므로 동사원형 Make는 올 수 없고, 동명사 Making이나 to부정사 To make로 써야 한다. ② be동사 is의 보어 자리이므로 부사 easily가 아닌 형용사 easy가 와야 한다. ③ 동사 exercise를 수식하는 자리이므로 형용사 regular가 아닌 부사 regularly가 와야 한다. ⑤ 주어인 The benefits가 '제한하는' 것이 아니라 '제한되는' 대상이므로, 능동의 의미를 나타내는 현재분사 limiting이 아닌 수동의 의미를 나타내는 과거분사 limited를 써야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 33,
+    "출처": "본문 03",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and ① having a role model can be a ② powerfully tool for making your dreams ③ to come true. Looking into the lives of the people you ④ are admired can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. ⑤ That you learn from them will benefit you both during and long after high school.",
+    "밑줄_친_부분": ["① having", "② powerfully", "③ to come true", "④ are admired", "⑤ That"],
+    "정답": "①",
+    "해설": "동명사구(having a role model)가 문장의 주어로 사용되었으므로 어법상 옳다. 따라서 정답은 ①이다. ② 부사 powerfully는 명사 tool을 수식할 수 없으므로, 형용사 powerful로 고쳐야 한다. ③ 사역동사 make의 목적격 보어 자리이므로, to come true는 동사원형 come true로 고쳐야 한다. ④ admire의 주체는 you이므로, 수동태 are admired는 능동태 admire로 고쳐야 한다. ⑤ learn의 목적어가 없으므로, 선행사를 포함하는 관계대명사 What으로 시작하여 명사절을 이끌어야 한다. 따라서 That은 What으로 고쳐야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 34,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "Who you are now ① say a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on ② that you are, where you're ③ heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength ④ living a more meaningful life. The high school years can be ⑤ overwhelmed at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① say", "② that", "③ heading", "④ living", "⑤ overwhelmed"],
+    "정답": "③",
+    "해설": "의문사 where가 이끄는 절에서 주어 you're(you are) 뒤에 이어지는 현재진행형 동사(be + v-ing)의 일부로, '어디로 향하고 있는지'라는 의미를 나타낸다. 따라서 heading은 어법상 옳다. 그러므로 정답은 ③번이다. ① 문장의 주어는 명사절인 'Who you are now'이므로 단수 취급해야 한다. 따라서 동사는 3인칭 단수형인 says가 되어야 한다. ② 동사 reflect on의 목적어로 의문사절이 병렬로 연결되어야 한다. 문맥상 '당신이 누구인지'라는 의미가 되어야 하므로, 접속사 that을 의문사 who로 고쳐야 한다. ④ 명사 strength를 수식하여 '더 의미 있는 삶을 살 힘'이라는 의미를 나타내야 하므로, 현재분사 living을 to부정사인 to live로 고쳐야 한다. ⑤ 주어인 'The high school years'가 '압도적인' 감정을 유발하는 주체이므로, 감정을 느끼는 대상에 사용하는 과거분사 overwhelmed를 감정을 유발하는 주체에 사용하는 현재분사 overwhelming으로 고쳐야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 35,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a ① proud member of the chess club. Chess is hugely ② popularly here in Hampton. The matches ③ play every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to ④ helping others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and ⑤ to express a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["① proud", "② popularly", "③ play", "④ helping", "⑤ to express"],
+    "정답": "①",
+    "해설": "형용사 proud는 뒤따르는 명사 member를 수식하는 역할을 하므로 어법상 올바르다. 따라서 ①이 정답이다. ② 동사 is는 보어를 필요로 하므로 부사 popularly가 아닌 형용사 popular가 와야 한다. ③ 주어 The matches는 경기가 열리는 대상이므로 수동태인 are played로 써야 한다. ④ 동사 want는 목적어로 to부정사를 취하므로 helping이 아닌 to help로 써야 한다. ⑤ 동사 enjoy는 목적어로 동명사를 취하며, and로 연결된 병렬 구조이므로 standing과 같은 형태인 expressing으로 써야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 36,
+    "출처": "본문 02",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more ① challenged tasks with increased energy. The benefits ② is not limited to physical strength; exercise also ③ boost confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or ④ to ride a bicycle, establishing and sticking to an exercise routine will ⑤ strengthen your body, mind, and spirit.",
+    "밑줄_친_부분": ["① challenged", "② is", "③ boost", "④ to ride", "⑤ strengthen"],
+    "정답": "⑤",
+    "해설": "조동사 will 다음에는 동사원형이 와야 한다. 문장의 주어는 동명사구인 'establishing and sticking to an exercise routine'이고, 조동사 will 뒤에 동사원형인 strengthen이 온 것은 어법상 옳다. 따라서 ⑤는 어법상 옳다. ① 뒤따르는 명사 tasks를 수식하는 분사 자리이다. 과업(tasks)이 도전적인 감정을 유발하는 것이므로, 능동의 의미를 나타내는 현재분사 challenging이 와야 한다. ② 문장의 주어는 The benefits로 복수 명사이므로, 동사도 복수 주어에 맞게 are로 써야 한다. ③ 문장의 주어는 exercise로 3인칭 단수이므로, 동사도 단수 주어에 맞게 boosts로 써야 한다. ④ or를 중심으로 lifting, jogging, 그리고 to ride가 병렬 구조를 이루고 있다. 동명사 lifting, jogging과 형태를 맞추기 위해 to ride를 동명사 riding으로 고쳐야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 37,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on ① where you are, ② that's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelming at times, but the challenge is there for a reason, and you don't have to be ③ perfectly every step of the way. During your high school days, have a great time ④ to try out different things and ⑤ to discover what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① where", "② that's", "③ perfectly", "④ to try", "⑤ to discover"],
+    "정답": "①",
+    "해설": "동사 reflect on의 목적어로 명사절이 와야 한다. 밑줄 친 where는 '어디로'라는 의미의 의문부사로, 뒤에 「주어+동사」의 어순을 갖는 명사절(간접의문문)을 이끌고 있다. 앞선 명사절 where you are와 병렬 구조를 이루고 있으므로 어법상 옳다. 따라서 정답은 ①이다. ② 동사 reflect on의 목적어로 쓰인 명사절로, 앞선 두 개의 명사절과 병렬 구조를 이루어야 한다. 문맥상 '무엇이 ~에게 중요한지'라는 의미가 되어야 하고, 절 안에서 주어 역할을 해야 하므로 관계대명사 that이 아닌 의문대명사 what으로 고쳐야 한다. ③ 동사 be는 2형식 동사로 뒤에 주격 보어가 와야 한다. 주어인 you의 상태를 설명하는 주격 보어 자리에는 부사 perfectly가 올 수 없으며, 형용사인 perfect로 고쳐야 한다. ④ 'have a great time -ing'는 '~하면서 즐거운 시간을 보내다'라는 의미의 관용 표현이다. 따라서 to부정사인 to try는 동명사인 trying으로 고쳐야 한다. ⑤ 등위 접속사 and로 연결되어 앞선 to try와 병렬 구조를 이루고 있다. to try가 trying으로 바뀌어야 하므로, to discover 역시 동명사인 discovering으로 고쳐야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 38,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely ① popularly here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to help others ② discovering its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky ③ living in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school ④ preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and ⑤ to express a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["① popularly", "② discovering", "③ living", "④ preparing", "⑤ to express"],
+    "정답": "④",
+    "해설": "'spend + 시간/돈 + -ing' 구문은 '~하는 데 시간/돈을 쓰다'라는 의미이다. 이 문장에서는 동사 spend의 목적어인 'all my time after school' 뒤에 동명사 preparing이 와서 '~을 준비하는 데 시간을 보내다'라는 의미를 나타내므로 어법상 옳다. 따라서 정답은 ④이다. ① be동사 'is'의 보어 자리이므로 부사 popularly가 아닌 형용사 popular가 와야 한다. ② 동사 help는 목적격 보어로 동사원형이나 to부정사를 취하므로, discovering은 discover 또는 to discover로 고쳐야 한다. ③ 감정의 원인을 나타내는 형용사 lucky 뒤에는 to부정사가 와야 하므로, living은 to live로 고쳐야 한다. ⑤ 동사 enjoy의 목적어로 동명사 standing이 왔고, 등위 접속사 and로 연결되었으므로 병렬 구조에 따라 to express는 expressing으로 고쳐야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 39,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+    "지문": "Who you are now ① say a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on ② that you are, where you're ③ heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength ④ living a more meaningful life. The high school years can be ⑤ overwhelmed at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① say", "② that", "③ heading", "④ living", "⑤ overwhelmed"],
+    "정답": "③",
+    "해설": "의문사 where가 이끄는 간접의문문(where you're heading)에서 be동사 are의 보어 역할을 하는 현재분사 heading은 어법상 옳다. 따라서 ③이 정답이다. ① 명사절 'Who you are now'가 문장의 주어이므로, 단수 취급하여 동사 say를 says로 고쳐야 한다. ② 전치사 on의 목적어로 간접의문문이 와야 하므로, 접속사 that을 의문대명사 who로 고쳐야 한다. ④ 명사 strength를 수식하여 '~할 힘'이라는 의미를 나타내야 하므로, 현재분사 living을 to부정사 to live로 고쳐야 한다. ⑤ 문장의 주어인 The high school years가 감정의 원인이므로, 과거분사 overwhelmed를 현재분사 overwhelming으로 고쳐야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 40,
+    "출처": "본문 02",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "① Making time for exercise with a busy schedule is not ② easy. However, it's important to exercise ③ regularly because it offers countless ④ benefit. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not ⑤ limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "밑줄_친_부분": ["① Making", "② easy", "③ regularly", "④ benefit", "⑤ limited"],
+    "정답": "④",
+    "해설": "'countless'는 '셀 수 없이 많은'이라는 의미로, 뒤에 셀 수 있는 명사의 복수형이 와야 한다. 'benefit'은 셀 수 있는 명사이므로 복수형인 'benefits'로 써야 한다. 따라서 'benefit'은 어법상 틀리다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 41,
+    "출처": "본문 03",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for ① making your dreams come true. ② Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, ③ such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and ④ observing their strategies. What you learn from them will ⑤ benefit you both during and long after high school.",
+    "밑줄_친_부분": ["① making", "② Looking", "③ such", "④ observing", "⑤ benefit"],
+    "정답": "④",
+    "해설": "문장의 동사 study와 observing은 등위 접속사 and로 연결되어 조동사 can에 이어지는 병렬 구조를 이루어야 한다. 따라서 동명사 observing은 조동사 can 뒤에 오는 동사원형 study와 형태를 맞추어 observe로 써야 한다. 그러므로 정답은 ④이다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 42,
+    "출처": "본문 04",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "These days, many teenagers spend too much time ① staring at smartphones and computer screens. Some even stay up late ② playing computer games and ③ watching videos. This is fine as long as these devices enrich your life. However, excessive ④ reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to ⑤ calmly with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "밑줄_친_부분": ["① staring", "② playing", "③ watching", "④ reliance", "⑤ calmly"],
+    "정답": "⑤",
+    "해설": "to부정사는 'to+동사원형'의 형태를 취하며, 문장에서 목적(~하기 위해서)을 나타낸다. 문맥상 '새로 찾은 시간을 친구, 가족, 그리고 자신과 차분하게 연결되기 위해 사용할 수 있다'는 의미가 되어야 하므로, 부사인 calmly를 동사원형인 connect 등으로 고쳐야 한다. 따라서 ⑤는 어법상 틀렸다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 43,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "Who you are now ① say a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on ② where you are, where you're ③ heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength ④ to live a more meaningful life. The high school years can be ⑤ overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① say", "② where", "③ heading", "④ to live", "⑤ overwhelming"],
+    "정답": "①",
+    "해설": "이 문장의 주어는 명사절인 'Who you are now'이다. 명사절이 주어일 때는 단수 취급하므로, 동사는 3인칭 단수형인 'says'가 되어야 한다. 따라서 ①의 'say'는 어법상 틀리다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 44,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a ① proud member of the chess club. Chess is hugely ② popularly here in Hampton. The matches ③ are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to ④ help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and ⑤ expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["① proud", "② popularly", "③ are played", "④ help", "⑤ expressing"],
+    "정답": "②",
+    "해설": "동사 is는 주격 보어를 필요로 하는 2형식 동사이다. 주어인 Chess의 상태를 설명하는 주격 보어 자리에는 형용사가 와야 하므로, 부사인 popularly는 올 수 없고 형용사인 popular가 와야 한다. 따라서 popularly는 어법상 틀리다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 45,
+    "출처": "본문 03",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and ① having a role model can be a ② powerfully tool for making your dreams ③ come true. Looking into the lives of the people you ④ admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. ⑤ What you learn from them will benefit you both during and long after high school.",
+    "밑줄_친_부분": ["① having", "② powerfully", "③ come true", "④ admire", "⑤ What"],
+    "정답": "②",
+    "해설": "부사 powerfully는 뒤따르는 명사 tool을 수식할 수 없다. 명사를 수식하는 것은 형용사이므로, powerfully를 형용사 powerful로 고쳐야 한다. 따라서 ②는 어법상 틀리다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 46,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on ① where you are, ② that's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelming at times, but the challenge is there for a reason, and you don't have to be ③ perfect every step of the way. During your high school days, have a great time ④ trying out different things and ⑤ discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① where", "② that's", "③ perfect", "④ trying", "⑤ discovering"],
+    "정답": "②",
+    "해설": "전치사 on의 목적어로 의문사절인 where you are와 where you're heading이 병렬로 연결되어 있다. 따라서 that's important to you right now도 이와 병렬 구조를 이루는 의문사절이 되어야 한다. 문맥상 '무엇이 ~인지'라는 의미가 되어야 하고, 절 안에서 주어 역할을 해야 하므로 의문대명사 what을 사용해야 한다. 그러므로 that은 what으로 고쳐야 한다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 47,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an ① importantly part of my life, and I want to help others ② discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky ③ to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school ④ preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy ⑤ standing in front of people and expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["① importantly", "② discover", "③ to live", "④ preparing", "⑤ standing"],
+    "정답": "①",
+    "해설": "부사 importantly는 명사 part를 수식할 수 없다. 명사를 수식하는 것은 형용사이므로 important로 고쳐야 한다. 따라서 ①은 어법상 틀리다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 48,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "Who you are now ① say a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on ② where you are, where you're ③ heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength ④ to live a more meaningful life. The high school years can be ⑤ overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① say", "② where", "③ heading", "④ to live", "⑤ overwhelming"],
+    "정답": "①",
+    "해설": "문장의 주어는 명사절인 'Who you are now'이다. 명사절이 주어일 경우 단수 취급하므로, 동사는 3인칭 단수형인 'says'가 되어야 한다. 따라서 ①의 'say'는 어법상 틀리다."
+  },
+  {
+    "유형": "어법",
+    "문항번호": 49,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely ① popularly here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has ② being an important part of my life, and I want to help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky ③ living in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school ④ to prepare for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy ⑤ to stand in front of people and expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["① popularly", "② being", "③ living", "④ to prepare", "⑤ to stand"],
+    "정답": "③",
+    "해설": "전치사 for는 목적어로 명사나 동명사를 취한다. 따라서 이 문장에서는 동사원형이 아닌 동명사 making이 와야 문맥상, 어법상 자연스럽다. 그러므로 정답은 ③이다. (※ 해설집 기준: ① popularly → popular, ② being → been, ③ living → to live, ④ to prepare → preparing, ⑤ to stand → standing 이며, 정답표상 정답은 ③)"
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 50,
+    "출처": "본문 02",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "Making time for exercise with a busy schedule is not ① arduous. However, it's important to exercise regularly because it offers ② limited benefits. You can have more new experiences and complete more ③ easy tasks with increased energy. The benefits are not limited to physical strength; exercise also ④ boosts confidence and fosters a ⑤ negative attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "밑줄_친_부분": ["① arduous", "② limited", "③ easy", "④ boosts", "⑤ negative"],
+    "정답": "④",
+    "해설": "이 글은 규칙적인 운동의 여러 가지 이점에 대해 설명하고 있다. 운동은 자신감을 높여주고 긍정적인 태도를 길러주는 등 정신적인 면에서도 이롭다는 내용이므로, '신장시키다, 북돋우다'라는 의미의 boosts는 자신감을 높인다는 의미로 문맥상 쓰임이 적절하다. 따라서 정답은 ④이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 51,
+    "출처": "본문 03",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a ① ineffectual tool for making your dreams come true. Looking into the lives of the people you ② despise can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and ④ disregard their strategies. What you learn from them will ⑤ benefit you both during and long after high school.",
+    "밑줄_친_부분": ["① ineffectual", "② despise", "③ despise", "④ disregard", "⑤ benefit"],
+    "정답": "⑤",
+    "해설": "이 글은 진로 선택에 있어 롤모델을 갖는 것이 중요하다는 내용이다. 마지막 문장은 롤모델로부터 배운 것이 고등학교 시절과 그 이후에 도움이 될 것이라는 긍정적인 결과를 설명하고 있다. 'benefit'은 '이익을 주다'라는 의미로, 롤모델로부터 배운 것이 이익이 된다는 문맥에 자연스럽게 어울린다. 따라서 문맥상 낱말의 쓰임이 적절한 것은 ⑤이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 52,
+    "출처": "본문 04",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "These days, many teenagers spend too much time ① staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices ② impoverish your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to ③ procrastinate on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to ④ disengage with friends, family, and yourself. You might be surprised at how much more productive you can be when not ⑤ indifferent to a screen.",
+    "밑줄_친_부분": ["① staring", "② impoverish", "③ procrastinate", "④ disengage", "⑤ indifferent"],
+    "정답": "①",
+    "해설": "이 글은 십대들이 스마트폰과 컴퓨터 화면을 너무 많이 보며 시간을 보낸다는 문제점을 지적하고 있다. '응시하다'라는 뜻의 staring은 문맥상 청소년들이 화면을 오랫동안 쳐다보는 상황을 자연스럽게 묘사하므로 적절하다. 따라서 정답은 ①이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 53,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to ① speculate on where you are, where you're ② stagnating, and what's important to you right now. Furthermore, when you're older, this letter can serve as a ③ concealment of the person you used to be. It might even give you a new sense of ④ weakness to live a more meaningful life. The high school years can be overwhelming at times, but the ⑤ challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① speculate", "② stagnating", "③ concealment", "④ weakness", "⑤ challenge"],
+    "정답": "⑤",
+    "해설": "고등학교 시절이 때때로 벅찰 수 있다는 앞선 내용으로 보아, 이러한 어려움을 '도전'이라고 표현하는 것은 자연스럽다. '그 도전은 이유가 있어서 존재한다'는 의미로 문맥상 적절하다. 따라서 정답은 ⑤번이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 54,
+    "출처": "본문 02",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise ① sporadically because it offers countless benefits. You can have more new experiences and ② avoid more challenging tasks with ③ increased energy. The benefits are not ④ unlimited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and ⑤ objecting to an exercise routine will strengthen your body, mind, and spirit.",
+    "밑줄_친_부분": ["① sporadically", "② avoid", "③ increased", "④ unlimited", "⑤ objecting"],
+    "정답": "③",
+    "해설": "이 글은 운동의 긍정적인 효과에 대해 설명하고 있다. 운동을 하면 에너지가 생겨서 더 많은 새로운 경험을 하고 더 어려운 과제를 해낼 수 있다는 내용이므로, '증가된'이라는 의미의 increased는 문맥상 적절하다. 따라서 정답은 ③번이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 55,
+    "출처": "본문 04",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "These days, many teenagers spend too much time ① glancing at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices ② enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to ③ procrastinate on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to ④ disengage with friends, family, and yourself. You might be surprised at how much more productive you can be when not ⑤ indifferent to a screen.",
+    "밑줄_친_부분": ["① glancing", "② enrich", "③ procrastinate", "④ disengage", "⑤ indifferent"],
+    "정답": "②",
+    "해설": "해당 문장은 기술 기기를 사용하는 것이 괜찮은 경우에 대한 조건을 제시한다. 앞 문장에서 십대들이 스마트폰과 컴퓨터 화면을 보며 너무 많은 시간을 보낸다고 언급한 후, 'This'는 앞 문장의 내용을 가리키며, 이러한 기기들이 삶을 '풍요롭게 하는(enrich)' 한 괜찮다고 말하는 것이 자연스럽다. 따라서 문맥상 낱말의 쓰임이 적절한 것은 ②이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 56,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may ① intensify. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to ② speculate on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a ③ concealment of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be ④ manageable at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and ⑤ discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① intensify", "② speculate", "③ concealment", "④ manageable", "⑤ discovering"],
+    "정답": "⑤",
+    "해설": "고등학교 시절에 다양한 것들을 시도해 보라고 격려하는 문맥이다. 여러 가지를 시도해 보면서 자신에게 가장 잘 맞는 것을 '발견하는(discovering)' 것이 자연스러운 흐름이다. 따라서 'discovering'은 문맥상 낱말의 쓰임이 적절하다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 57,
+    "출처": "본문 04",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "These days, many teenagers spend too much time ① glancing at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can ② exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to ③ start surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to ④ disengage with friends, family, and yourself. You might be surprised at how much more productive you can be when not ⑤ indifferent to a screen.",
+    "밑줄_친_부분": ["① glancing", "② exhaust", "③ start", "④ disengage", "⑤ indifferent"],
+    "정답": "②",
+    "해설": "이 글은 과도한 기술 사용의 부정적인 측면에 대해 이야기하고 있으므로, 기술에 대한 과도한 의존이 정신적 에너지를 '소진시킬' 수 있다는 내용이 되는 것이 자연스럽다. 'exhaust'는 '고갈시키다, 소진시키다'라는 의미로 문맥상 적절하다. 따라서 정답은 ②이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 58,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절한 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and ① blindnesses may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to ② reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a ③ concealment of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be ④ manageable at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and ⑤ hiding what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① blindnesses", "② reflect", "③ concealment", "④ manageable", "⑤ hiding"],
+    "정답": "②",
+    "해설": "미래의 자신에게 편지를 쓰는 것은 현재 자신의 위치, 나아가는 방향, 그리고 중요한 것에 대해 생각해 볼 시간을 준다는 내용이다. 따라서 '숙고하다'라는 의미의 reflect는 문맥상 적절하다. 그러므로 정답은 ②번이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 59,
+    "출처": "본문 02",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "Making time for exercise with a busy schedule is not ① easy. However, it's important to exercise regularly because it offers ② limited benefits. You can have more new experiences and complete more ③ challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also ④ boosts confidence and fosters a ⑤ positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "밑줄_친_부분": ["① easy", "② limited", "③ challenging", "④ boosts", "⑤ positive"],
+    "정답": "②",
+    "해설": "이 글은 규칙적인 운동이 주는 다양한 이점에 대해 설명하고 있다. 운동은 더 많은 에너지를 주고, 자신감을 높여주며, 긍정적인 태도를 길러준다고 하였으므로, 운동이 '제한된(limited)' 이점을 제공한다는 것은 문맥상 어색하다. 따라서 '수많은(numerous)' 또는 '많은(many)'과 같은 낱말로 바꾸는 것이 적절하다. 그러므로 정답은 ②이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 60,
+    "출처": "본문 04",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "These days, many teenagers spend too much time ① staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices ② impoverish your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to ③ focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to ④ connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not ⑤ glued to a screen.",
+    "밑줄_친_부분": ["① staring", "② impoverish", "③ focus", "④ connect", "⑤ glued"],
+    "정답": "②",
+    "해설": "전자기기를 사용하는 것이 삶을 풍요롭게 하는 한 괜찮다는 문맥이 되어야 자연스럽다. 'impoverish'는 '빈곤하게 하다'라는 의미이므로, 문맥상 '풍요롭게 하다'라는 의미의 'enrich'와 같은 낱말로 바꾸어야 한다. 따라서 ②는 문맥상 적절하지 않다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 61,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to ① reflect on where you are, where you're ② heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a ③ concealment of the person you used to be. It might even give you a new sense of ④ strength to live a more meaningful life. The high school years can be overwhelming at times, but the ⑤ challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① reflect", "② heading", "③ concealment", "④ strength", "⑤ challenge"],
+    "정답": "③",
+    "해설": "미래의 자신에게 쓴 편지는 나이가 들었을 때 과거의 자신이 어떤 사람이었는지를 상기시켜 주는 역할을 한다는 내용이 되어야 자연스럽다. '은폐, 숨김'을 의미하는 concealment는 문맥상 어색하며, '상기시켜 주는 것'을 의미하는 reminder와 같은 낱말로 바꾸어야 한다. 따라서 문맥상 낱말의 쓰임이 적절하지 않은 것은 ③이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 62,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely ① popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an ② important part of my life, and I want to help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an ③ extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school ④ preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and expressing a ⑤ narrow range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["① popular", "② important", "③ extracurricular", "④ preparing", "⑤ narrow"],
+    "정답": "⑤",
+    "해설": "연극 동아리 활동을 소개하며 기쁨, 슬픔, 그리고 다른 많은 감정들을 포함한 감정들을 표현하는 것을 즐긴다고 말하고 있다. 이는 좁은 범위의 감정이 아니라 넓은 범위의 감정을 표현한다는 것을 의미하므로, '좁은'이라는 뜻의 narrow는 문맥상 적절하지 않다. '넓은'이라는 의미의 wide나 broad와 같은 낱말로 바꾸는 것이 자연스럽다. 따라서 정답은 ⑤이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 63,
+    "출처": "본문 04",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "These days, many teenagers spend too much time ① staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices ② enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to ③ finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to ④ disengage with friends, family, and yourself. You might be surprised at how much more productive you can be when not ⑤ glued to a screen.",
+    "밑줄_친_부분": ["① staring", "② enrich", "③ finish", "④ disengage", "⑤ glued"],
+    "정답": "④",
+    "해설": "이 글은 스마트폰과 같은 기기 사용을 줄여서 확보한 시간을 친구, 가족, 그리고 자신과 같은 소중한 대상들과의 관계를 위해 사용해야 한다는 흐름으로 전개된다. 'disengage'는 '관계를 끊다'라는 의미이므로, 새로 찾은 시간을 친구, 가족, 자신과의 관계를 끊는 데 사용하라는 것은 문맥상 매우 어색하다. 따라서 이 자리에는 '관계를 맺다', '소통하다'라는 의미를 가진 'engage'나 'connect'와 같은 낱말이 와야 한다. 그러므로 문맥상 낱말의 쓰임이 적절하지 않은 것은 ④이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 64,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may ① fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more ② meaningful life. The high school years can be ③ manageable at times, but the challenge is there for a reason, and you don't have to be ④ perfect every step of the way. During your high school days, have a great time trying out different things and ⑤ discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① fade", "② meaningful", "③ manageable", "④ perfect", "⑤ discovering"],
+    "정답": "③",
+    "해설": "고등학교 시절이 때로는 힘들 수 있지만, 그 어려움에는 이유가 있다는 내용이 이어지므로, '관리할 수 있는'이라는 의미의 manageable은 문맥상 어색하다. 문맥상 '힘든' 또는 '어려운'과 같은 의미의 challenging이나 tough 등이 와야 자연스럽다. 따라서 manageable은 ③ 적절하지 않다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 65,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely ① popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to ② help others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an ③ academic activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school ④ preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and ⑤ expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["① popular", "② help", "③ academic", "④ preparing", "⑤ expressing"],
+    "정답": "③",
+    "해설": "호주에 사는 Emily는 서핑을 즐긴다고 말하고 있다. 서핑은 바다와 파도를 즐기는 신체 활동이므로 '학문적인'이라는 의미의 academic은 문맥상 어울리지 않는다. 따라서 'extracurricular(과외의)'와 같은 단어로 바꾸는 것이 적절하다. 그러므로 정답은 ③번이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 66,
+    "출처": "본문 04",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "These days, many teenagers spend too much time ① staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can ② replenish your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to ③ finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to ④ connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not ⑤ glued to a screen.",
+    "밑줄_친_부분": ["① staring", "② replenish", "③ finish", "④ connect", "⑤ glued"],
+    "정답": "②",
+    "해설": "이 글은 십대들의 과도한 스마트폰 및 컴퓨터 사용이 정신적 에너지에 부정적인 영향을 미친다는 내용이다. 'replenish'는 '보충하다'라는 의미인데, 문맥상 기술에 대한 과도한 의존은 정신적 에너지를 '고갈시킨다'는 의미가 되어야 자연스럽다. 따라서 '보충하다'는 의미의 replenish는 문맥상 적절하지 않으며, '고갈시키다'는 의미의 deplete와 같은 낱말로 바꾸어야 한다. 그러므로 정답은 ②번이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 67,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and ① perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to ② speculate on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a ③ reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be ④ overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and ⑤ discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["① perspectives", "② speculate", "③ reminder", "④ overwhelming", "⑤ discovering"],
+    "정답": "②",
+    "해설": "미래의 자신에게 편지를 쓰는 것은 현재 자신의 위치, 나아갈 방향, 그리고 자신에게 중요한 것이 무엇인지에 대해 잠시 생각해 볼 기회를 준다는 내용이다. 'speculate'은 '추측하다'라는 의미로, 충분한 정보 없이 짐작하는 것을 뜻한다. 문맥상 현재 자신의 삶에 대해 곰곰이 생각해 보고 성찰하는 것이므로, '추측하다'는 어색하다. 따라서 'reflect(성찰하다)'와 같은 낱말이 와야 한다. 그러므로 문맥상 낱말의 쓰임이 적절하지 않은 것은 ②이다."
+  },
+  {
+    "유형": "어휘",
+    "문항번호": 68,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분 중 문맥 상 낱말의 쓰임이 적절하지 않은 것은?",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a ① ashamed member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has been an important part of my life, and I want to help others ② discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an ③ extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school ④ preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and ⑤ expressing a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["① ashamed", "② discover", "③ extracurricular", "④ preparing", "⑤ expressing"],
+    "정답": "①",
+    "해설": "체스 동아리 회원인 Luke는 체스가 자신의 삶에서 중요한 부분이라고 말하며 다른 사람들도 체스의 즐거움을 발견하도록 돕고 싶다고 말하고 있다. 이는 체스에 대한 자부심을 나타내는 긍정적인 문맥이다. 따라서 '부끄러워하는'이라는 의미의 ashamed는 문맥상 적절하지 않으며, '자랑스러워하는'이라는 의미의 proud와 같은 낱말로 고쳐야 한다. 그러므로 정답은 ①이다."
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 69,
+    "출처": "본문 01",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "High school is the best time sparking your curiosity and passion. You can to explore, try new things, and learn more about yourself. The three years pass quickly, so use this time wisely to set yourself up for the future. Here are a few ways doing just that.",
+    "밑줄_친_부분": ["sparking", "to explore", "doing"],
+    "정답": {"sparking": "to spark", "to explore": "explore", "doing": "to do"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 70,
+    "출처": "본문 02",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "Making time for exercise with a busy schedule is not easily. However, it's important to exercise regular because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, to establish and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "밑줄_친_부분": ["easily", "regular", "to establish"],
+    "정답": {"easily": "easy", "regular": "regularly", "to establish": "establishing"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 71,
+    "출처": "본문 03",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams to come true. Looking into the lives of the people you admire can be an inspiration in themselves. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, as as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+    "밑줄_친_부분": ["to come true", "themselves", "as as"],
+    "정답": {"to come true": "come true", "themselves": "itself", "as as": "such as"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 72,
+    "출처": "본문 04",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "These days, many teenagers spend too much time came at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is laid down as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier what on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+    "밑줄_친_부분": ["came", "laid down", "what"],
+    "정답": {"came": "staring", "laid down": "fine", "what": "to focus"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 73,
+    "출처": "본문 05",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're to head, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelmed at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time to try out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "밑줄_친_부분": ["to head", "overwhelmed", "to try"],
+    "정답": {"to head": "heading", "overwhelmed": "overwhelming", "to try": "trying"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 74,
+    "출처": "Inside Culture",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "Hello, I'm Luke Martin from Hampton, England, and I'm a proud member of the chess club. Chess is hugely popular here in Hampton. The matches are played every Friday after school. Since I learned chess in elementary school, it has being an important part of my life, and I want to helping others discover its joys. Therefore, I'm planning to organize a chess competition this year. Good day, mates! My name is Emily, and I live in New South Wales, Australia. I enjoy surfing, and I do it as an extracurricular activity. We go to the beach to enjoy the beautiful ocean and perfect waves. I feel really lucky to live in this area and be a member of the surfing club. Hi, my name is Rajesh Singh from India, and I'm a member of the robotics club. With the other members of my club, I learn about all kinds of robots. We study everything necessary for making a robot: electronics, programming, problem-solving, and even design skills. Hi, I'm Yuto from Japan, and I'm a member of the baseball club. These days, I spend all my time after school preparing for the regional high school sports festival. This is a major sports event in Japan, so my friends and I are really looking forward to it! Hello, I'm Janice from the USA. I'm in the drama club. I enjoy standing in front of people and to express a wide range of emotions, including delight, sadness, and many others. Plus, having an opportunity to be another person is totally special!",
+    "밑줄_친_부분": ["being", "helping", "to express"],
+    "정답": {"being": "been", "helping": "help", "to express": "expressing"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 75,
+    "출처": "본문 02",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more challenged tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and foster a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, to establish and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+    "밑줄_친_부분": ["challenged", "foster", "to establish"],
+    "정답": {"challenged": "challenging", "foster": "fosters", "to establish": "establishing"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 76,
+    "출처": "본문 03",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for to make your dreams come true. Look into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. That you learn from them will benefit you both during and long after high school.",
+    "밑줄_친_부분": ["to make", "Look", "That"],
+    "정답": {"to make": "making", "Look": "Looking", "That": "What"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 77,
+    "출처": "본문 03",
+    "발문": "다음 글의 밑줄 친 부분을 어법상 적절하게 고치시오.",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and to have a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you are admired can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observing their strategies. What you learn from them will benefit you both during and long after high school.",
+    "밑줄_친_부분": ["to have", "are admired", "observing"],
+    "정답": {"to have": "having", "are admired": "admire", "observing": "observe"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 78,
+    "출처": "본문 03",
+    "발문": "다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B)에 들어갈 단어를 본문에서 찾아 필요시 변형하여 쓰시오.",
+    "지문": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+    "요약문": "Emulating the (A) of exemplary people can offer substantial (B) for achieving life's ambitions.",
+    "정답": {"A": "actions", "B": "guidance"}
+  },
+  {
+    "유형": "서술형",
+    "문항번호": 79,
+    "출처": "본문 05",
+    "발문": "다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B)에 들어갈 단어를 본문에서 찾아 필요시 변형하여 쓰시오.",
+    "지문": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life. The high school years can be overwhelming at times, but the challenge is there for a reason, and you don't have to be perfect every step of the way. During your high school days, have a great time trying out different things and discovering what works best for you. More importantly, however, don't forget to have fun along the way!",
+    "요약문": "Recording one's current perspectives and goals is a means of self-examination that can later become a (A) source of (B)",
+    "정답": {"A": "meaningful", "B": "strength"}
+  }
+]

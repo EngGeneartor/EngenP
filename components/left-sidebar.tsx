@@ -424,7 +424,7 @@ export function LeftSidebar({
           <Zap className="size-[18px] text-white" strokeWidth={2.5} />
         </div>
         <div>
-          <h1 className="text-[15px] font-extrabold tracking-tight text-gradient-bright">Abyss</h1>
+          <h1 className="text-[15px] font-extrabold tracking-tight text-gradient-bright">Haean</h1>
           <p className="text-[11px] font-medium tracking-wide text-muted-foreground/70">AI 내신 변형 문제 생성기</p>
         </div>
       </a>

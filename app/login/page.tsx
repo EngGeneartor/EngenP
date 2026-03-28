@@ -181,7 +181,7 @@ export default function LoginPage() {
             <Zap className="size-6 text-white" strokeWidth={2.5} />
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-extrabold tracking-tight text-gradient-bright">Abyss</h1>
+            <h1 className="text-2xl font-extrabold tracking-tight text-gradient-bright">Haean</h1>
             <p className="mt-1 text-[13px] font-medium text-foreground/60">AI 영어 내신 변형 문제 생성기</p>
           </div>
         </Link>

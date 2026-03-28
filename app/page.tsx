@@ -143,7 +143,7 @@ export default function LandingPage() {
             <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 glow-sm">
               <Zap className="size-4 text-white" strokeWidth={2.5} />
             </div>
-            <span className="text-lg font-extrabold tracking-tight text-gradient-bright">Abyss</span>
+            <span className="text-lg font-extrabold tracking-tight text-gradient-bright">Haean</span>
           </a>
           <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-[13px] font-medium text-foreground/65 transition-smooth hover:text-foreground/80">기능</a>
@@ -253,7 +253,7 @@ export default function LandingPage() {
                   <div className="hidden sm:flex w-[200px] shrink-0 flex-col border-r border-border/15 p-4">
                     <div className="flex items-center gap-2 mb-6">
                       <div className="size-6 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600" />
-                      <span className="text-[11px] font-bold text-foreground/65">Abyss</span>
+                      <span className="text-[11px] font-bold text-foreground/65">Haean</span>
                     </div>
                     <div className="space-y-2">
                       <div className="rounded-lg bg-purple-500/10 px-3 py-2"><span className="text-[10px] text-purple-600 dark:text-purple-300">타겟 지문 업로드</span></div>
@@ -649,10 +649,10 @@ export default function LandingPage() {
             <div className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600">
               <Zap className="size-3.5 text-white" />
             </div>
-            <span className="text-[14px] font-bold text-gradient-bright">Abyss</span>
+            <span className="text-[14px] font-bold text-gradient-bright">Haean</span>
           </div>
           <p className="text-[12px] text-muted-foreground/50">
-            © 2026 Abyss. All rights reserved.
+            © 2026 Haean. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">이용약관</a>
