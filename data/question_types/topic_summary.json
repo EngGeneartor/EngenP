@@ -1,0 +1,56 @@
+{
+  "type_id": "topic_summary",
+  "type_name_ko": "주제/요지/제목",
+  "type_name_en": "Topic / Main Idea / Title",
+  "description": "지문 전체를 읽고 주제(topic), 요지(main idea/주장), 또는 제목(title)으로 가장 적절한 것을 5개의 선택지 중에서 고르는 문제. 글의 핵심 논지를 종합적으로 파악하는 능력을 평가한다. 세부 문항 유형은 주제, 요지, 제목으로 구분된다.",
+  "difficulty_range": [2, 4],
+  "instruction_template_topic": "다음 글의 주제로 가장 적절한 것은?",
+  "instruction_template_main_idea": "다음 글의 요지로 가장 적절한 것은?",
+  "instruction_template_title": "다음 글의 제목으로 가장 적절한 것은?",
+  "output_schema": {
+    "question_number": "number",
+    "difficulty": "number (1-5)",
+    "subtype": "string — one of: 'topic' | 'main_idea' | 'title'",
+    "instruction": "string",
+    "passage_with_markers": "string (complete passage, 150–200 words, no inline markers)",
+    "choices": [
+      "① string",
+      "② string",
+      "③ string",
+      "④ string",
+      "⑤ string"
+    ],
+    "answer": "string (e.g. '②')",
+    "explanation": "string (Korean explanation: the central claim of the passage and why the correct choice best captures it; why distractors miss the point)",
+    "test_point": "string (what macro-reading skill is tested, in Korean)"
+  },
+  "generation_rules": [
+    "지문은 하나의 일관된 논지를 가진 150~200 단어의 설득적·논설적 단락으로 작성한다. 두 가지 이상의 주제가 경쟁하는 글은 피한다.",
+    "주제(topic) 문제: 선택지는 짧은 명사구(예: 'the role of failure in learning') 형태로, 글 전체가 다루는 소재+관점을 담는다. 지나치게 넓거나 좁은 선택지를 오답으로 활용한다.",
+    "요지(main idea) 문제: 선택지는 완전한 문장 형태로, 필자의 핵심 주장을 진술한다. 요지는 글의 주제문(topic sentence) 또는 결론부와 일치해야 한다.",
+    "제목(title) 문제: 선택지는 신문 헤드라인 또는 책 제목 형식의 짧고 인상적인 명사구나 어구로 작성한다. 정답 제목은 핵심 논지를 함축적으로 표현해야 한다.",
+    "오답 선택지 설계 원칙: (1) 지문의 세부 내용 한 가지만을 가리키는 선택지(너무 좁음), (2) 지문 내용을 포함하지만 훨씬 더 넓은 범주를 가리키는 선택지(너무 넓음), (3) 지문의 핵심어는 포함하나 논지가 반대인 선택지, (4) 지문에 언급되지 않은 내용을 담은 선택지.",
+    "정답은 글 전체의 논리적 흐름을 모두 포괄해야 하며, 한두 문장만 읽고 고를 수 있는 선택지는 피한다.",
+    "선택지 영어 표현의 수준은 지문과 동일한 수준으로 유지한다. 선택지가 지문 내 특정 문장을 그대로 인용하지 않도록 한다.",
+    "explanation은 한국어로 작성하며, 글의 핵심 논지를 요약하고 정답이 그 논지를 가장 잘 포착하는 이유와 각 오답의 문제점을 서술한다.",
+    "subtype은 반드시 'topic', 'main_idea', 'title' 중 하나로 지정하고, instruction은 subtype에 맞는 template를 사용한다.",
+    "test_point는 선택지 간 변별의 핵심 기준(예: '지나치게 좁은 선택지 vs. 글 전체를 포괄하는 선택지 구별')을 서술한다."
+  ],
+  "examples": [
+    {
+      "instruction": "다음 글의 제목으로 가장 적절한 것은?",
+      "subtype": "title",
+      "passage_with_markers": "Failure is often viewed as something to be avoided at all costs, yet research in developmental psychology consistently reveals that experiencing and recovering from failure is essential to building genuine competence. When children are shielded from all setbacks, they miss the opportunity to develop resilience — the capacity to adapt and persist in the face of difficulty. Studies show that students who encounter manageable challenges and learn to work through them develop stronger problem-solving skills and higher levels of intrinsic motivation than those who are constantly protected from failure. Educators and parents, therefore, should resist the temptation to remove every obstacle from a child's path. A certain degree of struggle is not a sign of inadequate support; it is a necessary ingredient for growth.",
+      "choices": [
+        "① How to Prevent Children from Failing at School",
+        "② The Hidden Value of Failure in Building Resilience",
+        "③ Why Intrinsic Motivation Declines in Modern Education",
+        "④ Parenting Styles and Their Effects on Academic Performance",
+        "⑤ The Relationship Between Competence and Natural Talent"
+      ],
+      "answer": "②",
+      "explanation": "글의 핵심 논지는 실패를 경험하고 극복하는 것이 진정한 능력과 회복 탄력성 형성에 필수적이라는 것이다. ② 'The Hidden Value of Failure in Building Resilience'는 이 논지를 가장 함축적으로 표현한다. ①은 글의 주장과 반대(실패 방지)이고, ③④⑤는 지문이 직접 다루지 않는 세부 주제이거나 너무 좁은 내용이다.",
+      "test_point": "글 전체 논지를 포괄하는 제목 선택 — 지나치게 좁거나 반대 방향의 선택지 변별"
+    }
+  ]
+}

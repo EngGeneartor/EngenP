@@ -1,95 +1,63 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Send, Bot, User, Sparkles, Lightbulb, MessageCircle } from "lucide-react"
+import { Send, User, Sparkles, Lightbulb, MessageCircle, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
-
-interface Message {
-  id: number
-  role: "user" | "assistant"
-  content: string
-  timestamp: Date
-}
-
-const initialMessages: Message[] = [
-  {
-    id: 1,
-    role: "assistant",
-    content:
-      "안녕하세요! 문제 생성을 도와드리는 AI 어시스턴트입니다. 생성된 문제에 대해 수정이 필요하시면 말씀해주세요.",
-    timestamp: new Date(Date.now() - 60000),
-  },
-  {
-    id: 2,
-    role: "user",
-    content: "1번 문제의 어법 포인트를 '관계대명사'에서 '도치'로 바꿔줘",
-    timestamp: new Date(Date.now() - 45000),
-  },
-  {
-    id: 3,
-    role: "assistant",
-    content:
-      "1번 문제의 어법 포인트를 '도치'로 변경했습니다. 문장 구조를 분석하여 도치 구문이 자연스럽게 포함되도록 수정했어요. 확인해주세요!",
-    timestamp: new Date(Date.now() - 30000),
-  },
-]
+import { useChat } from "@/hooks/use-chat"
+import type { ChatContext } from "@/hooks/use-chat"
+import type { StructuredPassage, GeneratedQuestion } from "@/lib/types"
 
 const quickPrompts = [
   { text: "난이도 올려줘", icon: "↑" },
-  { text: "빈칸 추론 1개 추가", icon: "+" },
-  { text: "3번 선택지 더 어렵게", icon: "★" },
-  { text: "문법 설명 추가", icon: "i" },
+  { text: "문제 추가해줘", icon: "+" },
+  { text: "해설 자세히", icon: "★" },
+  { text: "다른 유형으로", icon: "↻" },
 ]
 
 interface AIChatSidebarProps {
   userEmail?: string | null
   onSignOut?: () => void
+  context?: {
+    passage?: StructuredPassage | null
+    questions?: GeneratedQuestion[] | null
+  }
 }
 
-export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {}) {
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
-  const [input, setInput] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const scrollRef = useRef<HTMLDivElement>(null)
+export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarProps = {}) {
+  const chatContext: ChatContext = {
+    passage: context?.passage,
+    questions: context?.questions,
+  }
 
+  const { messages, isLoading, error, sendMessage, clearMessages } = useChat(chatContext)
+  const [input, setInput] = useState("")
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const viewportRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to bottom when messages update
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    // ScrollArea renders a viewport div we can target
+    const viewport = scrollRef.current?.querySelector(
+      "[data-radix-scroll-area-viewport]"
+    ) as HTMLDivElement | null
+    if (viewport) {
+      viewport.scrollTop = viewport.scrollHeight
     }
   }, [messages])
 
   const handleSend = () => {
-    if (!input.trim()) return
-
-    const userMessage: Message = {
-      id: messages.length + 1,
-      role: "user",
-      content: input,
-      timestamp: new Date(),
-    }
-
-    setMessages((prev) => [...prev, userMessage])
+    if (!input.trim() || isLoading) return
+    sendMessage(input.trim())
     setInput("")
-    setIsLoading(true)
-
-    setTimeout(() => {
-      const assistantMessage: Message = {
-        id: messages.length + 2,
-        role: "assistant",
-        content: `요청하신 "${input}"에 대해 처리했습니다. 변경 사항이 반영되었어요. 추가 수정이 필요하시면 말씀해주세요!`,
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, assistantMessage])
-      setIsLoading(false)
-    }, 1500)
   }
 
   const handleQuickPrompt = (prompt: string) => {
-    setInput(prompt)
+    if (isLoading) return
+    sendMessage(prompt)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -106,7 +74,7 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
         <div className="px-5 pt-4 pb-2">
           <div className="flex items-center gap-2 rounded-xl bg-muted/20 px-3 py-2">
             <User className="size-3.5 shrink-0 text-purple-400" />
-            <span className="text-[11px] font-medium text-foreground/55 truncate">{userEmail}</span>
+            <span className="text-[11px] font-medium text-foreground/70 truncate">{userEmail}</span>
           </div>
         </div>
       )}
@@ -118,11 +86,20 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
         </div>
         <div className="flex-1">
           <h3 className="text-[15px] font-extrabold tracking-tight text-gradient-bright">Abyss AI</h3>
-          <p className="text-[11px] font-medium tracking-wide text-muted-foreground/60">문제 생성 & 수정 어시스턴트</p>
+          <p className="text-[11px] font-medium tracking-wide text-muted-foreground/60">문제 생성 &amp; 수정 어시스턴트</p>
         </div>
-        <div className="relative">
-          <div className="size-2.5 rounded-full bg-emerald-400" />
-          <div className="absolute inset-0 size-2.5 rounded-full bg-emerald-400 animate-pulse-ring" />
+        <div className="flex items-center gap-2">
+          <button
+            onClick={clearMessages}
+            title="대화 초기화"
+            className="rounded-lg p-1.5 text-foreground/50 transition-smooth hover:bg-muted/30 hover:text-foreground/70"
+          >
+            <Trash2 className="size-3.5" />
+          </button>
+          <div className="relative">
+            <div className="size-2.5 rounded-full bg-emerald-400" />
+            <div className="absolute inset-0 size-2.5 rounded-full bg-emerald-400 animate-pulse-ring" />
+          </div>
         </div>
       </div>
 
@@ -130,7 +107,7 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
 
       {/* Quick Prompts */}
       <div className="px-4 py-4">
-        <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground/50">
+        <div className="mb-2.5 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground/70">
           <Lightbulb className="size-3 text-amber-400/70" />
           <span>빠른 명령어</span>
         </div>
@@ -139,9 +116,10 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
             <button
               key={idx}
               onClick={() => handleQuickPrompt(prompt.text)}
-              className="group flex items-center gap-1.5 rounded-xl border border-border/30 bg-muted/15 px-2.5 py-2 text-[11px] font-medium text-foreground/50 transition-smooth hover:border-purple-500/25 hover:bg-purple-500/[0.06] hover:text-purple-300"
+              disabled={isLoading}
+              className="group flex items-center gap-1.5 rounded-xl border border-border/30 bg-muted/15 px-2.5 py-2 text-[11px] font-medium text-foreground/65 transition-smooth hover:border-purple-500/25 hover:bg-purple-500/[0.06] hover:text-purple-700 dark:hover:text-purple-300 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <span className="flex size-5 items-center justify-center rounded-md bg-muted/30 text-[10px] font-bold text-muted-foreground/40 transition-smooth group-hover:bg-purple-500/15 group-hover:text-purple-400">
+              <span className="flex size-5 items-center justify-center rounded-md bg-muted/30 text-[10px] font-bold text-muted-foreground/60 transition-smooth group-hover:bg-purple-500/15 group-hover:text-purple-400">
                 {prompt.icon}
               </span>
               {prompt.text}
@@ -187,13 +165,13 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
                     : "rounded-tr-lg bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white shadow-lg shadow-purple-500/10"
                 )}
               >
-                <p className="leading-[1.7]">{message.content}</p>
+                <p className="leading-[1.7] whitespace-pre-wrap">{message.content}</p>
                 <p
                   className={cn(
                     "mt-1.5 text-[10px]",
                     message.role === "assistant"
-                      ? "text-muted-foreground/40"
-                      : "text-white/35"
+                      ? "text-muted-foreground/60"
+                      : "text-white/50"
                   )}
                 >
                   {message.timestamp.toLocaleTimeString("ko-KR", {
@@ -204,7 +182,9 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
               </div>
             </div>
           ))}
-          {isLoading && (
+
+          {/* Typing indicator: show only when loading and the last message is NOT yet a partial assistant reply */}
+          {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
             <div className="flex gap-2.5">
               <Avatar className="size-7 shrink-0">
                 <AvatarFallback className="rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 text-white">
@@ -221,6 +201,13 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
         </div>
       </ScrollArea>
 
+      {/* Error banner */}
+      {error && (
+        <div className="mx-4 mb-2 rounded-xl border border-red-500/20 bg-red-500/8 px-3 py-2 text-[11px] text-red-400">
+          {error}
+        </div>
+      )}
+
       {/* Input */}
       <div className="divider-gradient mx-4" />
       <div className="px-4 pb-5 pt-4">
@@ -230,7 +217,7 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="문제 수정 요청을 입력하세요..."
-            className="min-h-[72px] resize-none rounded-2xl border-border/30 bg-muted/20 pr-12 text-[13px] text-foreground/80 placeholder:text-muted-foreground/35 transition-smooth focus:border-purple-500/30 focus:bg-muted/30 focus:ring-1 focus:ring-purple-500/15"
+            className="min-h-[72px] resize-none rounded-2xl border-border/30 bg-muted/20 pr-12 text-[13px] text-foreground/80 placeholder:text-muted-foreground/60 transition-smooth focus:border-purple-500/30 focus:bg-muted/30 focus:ring-1 focus:ring-purple-500/15"
           />
           <Button
             size="icon"
@@ -241,7 +228,7 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
             <Send className="size-3.5" />
           </Button>
         </div>
-        <p className="mt-2 text-center text-[10px] text-muted-foreground/35">
+        <p className="mt-2 text-center text-[10px] text-muted-foreground/60">
           Enter 전송 · Shift+Enter 줄바꿈
         </p>
       </div>

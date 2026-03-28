@@ -140,12 +140,12 @@ function CallbackContent() {
               </div>
               <div className="text-left">
                 <p className="text-[13px] font-bold text-foreground/75">AI 변형 문제 생성 준비 완료</p>
-                <p className="text-[11px] text-foreground/40">지문을 업로드하면 바로 시작할 수 있어요</p>
+                <p className="text-[11px] text-foreground/60">지문을 업로드하면 바로 시작할 수 있어요</p>
               </div>
             </div>
 
             <div className="mt-4 flex flex-col items-center gap-3">
-              <p className="text-[13px] text-foreground/40">
+              <p className="text-[13px] text-foreground/60">
                 <span className="font-bold text-purple-400">{countdown}초</span> 후 대시보드로 이동합니다
               </p>
               <button
@@ -178,7 +178,7 @@ function CallbackContent() {
             </div>
 
             <div className="mt-4 flex flex-col items-center gap-3">
-              <p className="text-[13px] text-foreground/40">
+              <p className="text-[13px] text-foreground/60">
                 <span className="font-bold text-purple-400">{countdown}초</span> 후 대시보드로 이동합니다
               </p>
               <button
@@ -199,7 +199,7 @@ function CallbackContent() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground/80">인증에 실패했습니다</h1>
-              <p className="mt-2 text-[13px] text-foreground/45">
+              <p className="mt-2 text-[13px] text-foreground/60">
                 링크가 만료되었거나 유효하지 않습니다. 다시 시도해주세요.
               </p>
             </div>

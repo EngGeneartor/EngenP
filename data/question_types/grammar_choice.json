@@ -1,0 +1,40 @@
+{
+  "type_id": "grammar_choice",
+  "type_name_ko": "어법 선택",
+  "type_name_en": "Grammar Choice",
+  "description": "지문 내 밑줄 친 5개의 어법 포인트 중 문법적으로 틀린 것을 고르거나, 괄호 안의 두 선택지 중 어법에 맞는 표현을 고르는 문제. 수능 및 내신에서 가장 빈출되는 유형 중 하나.",
+  "difficulty_range": [2, 5],
+  "instruction_template": "다음 글의 밑줄 친 부분 중, 어법상 틀린 것은?",
+  "instruction_template_variant": "(A), (B), (C)의 각 네모 안에서 어법에 맞는 표현으로 가장 적절한 것은?",
+  "output_schema": {
+    "question_number": "number",
+    "difficulty": "number (1-5)",
+    "instruction": "string",
+    "passage_with_markers": "string (passage with ①②③④⑤ inline markers, OR passage with (A)[option1/option2] bracket-style choices)",
+    "choices": "null if inline markers; array of 5 strings if bracket-style (e.g. '(A)knowing - (B)which - (C)fewer')",
+    "answer": "string (e.g. '④' or '②')",
+    "explanation": "string (Korean explanation: the grammar rule violated and the correct form)",
+    "test_point": "string (grammar point being tested, in Korean)"
+  },
+  "generation_rules": [
+    "지문은 150~200 단어의 완결된 영어 단락으로 작성한다.",
+    "어법 포인트 5개를 선택하여 ①②③④⑤ 번호를 해당 표현 앞에 직접 붙인다.",
+    "정답 1개만 어법상 틀린 표현이며, 나머지 4개는 모두 올바른 표현이어야 한다.",
+    "시험에 출제되는 주요 어법 포인트: (1) 주어-동사 수 일치, (2) 준동사(to부정사 vs. 동명사 vs. 분사), (3) 관계사(which vs. that vs. who, 관계부사 등), (4) 능동태 vs. 수동태, (5) 비교 구문(fewer vs. less, as ~ as 등), (6) 접속사 vs. 전치사(although vs. despite 등), (7) 도치 구문, (8) 병렬 구조.",
+    "정답 오류는 문장 구조를 분석해야만 발견할 수 있도록 복잡한 문장에 배치한다. 너무 명백한 오류는 피한다.",
+    "bracket-style 문제의 경우, (A)(B)(C) 각 괄호에 두 개의 선택지를 '/'로 구분하여 넣고, 5개의 보기 조합을 choices 배열에 넣는다.",
+    "explanation은 한국어로 작성하며, 틀린 이유와 올바른 표현 및 해당 문법 규칙을 명확히 설명한다.",
+    "test_point는 한국어로 구체적인 문법 항목명을 서술한다 (예: '주어-동사 수 일치 (관계절 수식을 받는 복수 주어)').",
+    "지문 소재는 과학, 사회, 문화, 심리 등 다양한 영역에서 선택한다."
+  ],
+  "examples": [
+    {
+      "instruction": "다음 글의 밑줄 친 부분 중, 어법상 틀린 것은?",
+      "passage_with_markers": "The invention of the printing press in the fifteenth century had a profound impact on European society. Books, which had previously been ①copied by hand and were therefore extremely expensive, suddenly became ②affordable to a much wider audience. This shift in access to information ③was accompanied by a dramatic rise in literacy rates across the continent. Scholars who had once ④struggled to share their ideas across great distances now found ⑤them able to communicate with readers in distant lands through the printed word.",
+      "choices": null,
+      "answer": "⑤",
+      "explanation": "⑤ them은 어법상 틀렸다. 'found + 목적어 + 목적보어' 구문에서 목적어는 주절의 주어(Scholars)와 동일하므로 재귀대명사 themselves를 써야 한다. 'found themselves able to...'가 올바른 표현이다.",
+      "test_point": "재귀대명사 vs. 인칭대명사 (주어와 목적어가 동일 지시 대상일 때 재귀대명사 사용)"
+    }
+  ]
+}

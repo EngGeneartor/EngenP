@@ -1,49 +1,25 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Edit3, Trash2, RefreshCw, Download, Sparkles, CheckCircle2, Eye, BookOpen, ZoomIn, ZoomOut, RotateCw, Upload } from "lucide-react"
+import { Edit3, Trash2, RefreshCw, Download, Sparkles, CheckCircle2, Eye, BookOpen, ZoomIn, ZoomOut, RotateCw, Upload, Loader2, AlertCircle } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import type { UploadedFile } from "@/lib/types"
+import { ThemeToggle } from "@/components/theme-toggle"
+import type { UploadedFile, StructuredPassage, GeneratedQuestion } from "@/lib/types"
+import { exportDocx, exportHwpx } from "@/lib/api-client"
+import type { ProcessingStep } from "@/app/dashboard/page"
 
 interface MainContentProps {
   selectedFile: UploadedFile | null
   uploadedFiles: UploadedFile[]
+  structuredPassage?: StructuredPassage | null
+  generatedQuestions?: GeneratedQuestion[]
+  isProcessing?: boolean
+  processingStep?: ProcessingStep
+  isDemo?: boolean
 }
-
-/* ═══ Sample Data (승규 원본) ═══ */
-
-const samplePassage = `The concept of "cultural intelligence" has emerged as a critical competency in our increasingly globalized world. Unlike traditional measures of intelligence, cultural intelligence (CQ) refers to an individual's capability to function effectively across various cultural contexts. Research has shown that individuals with high CQ are better equipped to navigate the complexities of cross-cultural interactions, whether in business negotiations, educational settings, or personal relationships.
-
-The development of cultural intelligence involves four key components: cognitive, metacognitive, motivational, and behavioral. The cognitive aspect encompasses knowledge about different cultures, including their norms, practices, and conventions. Metacognitive CQ involves the mental processes used to acquire and understand cultural knowledge. Motivational CQ reflects an individual's drive and interest to adapt to new cultural situations. Finally, behavioral CQ represents the capability to exhibit appropriate verbal and nonverbal actions when interacting with people from different cultures.
-
-Studies have demonstrated that cultural intelligence can be developed and enhanced through targeted training and cross-cultural experiences. Organizations increasingly recognize the value of CQ in their workforce, as employees with high cultural intelligence tend to perform better in international assignments and multicultural team settings.`
-
-const sampleQuestions = [
-  {
-    id: 1, type: "어법", difficulty: 3,
-    question: "밑줄 친 (A), (B), (C)에서 어법에 맞는 표현으로 가장 적절한 것은?",
-    content: `The concept of "cultural intelligence" has emerged as a critical competency in our increasingly globalized world. Unlike traditional measures of intelligence, cultural intelligence (CQ) (A) [refers / referring] to an individual's capability to function effectively across various cultural contexts. Research has shown that individuals with high CQ (B) [is / are] better equipped to navigate the complexities of cross-cultural interactions.`,
-    options: ["(A) refers - (B) is", "(A) refers - (B) are", "(A) referring - (B) is", "(A) referring - (B) are"],
-    answer: 2, grammarPoint: "주어-동사 수일치",
-  },
-  {
-    id: 2, type: "빈칸 추론", difficulty: 4,
-    question: "다음 빈칸에 들어갈 말로 가장 적절한 것은?",
-    content: `The development of cultural intelligence involves four key components. The cognitive aspect encompasses knowledge about different cultures. Metacognitive CQ involves the mental processes used to acquire cultural knowledge. This suggests that cultural intelligence is not just about ____________, but also about how we process and apply that knowledge in real situations.`,
-    options: ["accumulating information", "avoiding conflicts", "expressing emotions", "maintaining traditions", "building relationships"],
-    answer: 1, grammarPoint: "글의 흐름 파악",
-  },
-  {
-    id: 3, type: "어휘", difficulty: 2,
-    question: "밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?",
-    content: `Organizations increasingly recognize the value of CQ in their workforce. Employees with high cultural intelligence tend to ①perform better in international assignments. Their ability to ②adapt to new cultural situations makes them ③valuable assets. However, those who ④lack cultural awareness may ⑤succeed in multicultural team settings.`,
-    options: ["perform", "adapt", "valuable", "lack", "succeed"],
-    answer: 5, grammarPoint: "문맥상 어휘 선택",
-  },
-]
 
 /* ═══ File Viewers ═══ */
 
@@ -59,11 +35,11 @@ function ImageViewer({ url, name }: { url: string; name: string }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-center gap-2 border-b border-border/20 py-3">
-        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/50 hover:text-foreground/80" onClick={() => setZoom(z => Math.max(25, z - 25))}><ZoomOut className="size-4" /></Button>
-        <span className="min-w-[50px] text-center text-[12px] font-medium text-foreground/50">{zoom}%</span>
-        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/50 hover:text-foreground/80" onClick={() => setZoom(z => Math.min(300, z + 25))}><ZoomIn className="size-4" /></Button>
+        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/65 hover:text-foreground/80" onClick={() => setZoom(z => Math.max(25, z - 25))}><ZoomOut className="size-4" /></Button>
+        <span className="min-w-[50px] text-center text-[12px] font-medium text-foreground/65">{zoom}%</span>
+        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/65 hover:text-foreground/80" onClick={() => setZoom(z => Math.min(300, z + 25))}><ZoomIn className="size-4" /></Button>
         <div className="mx-2 h-4 w-px bg-border/30" />
-        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/50 hover:text-foreground/80" onClick={() => setRotation(r => (r + 90) % 360)}><RotateCw className="size-4" /></Button>
+        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/65 hover:text-foreground/80" onClick={() => setRotation(r => (r + 90) % 360)}><RotateCw className="size-4" /></Button>
       </div>
       <ScrollArea className="flex-1">
         <div className="flex min-h-full items-center justify-center p-8">
@@ -84,7 +60,7 @@ function TextViewer({ url }: { url: string }) {
   return <ScrollArea className="h-full"><pre className="whitespace-pre-wrap p-6 text-[13px] leading-[1.8] text-foreground/70 font-mono">{content}</pre></ScrollArea>
 }
 
-/* ═══ Helper ═══ */
+/* ═══ Helpers ═══ */
 
 function getDifficultyColor(level: number) {
   if (level <= 2) return "border-emerald-500/25 bg-emerald-500/8 text-emerald-400"
@@ -92,29 +68,129 @@ function getDifficultyColor(level: number) {
   return "border-rose-500/25 bg-rose-500/8 text-rose-400"
 }
 
-function getTypeColor(type: string) {
+function getTypeColor(typeId: string) {
   const colors: Record<string, string> = {
-    어법: "border-sky-500/25 bg-sky-500/8 text-sky-400",
-    어휘: "border-purple-500/25 bg-purple-500/8 text-purple-400",
-    "빈칸 추론": "border-teal-500/25 bg-teal-500/8 text-teal-400",
+    grammar_choice:     "border-sky-500/25 bg-sky-500/8 text-sky-400",
+    vocabulary_choice:  "border-purple-500/25 bg-purple-500/8 text-purple-400",
+    blank_inference:    "border-teal-500/25 bg-teal-500/8 text-teal-400",
+    sentence_ordering:  "border-orange-500/25 bg-orange-500/8 text-orange-400",
+    sentence_insertion: "border-pink-500/25 bg-pink-500/8 text-pink-400",
+    topic_summary:      "border-indigo-500/25 bg-indigo-500/8 text-indigo-400",
   }
-  return colors[type] || "border-gray-500/25 bg-gray-500/8 text-gray-400"
+  return colors[typeId] || "border-gray-500/25 bg-gray-500/8 text-gray-400"
+}
+
+const TYPE_LABEL: Record<string, string> = {
+  grammar_choice:     "어법",
+  vocabulary_choice:  "어휘",
+  blank_inference:    "빈칸 추론",
+  sentence_ordering:  "순서 배열",
+  sentence_insertion: "문장 삽입",
+  topic_summary:      "제목·요약",
+}
+
+function getTypeLabel(typeId: string) {
+  return TYPE_LABEL[typeId] ?? typeId
 }
 
 function getFileExtension(name: string) { return name.split('.').pop()?.toUpperCase() || '' }
 
+/* ═══ Processing overlay ═══ */
+
+function ProcessingOverlay({ step }: { step: ProcessingStep }) {
+  const label =
+    step === "structurizing" ? "지문 분석 중..." :
+    step === "generating"    ? "문제 생성 중..." :
+    step === "exporting"     ? "내보내는 중..."  : "처리 중..."
+
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-5">
+      <div className="relative flex size-20 items-center justify-center rounded-3xl bg-gradient-to-br from-purple-500/10 to-indigo-500/10">
+        <Loader2 className="size-9 animate-spin text-purple-400/60" />
+      </div>
+      <div className="text-center">
+        <p className="text-[15px] font-bold text-foreground/70">{label}</p>
+        <p className="mt-1 text-[12px] text-foreground/60">Claude AI가 처리하고 있습니다</p>
+      </div>
+      <div className="flex gap-1.5">
+        {(["structurizing", "generating"] as ProcessingStep[]).map((s) => {
+          const active = s === step
+          const done   = step === "generating" && s === "structurizing"
+          return (
+            <div key={s} className={`h-1.5 w-8 rounded-full transition-all duration-500 ${done ? "bg-emerald-400/60" : active ? "bg-purple-400 animate-pulse" : "bg-muted/30"}`} />
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 /* ═══ Main Component ═══ */
 
-export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
+export function MainContent({
+  selectedFile,
+  uploadedFiles,
+  structuredPassage,
+  generatedQuestions = [],
+  isProcessing = false,
+  processingStep = "idle",
+  isDemo = false,
+}: MainContentProps) {
   const [activeTab, setActiveTab] = useState("passage")
-  const [questions, setQuestions] = useState(sampleQuestions)
+  const [localQuestions, setLocalQuestions] = useState<GeneratedQuestion[]>([])
+  const [isExporting, setIsExporting] = useState<false | 'docx' | 'hwpx'>(false)
+  const [exportError, setExportError] = useState<string | null>(null)
 
-  const handleDelete = (id: number) => setQuestions(questions.filter((q) => q.id !== id))
-
-  // 파일 선택되면 자동으로 viewer 탭으로
+  // Keep local questions in sync with incoming generated questions
   useEffect(() => {
-    if (selectedFile) setActiveTab("viewer")
+    if (generatedQuestions.length > 0) {
+      setLocalQuestions(generatedQuestions)
+    }
+  }, [generatedQuestions])
+
+  // Switch to questions tab when generation completes
+  useEffect(() => {
+    if (processingStep === "done" && generatedQuestions.length > 0) {
+      setActiveTab("questions")
+    }
+  }, [processingStep, generatedQuestions.length])
+
+  // Switch to viewer tab when a new file is selected (only if not processing)
+  useEffect(() => {
+    if (selectedFile && processingStep === "idle") {
+      setActiveTab("viewer")
+    }
   }, [selectedFile])
+
+  const handleDelete = (questionNumber: number) => {
+    setLocalQuestions(prev => prev.filter(q => q.question_number !== questionNumber))
+  }
+
+  const handleExport = async (format: 'docx' | 'hwpx') => {
+    if (!structuredPassage || localQuestions.length === 0) return
+    setIsExporting(format)
+    setExportError(null)
+    try {
+      const base = structuredPassage.title ?? "exam-questions"
+      if (format === 'docx') {
+        await exportDocx(localQuestions, structuredPassage, `${base}.docx`)
+      } else {
+        await exportHwpx(localQuestions, structuredPassage, `${base}.hwpx`)
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "내보내기에 실패했습니다."
+      setExportError(msg)
+    } finally {
+      setIsExporting(false)
+    }
+  }
+
+  const displayQuestions = localQuestions
+  const avgDifficulty = displayQuestions.length > 0
+    ? (displayQuestions.reduce((a, b) => a + b.difficulty, 0) / displayQuestions.length).toFixed(1)
+    : "-"
+
+  const isGenerating = processingStep === "structurizing" || processingStep === "generating"
 
   return (
     <main className="relative z-10 flex flex-1 flex-col">
@@ -129,12 +205,18 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
           </div>
           <div>
             <h2 className="text-[15px] font-bold tracking-tight text-foreground/90">
-              {activeTab === "viewer" && selectedFile ? selectedFile.name : "2024 수능특강 영어 - 지문 1"}
+              {structuredPassage?.title
+                ? structuredPassage.title
+                : activeTab === "viewer" && selectedFile
+                  ? selectedFile.name
+                  : "지문 분석 결과"}
             </h2>
             <p className="text-[12px] font-medium text-muted-foreground/60">
-              {activeTab === "viewer" && selectedFile
-                ? `${getFileExtension(selectedFile.name)} · ${(selectedFile.size / 1024).toFixed(1)}KB`
-                : "Cultural Intelligence in a Globalized World"
+              {structuredPassage
+                ? `${structuredPassage.wordCount}단어 · 난이도 ${structuredPassage.estimatedDifficulty} · ${structuredPassage.topics.slice(0, 2).join(", ")}`
+                : activeTab === "viewer" && selectedFile
+                  ? `${getFileExtension(selectedFile.name)} · ${(selectedFile.size / 1024).toFixed(1)}KB`
+                  : "업로드된 지문이 없습니다"
               }
             </p>
           </div>
@@ -146,12 +228,13 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
               {uploadedFiles.length}개 파일 업로드
             </Badge>
           )}
-          {questions.length > 0 && activeTab !== "viewer" && (
+          {displayQuestions.length > 0 && activeTab !== "viewer" && (
             <Badge className="pill border border-purple-500/20 bg-purple-500/8 text-purple-400 gap-1.5">
               <Sparkles className="size-3" />
-              {questions.length}문항
+              {displayQuestions.length}문항
             </Badge>
           )}
+          <ThemeToggle />
         </div>
       </header>
 
@@ -161,53 +244,110 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
       <div className="flex-1 overflow-hidden p-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex h-full flex-col">
           <TabsList className="w-fit rounded-2xl bg-muted/30 p-1 backdrop-blur-sm">
-            <TabsTrigger value="passage" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
+            <TabsTrigger value="passage" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300">
               <Eye className="size-4" />
               지문 원문
             </TabsTrigger>
-            <TabsTrigger value="viewer" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
+            <TabsTrigger value="viewer" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300">
               <Upload className="size-4" />
               타겟 지문
               {uploadedFiles.length > 0 && (
                 <span className="ml-1 flex size-5 items-center justify-center rounded-md bg-emerald-500/20 text-[10px] font-bold text-emerald-400">{uploadedFiles.length}</span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="questions" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
+            <TabsTrigger value="questions" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300">
               <Sparkles className="size-4" />
               변형 문제
-              <span className="ml-1 flex size-5 items-center justify-center rounded-md bg-purple-500/20 text-[10px] font-bold text-purple-400">{questions.length}</span>
+              <span className="ml-1 flex size-5 items-center justify-center rounded-md bg-purple-500/20 text-[10px] font-bold text-purple-400">{displayQuestions.length}</span>
             </TabsTrigger>
           </TabsList>
 
-          {/* ═══ 지문 원문 (샘플) ═══ */}
+          {/* ═══ 지문 원문 ═══ */}
           <TabsContent value="passage" className="mt-5 flex-1 overflow-hidden">
             <div className="glass-card h-full overflow-hidden rounded-2xl">
-              <ScrollArea className="h-full">
-                <div className="p-7">
-                  <div className="mb-5 flex items-center gap-2">
-                    <span className="pill border border-purple-500/20 bg-purple-500/8 text-purple-400">EBS 수능특강</span>
-                    <span className="pill border border-border/30 bg-muted/20 text-muted-foreground/60">영어</span>
-                    <span className="pill border border-border/30 bg-muted/20 text-muted-foreground/60">2024</span>
-                  </div>
-                  <h3 className="mb-6 text-xl font-bold tracking-tight text-foreground/90">
-                    Cultural Intelligence in a Globalized World
-                  </h3>
-                  {samplePassage.split("\n\n").map((paragraph, idx) => (
-                    <p key={idx} className="mb-5 text-[13.5px] leading-[1.9] text-foreground/65 selection:bg-purple-500/20">{paragraph}</p>
-                  ))}
-                  <div className="mt-10 rounded-2xl gradient-border bg-gradient-to-br from-purple-500/[0.06] via-indigo-500/[0.03] to-violet-500/[0.06] border border-purple-500/[0.08] p-6">
-                    <h4 className="mb-4 text-[13px] font-bold tracking-wide text-foreground/70">지문 분석</h4>
-                    <div className="grid grid-cols-3 gap-3">
-                      {[{ value: "247", label: "단어 수" }, { value: "12.4", label: "평균 문장 길이" }, { value: "B2", label: "CEFR 레벨" }].map((stat) => (
-                        <div key={stat.label} className="rounded-xl bg-background/30 p-4 text-center">
-                          <p className="text-2xl font-extrabold tracking-tight text-gradient">{stat.value}</p>
-                          <p className="mt-1 text-[11px] font-medium text-muted-foreground/50">{stat.label}</p>
-                        </div>
+              {isGenerating && processingStep === "structurizing" ? (
+                <ProcessingOverlay step={processingStep} />
+              ) : structuredPassage ? (
+                <ScrollArea className="h-full">
+                  <div className="p-7">
+                    {/* Tags */}
+                    <div className="mb-5 flex flex-wrap items-center gap-2">
+                      {structuredPassage.topics.map(topic => (
+                        <span key={topic} className="pill border border-purple-500/20 bg-purple-500/8 text-purple-400">{topic}</span>
                       ))}
+                      <span className="pill border border-border/30 bg-muted/20 text-muted-foreground/60">
+                        난이도 {structuredPassage.estimatedDifficulty}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    {structuredPassage.title && (
+                      <h3 className="mb-6 text-xl font-bold tracking-tight text-foreground/90">
+                        {structuredPassage.title}
+                      </h3>
+                    )}
+
+                    {/* Paragraphs */}
+                    {structuredPassage.paragraphs.map((para) => (
+                      <p key={para.index} className="mb-5 text-[13.5px] leading-[1.9] text-foreground/65 selection:bg-purple-500/20">
+                        {para.rawText}
+                      </p>
+                    ))}
+
+                    {/* Stats + Key Vocab */}
+                    <div className="mt-10 rounded-2xl gradient-border bg-gradient-to-br from-purple-500/[0.06] via-indigo-500/[0.03] to-violet-500/[0.06] border border-purple-500/[0.08] p-6">
+                      <h4 className="mb-4 text-[13px] font-bold tracking-wide text-foreground/70">지문 분석</h4>
+                      <div className="grid grid-cols-3 gap-3">
+                        {[
+                          { value: String(structuredPassage.wordCount), label: "단어 수" },
+                          { value: String(structuredPassage.estimatedDifficulty), label: "난이도 (1-5)" },
+                          { value: String(structuredPassage.paragraphs.length), label: "단락 수" },
+                        ].map((stat) => (
+                          <div key={stat.label} className="rounded-xl bg-background/30 p-4 text-center">
+                            <p className="text-2xl font-extrabold tracking-tight text-gradient">{stat.value}</p>
+                            <p className="mt-1 text-[11px] font-medium text-muted-foreground/70">{stat.label}</p>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Key Vocab */}
+                      {structuredPassage.keyVocab.length > 0 && (
+                        <div className="mt-5">
+                          <h5 className="mb-3 text-[12px] font-semibold text-foreground/60">핵심 어휘</h5>
+                          <div className="flex flex-wrap gap-2">
+                            {structuredPassage.keyVocab.slice(0, 12).map((v, i) => (
+                              <div key={i} className="group relative rounded-xl border border-border/20 bg-background/30 px-3 py-1.5">
+                                <span className="text-[12px] font-semibold text-foreground/70">{v.word}</span>
+                                <span className="ml-1.5 text-[10px] text-muted-foreground/70">{v.pos}</span>
+                                {v.definitionKo && (
+                                  <div className="absolute bottom-full left-0 z-10 mb-1.5 hidden rounded-xl border border-border/30 bg-background/95 px-3 py-2 shadow-xl group-hover:block">
+                                    <p className="text-[11px] font-medium text-foreground/80">{v.definitionKo}</p>
+                                    <p className="text-[10px] text-muted-foreground/60">{v.definition}</p>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
+                </ScrollArea>
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center gap-5 text-center">
+                  <div className="flex size-20 items-center justify-center rounded-3xl bg-gradient-to-br from-purple-500/10 to-indigo-500/10">
+                    <Eye className="size-9 text-purple-400/40" />
+                  </div>
+                  <div>
+                    <h3 className="text-[17px] font-bold text-foreground/70">지문을 생성해주세요</h3>
+                    <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/60">
+                      좌측에서 파일을 업로드하고<br />
+                      &ldquo;문제 생성하기&rdquo; 버튼을 누르면<br />
+                      AI가 지문을 분석합니다.
+                    </p>
+                  </div>
                 </div>
-              </ScrollArea>
+              )}
             </div>
           </TabsContent>
 
@@ -233,14 +373,14 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
                   </div>
                   <div>
                     <h3 className="text-[17px] font-bold text-foreground/70">지문을 업로드해주세요</h3>
-                    <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/40">
+                    <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/60">
                       좌측에서 PDF, JPG, PNG, TXT 파일을 업로드하면<br />
                       여기에서 내용을 확인할 수 있습니다.
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
                     {["PDF", "JPG", "PNG", "TXT"].map(ext => (
-                      <span key={ext} className="pill border border-border/30 bg-muted/20 text-muted-foreground/50">{ext}</span>
+                      <span key={ext} className="pill border border-border/30 bg-muted/20 text-muted-foreground/70">{ext}</span>
                     ))}
                   </div>
                 </div>
@@ -250,41 +390,89 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
 
           {/* ═══ 변형 문제 ═══ */}
           <TabsContent value="questions" className="mt-5 flex-1 overflow-hidden">
-            <ScrollArea className="h-full">
-              <div className="flex flex-col gap-4 pb-4">
-                {questions.map((q, index) => (
-                  <div key={q.id} className="glass-card hover-lift rounded-2xl overflow-hidden">
-                    <div className="flex items-start gap-4 p-5">
-                      <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-600 text-lg font-extrabold text-white shadow-lg shadow-purple-500/15">
-                        {index + 1}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="mb-3 flex flex-wrap items-center gap-2">
-                          <span className={`pill border ${getTypeColor(q.type)}`}>{q.type}</span>
-                          <span className={`pill border ${getDifficultyColor(q.difficulty)}`}>Lv.{q.difficulty}</span>
-                          <span className="pill border border-border/20 bg-muted/15 text-muted-foreground/50">{q.grammarPoint}</span>
+            {isGenerating ? (
+              <div className="glass-card h-full overflow-hidden rounded-2xl">
+                <ProcessingOverlay step={processingStep} />
+              </div>
+            ) : displayQuestions.length > 0 ? (
+              <ScrollArea className="h-full">
+                <div className="flex flex-col gap-4 pb-4">
+                  {displayQuestions.map((q, index) => (
+                    <div key={q.question_number} className="glass-card hover-lift rounded-2xl overflow-hidden">
+                      <div className="flex items-start gap-4 p-5">
+                        <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-600 text-lg font-extrabold text-white shadow-lg shadow-purple-500/15">
+                          {index + 1}
                         </div>
-                        <p className="mb-3 text-[13px] font-semibold leading-relaxed text-foreground/85">{q.question}</p>
-                        <div className="mb-4 rounded-xl bg-background/30 border border-border/20 p-4 text-[13px] leading-[1.85] text-foreground/60">{q.content}</div>
-                        <div className="flex flex-col gap-1.5">
-                          {q.options.map((option, optIdx) => (
-                            <div key={optIdx} className={`rounded-xl border px-4 py-2.5 text-[13px] transition-smooth ${optIdx + 1 === q.answer ? "border-purple-500/25 bg-purple-500/[0.07] text-purple-300 font-medium" : "border-border/15 text-foreground/50 hover:bg-muted/20"}`}>
-                              <span className="mr-2.5 font-semibold text-foreground/30">{String.fromCharCode(9312 + optIdx)}</span>
-                              {option}
+                        <div className="min-w-0 flex-1">
+                          <div className="mb-3 flex flex-wrap items-center gap-2">
+                            <span className={`pill border ${getTypeColor(q.type_id)}`}>{getTypeLabel(q.type_id)}</span>
+                            <span className={`pill border ${getDifficultyColor(q.difficulty)}`}>Lv.{q.difficulty}</span>
+                            {q.test_point && (
+                              <span className="pill border border-border/20 bg-muted/15 text-muted-foreground/70">{q.test_point}</span>
+                            )}
+                          </div>
+                          <p className="mb-3 text-[13px] font-semibold leading-relaxed text-foreground/85">{q.instruction}</p>
+                          {(q.passage_with_markers || q.rawPassage) && (
+                            <div className="mb-4 rounded-xl bg-background/30 border border-border/20 p-4 text-[13px] leading-[1.85] text-foreground/60">
+                              {q.passage_with_markers || q.rawPassage}
                             </div>
-                          ))}
+                          )}
+                          {q.choices && q.choices.length > 0 && (
+                            <div className="flex flex-col gap-1.5">
+                              {q.choices.map((option, optIdx) => {
+                                // Match answer against the circled-number prefix or literal option text
+                                const circled = String.fromCharCode(9312 + optIdx)
+                                const isAnswer =
+                                  q.answer === circled ||
+                                  q.answer === String(optIdx + 1) ||
+                                  q.answer.startsWith(circled) ||
+                                  q.answer === option
+                                return (
+                                  <div
+                                    key={optIdx}
+                                    className={`rounded-xl border px-4 py-2.5 text-[13px] transition-smooth ${isAnswer ? "border-purple-500/25 bg-purple-500/[0.07] text-purple-700 dark:text-purple-300 font-medium" : "border-border/15 text-foreground/65 hover:bg-muted/20"}`}
+                                  >
+                                    <span className="mr-2.5 font-semibold text-foreground/50">{circled}</span>
+                                    {option}
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )}
+                          {q.explanation && (
+                            <div className="mt-3 rounded-xl border border-indigo-500/15 bg-indigo-500/[0.04] px-4 py-3">
+                              <p className="text-[11px] font-semibold text-indigo-400/80 mb-1">해설</p>
+                              <p className="text-[12px] leading-relaxed text-foreground/55">{q.explanation}</p>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                      <div className="flex shrink-0 flex-col gap-0.5">
-                        <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/40 hover:text-purple-400 hover:bg-purple-500/10"><Edit3 className="size-3.5" /></Button>
-                        <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/40 hover:text-red-400 hover:bg-red-500/10" onClick={() => handleDelete(q.id)}><Trash2 className="size-3.5" /></Button>
-                        <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/40 hover:text-indigo-400 hover:bg-indigo-500/10"><RefreshCw className="size-3.5" /></Button>
+                        <div className="flex shrink-0 flex-col gap-0.5">
+                          <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/65 hover:text-red-400 hover:bg-red-500/10" onClick={() => handleDelete(q.question_number)}>
+                            <Trash2 className="size-3.5" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/65 hover:text-indigo-400 hover:bg-indigo-500/10">
+                            <RefreshCw className="size-3.5" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </ScrollArea>
+            ) : (
+              <div className="glass-card flex h-full flex-col items-center justify-center gap-5 rounded-2xl text-center">
+                <div className="flex size-20 items-center justify-center rounded-3xl bg-gradient-to-br from-purple-500/10 to-indigo-500/10">
+                  <Sparkles className="size-9 text-purple-400/40" />
+                </div>
+                <div>
+                  <h3 className="text-[17px] font-bold text-foreground/70">생성된 문제가 없습니다</h3>
+                  <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/60">
+                    좌측에서 &ldquo;문제 생성하기&rdquo; 버튼을 누르면<br />
+                    AI가 변형 문제를 생성합니다.
+                  </p>
+                </div>
               </div>
-            </ScrollArea>
+            )}
           </TabsContent>
         </Tabs>
       </div>
@@ -292,16 +480,67 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
       {/* Footer */}
       <div className="divider-gradient mx-6" />
       <footer className="px-7 py-4">
+        {exportError && (
+          <div className="mb-3 flex items-center gap-2 rounded-xl bg-red-500/10 border border-red-500/15 px-3 py-2">
+            <AlertCircle className="size-3.5 shrink-0 text-red-400" />
+            <p className="text-[11px] text-red-700 dark:text-red-300">{exportError}</p>
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-[13px]">
-            <span className="font-medium text-foreground/50">총 {questions.length}문항</span>
+            <span className="font-medium text-foreground/65">총 {displayQuestions.length}문항</span>
             <span className="size-1 rounded-full bg-muted-foreground/20" />
-            <span className="font-medium text-foreground/50">평균 난이도 {(questions.reduce((a, b) => a + b.difficulty, 0) / questions.length).toFixed(1)}</span>
+            <span className="font-medium text-foreground/65">평균 난이도 {avgDifficulty}</span>
           </div>
-          <Button className="btn-shine rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-7 py-5 text-[13px] font-bold text-white shadow-xl shadow-purple-500/15 transition-smooth hover:shadow-purple-500/25 hover:brightness-110 active:scale-[0.98]" size="lg">
-            <Download className="mr-2 size-4" />
-            Word(.docx) 추출
-          </Button>
+          <div className="flex items-center gap-2">
+            {/* .docx download */}
+            <Button
+              onClick={() => handleExport('docx')}
+              disabled={!!isExporting || displayQuestions.length === 0 || !structuredPassage}
+              className={`btn-shine rounded-2xl px-5 py-5 text-[13px] font-bold text-white shadow-xl transition-smooth active:scale-[0.98] ${
+                displayQuestions.length > 0 && structuredPassage && !isExporting
+                  ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 shadow-purple-500/15 hover:shadow-purple-500/25 hover:brightness-110"
+                  : "bg-muted/30 text-foreground/50 shadow-none cursor-not-allowed"
+              }`}
+              size="lg"
+            >
+              {isExporting === 'docx' ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  내보내는 중...
+                </>
+              ) : (
+                <>
+                  <Download className="mr-2 size-4" />
+                  Word (.docx)
+                </>
+              )}
+            </Button>
+
+            {/* .hwpx download */}
+            <Button
+              onClick={() => handleExport('hwpx')}
+              disabled={!!isExporting || displayQuestions.length === 0 || !structuredPassage}
+              className={`btn-shine rounded-2xl px-5 py-5 text-[13px] font-bold text-white shadow-xl transition-smooth active:scale-[0.98] ${
+                displayQuestions.length > 0 && structuredPassage && !isExporting
+                  ? "bg-gradient-to-r from-teal-600 via-emerald-600 to-green-600 shadow-teal-500/15 hover:shadow-teal-500/25 hover:brightness-110"
+                  : "bg-muted/30 text-foreground/50 shadow-none cursor-not-allowed"
+              }`}
+              size="lg"
+            >
+              {isExporting === 'hwpx' ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  내보내는 중...
+                </>
+              ) : (
+                <>
+                  <Download className="mr-2 size-4" />
+                  한글 (.hwpx)
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </footer>
     </main>
