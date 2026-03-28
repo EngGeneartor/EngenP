@@ -7,13 +7,13 @@ import { NextRequest, NextResponse } from 'next/server'
  *   /                    — landing page
  *   /login               — login page
  *   /auth/callback        — Supabase OAuth callback
- *   /api/stripe/webhook  — Stripe webhook (verified by signature, not JWT)
+ *   /api/payments/webhook — Toss Payments webhook
  *   /_next/*             — Next.js internals / static assets
  *   /favicon.ico         — favicon
  */
 
 const PUBLIC_ROUTES = new Set(['/', '/login', '/auth/callback'])
-const PUBLIC_API_ROUTES = new Set(['/api/stripe/webhook'])
+const PUBLIC_API_ROUTES = new Set(['/api/payments/webhook'])
 
 function isPublicRoute(pathname: string): boolean {
   if (PUBLIC_ROUTES.has(pathname)) return true

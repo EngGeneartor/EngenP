@@ -52,8 +52,8 @@ export function SettingsModal({
   const [usageStats, setUsageStats] = useState<UsageStats | null>(null)
   const [statsLoading, setStatsLoading] = useState(false)
 
-  // Stripe actions
-  const [portalLoading, setPortalLoading] = useState(false)
+  // Payment actions
+  const [cancelLoading, setCancelLoading] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
 
   useEffect(() => { setMounted(true) }, [])
@@ -84,34 +84,46 @@ export function SettingsModal({
   const genPct = isPro ? 0 : Math.min((genUsed / FREE_GEN_LIMIT) * 100, 100)
   const expPct = isPro ? 0 : Math.min((expUsed / FREE_EXP_LIMIT) * 100, 100)
 
-  const openStripePortal = async () => {
-    setPortalLoading(true)
+  const cancelSubscription = async () => {
+    if (!confirm("정말로 구독을 취소하시겠습니까?")) return
+    setCancelLoading(true)
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session?.access_token) return
-      const res = await fetch("/api/stripe/portal", {
+      const res = await fetch("/api/payments/cancel", {
         method: "POST",
         headers: { Authorization: `Bearer ${session.access_token}` },
       })
-      const { url } = await res.json()
-      if (url) window.location.href = url
-    } catch {} finally { setPortalLoading(false) }
+      if (res.ok) {
+        alert("구독이 취소되었습니다. 현재 결제 기간까지 Pro 기능을 사용할 수 있습니다.")
+        window.location.reload()
+      }
+    } catch {} finally { setCancelLoading(false) }
   }
 
-  const openCheckout = async () => {
+  const openCheckout = () => {
     setCheckoutLoading(true)
     try {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session?.access_token) return
-      const res = await fetch("/api/stripe/create-checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
+      const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENTS_CLIENT_KEY
+      if (!clientKey || !userId) return
+
+      const origin = window.location.origin
+      const orderId = `pro-${userId.slice(0, 8)}-${Date.now()}`
+
+      // Redirect to Toss Payments checkout page
+      const params = new URLSearchParams({
+        clientKey,
+        orderId,
+        orderName: "Abyss Pro 월간 구독",
+        amount: "29900",
+        currency: "KRW",
+        customerEmail: userEmail ?? "",
+        successUrl: `${origin}/payments/success`,
+        failUrl: `${origin}/payments/fail`,
+        method: "카드",
       })
-      const { url } = await res.json()
-      if (url) window.location.href = url
+
+      window.location.href = `https://api.tosspayments.com/v1/payments?${params.toString()}`
     } catch {} finally { setCheckoutLoading(false) }
   }
 
@@ -242,15 +254,15 @@ export function SettingsModal({
                         <p className="text-[13px] font-medium text-emerald-700 dark:text-emerald-300">Pro 플랜 이용 중</p>
                       </div>
                       <button
-                        onClick={openStripePortal}
-                        disabled={portalLoading}
+                        onClick={cancelSubscription}
+                        disabled={cancelLoading}
                         className="flex items-center justify-between rounded-xl border border-border/30 bg-muted/15 px-4 py-3.5 text-[13px] font-medium text-foreground/70 transition-smooth hover:bg-muted/30 disabled:opacity-50"
                       >
                         <div className="flex items-center gap-2.5">
                           <CreditCard className="size-4 text-foreground/50" />
-                          결제 수단 변경 / 구독 관리
+                          구독 취소
                         </div>
-                        {portalLoading ? <Loader2 className="size-4 animate-spin" /> : <ChevronRight className="size-4 text-foreground/50" />}
+                        {cancelLoading ? <Loader2 className="size-4 animate-spin" /> : <ChevronRight className="size-4 text-foreground/50" />}
                       </button>
                     </div>
                   ) : (

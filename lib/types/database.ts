@@ -195,8 +195,10 @@ export type Database = {
         Row: {
           id: string
           user_id: string
-          stripe_customer_id: string | null
-          stripe_subscription_id: string | null
+          toss_payment_key: string | null
+          toss_order_id: string | null
+          toss_billing_key: string | null
+          toss_customer_key: string | null
           plan: 'free' | 'pro'
           status: 'active' | 'canceled' | 'past_due' | 'trialing'
           current_period_start: string | null
@@ -207,8 +209,10 @@ export type Database = {
         Insert: {
           id?: string
           user_id: string
-          stripe_customer_id?: string | null
-          stripe_subscription_id?: string | null
+          toss_payment_key?: string | null
+          toss_order_id?: string | null
+          toss_billing_key?: string | null
+          toss_customer_key?: string | null
           plan?: 'free' | 'pro'
           status?: 'active' | 'canceled' | 'past_due' | 'trialing'
           current_period_start?: string | null
@@ -219,8 +223,10 @@ export type Database = {
         Update: {
           id?: string
           user_id?: string
-          stripe_customer_id?: string | null
-          stripe_subscription_id?: string | null
+          toss_payment_key?: string | null
+          toss_order_id?: string | null
+          toss_billing_key?: string | null
+          toss_customer_key?: string | null
           plan?: 'free' | 'pro'
           status?: 'active' | 'canceled' | 'past_due' | 'trialing'
           current_period_start?: string | null

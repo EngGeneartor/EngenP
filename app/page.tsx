@@ -148,16 +148,26 @@ export default function LandingPage() {
         window.location.href = "/login"
         return
       }
-      const res = await fetch("/api/stripe/create-checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
+      const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENTS_CLIENT_KEY
+      if (!clientKey) throw new Error("결제 설정이 완료되지 않았습니다.")
+
+      const userId = session.user?.id ?? "unknown"
+      const origin = window.location.origin
+      const orderId = `pro-${userId.slice(0, 8)}-${Date.now()}`
+
+      const params = new URLSearchParams({
+        clientKey,
+        orderId,
+        orderName: "Abyss Pro 월간 구독",
+        amount: "29900",
+        currency: "KRW",
+        customerEmail: session.user?.email ?? "",
+        successUrl: `${origin}/payments/success`,
+        failUrl: `${origin}/payments/fail`,
+        method: "카드",
       })
-      if (!res.ok) throw new Error("결제 페이지를 열 수 없습니다.")
-      const { url } = await res.json()
-      if (url) window.location.href = url
+
+      window.location.href = `https://api.tosspayments.com/v1/payments?${params.toString()}`
     } catch {
       // Fall back to login page if anything fails
       window.location.href = "/login"

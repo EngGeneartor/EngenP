@@ -118,13 +118,13 @@ async function getMonthlyCount(userId: string, action: string): Promise<number> 
 }
 
 /**
- * Upsert a subscription row from Stripe webhook data.
+ * Upsert a subscription row from Toss Payments data.
  * Uses the service-role client (no auth token needed).
  */
 export async function upsertSubscription(params: {
   userId: string
-  stripeCustomerId: string
-  stripeSubscriptionId: string
+  tossPaymentKey: string
+  tossOrderId: string
   plan: 'free' | 'pro'
   status: 'active' | 'canceled' | 'past_due' | 'trialing'
   currentPeriodStart: Date
@@ -137,8 +137,8 @@ export async function upsertSubscription(params: {
     .upsert(
       {
         user_id: params.userId,
-        stripe_customer_id: params.stripeCustomerId,
-        stripe_subscription_id: params.stripeSubscriptionId,
+        toss_payment_key: params.tossPaymentKey,
+        toss_order_id: params.tossOrderId,
         plan: params.plan,
         status: params.status,
         current_period_start: params.currentPeriodStart.toISOString(),
@@ -155,17 +155,17 @@ export async function upsertSubscription(params: {
 }
 
 /**
- * Look up a user_id from a Stripe customer ID.
+ * Look up a user_id from a Toss payment key.
  */
-export async function getUserIdByCustomer(
-  stripeCustomerId: string
+export async function getUserIdByPaymentKey(
+  tossPaymentKey: string
 ): Promise<string | null> {
   const db = createServerClient()
 
   const { data, error } = await db
     .from('subscriptions')
     .select('user_id')
-    .eq('stripe_customer_id', stripeCustomerId)
+    .eq('toss_payment_key', tossPaymentKey)
     .limit(1)
     .single()
 

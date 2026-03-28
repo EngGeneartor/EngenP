@@ -96,7 +96,7 @@ function DashboardContent() {
     return () => subscription.unsubscribe()
   }, [router, isDemo])
 
-  // Mark plan as pro immediately when redirected back after Stripe checkout
+  // Mark plan as pro immediately when redirected back after Toss Payments checkout
   useEffect(() => {
     if (upgraded) {
       setUserPlan("pro")
