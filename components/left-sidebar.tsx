@@ -866,7 +866,7 @@ export function LeftSidebar({
             <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-foreground/50">이번 달 사용량</p>
             <UsageIndicator
               userId={userId}
-              onUpgradeClick={() => window.location.href = "/pricing/"}
+              onUpgradeClick={() => window.location.href = "/dashboard/?upgrade=true"}
             />
           </div>
         )}
