@@ -17,6 +17,6 @@ node_modules
 .next/
 out/
 .DS_Store
-.claude/b_*
+.claude/
 archiv/
 tsconfig.tsbuildinfo

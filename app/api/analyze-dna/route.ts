@@ -67,10 +67,10 @@ export async function POST(request: NextRequest) {
     )
   } catch (err) {
     const isDnaError = err instanceof DnaAnalyzerError
-    const message = err instanceof Error ? err.message : 'DNA analysis failed'
+    const message = err instanceof Error ? err.message : 'unknown'
     const code = isDnaError ? (err as DnaAnalyzerError).code : 'UNKNOWN_ERROR'
 
-    console.error('[/api/analyze-dna] Error for user', user.id, err)
+    console.error('[/api/analyze-dna] Error:', message)
 
     const status =
       code === 'NO_FILES' || code === 'INVALID_PROFILE' ? 400 :
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       500
 
     return NextResponse.json(
-      { error: message, code },
+      { error: 'DNA 분석 중 오류가 발생했습니다.', code },
       { status, headers: rateLimitHeaders() }
     )
   }

@@ -120,8 +120,9 @@ export async function POST(request: NextRequest) {
           const msg =
             err instanceof StructurizerError || err instanceof Error
               ? err.message
-              : '지문 분석에 실패했습니다.'
-          sendEvent({ step: 'error', message: msg })
+              : 'unknown'
+          console.error('[/api/generate-stream] Structurize error:', msg)
+          sendEvent({ step: 'error', message: '스트리밍 중 오류가 발생했습니다.' })
           controller.close()
           return
         }
@@ -144,9 +145,9 @@ export async function POST(request: NextRequest) {
         })
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.'
-        console.error('[/api/generate-stream] Unhandled error for user', user.id, err)
-        sendEvent({ step: 'error', message })
+          err instanceof Error ? err.message : 'unknown'
+        console.error('[/api/generate-stream] Error:', message)
+        sendEvent({ step: 'error', message: '스트리밍 중 오류가 발생했습니다.' })
       } finally {
         controller.close()
       }

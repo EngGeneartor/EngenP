@@ -62,10 +62,10 @@ export async function POST(request: NextRequest) {
       { status: 200, headers: rateLimitHeaders() }
     )
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Validation failed'
-    console.error('[/api/validate] Error for user', user.id, err)
+    const message = err instanceof Error ? err.message : 'unknown'
+    console.error('[/api/validate] Error:', message)
     return NextResponse.json(
-      { error: message },
+      { error: '검증 중 오류가 발생했습니다.' },
       { status: 500, headers: rateLimitHeaders() }
     )
   }

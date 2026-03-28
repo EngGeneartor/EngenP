@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://dxbhqfjeijbqmguewxer.supabase.co'
-const supabaseAnonKey = 'sb_publishable_HuYAaEimtaUGHfr9c9dzIA_IgOncyaT'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 // Service role key should be set as an environment variable and never exposed client-side
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey
 

@@ -70,10 +70,10 @@ export async function POST(request: NextRequest) {
       }
     )
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Question generation failed'
-    console.error('[/api/generate] Error for user', user.id, err)
+    const message = err instanceof Error ? err.message : 'unknown'
+    console.error('[/api/generate] Error:', message)
     return NextResponse.json(
-      { error: message },
+      { error: '문제 생성 중 오류가 발생했습니다.' },
       { status: 500, headers: rateLimitHeaders() }
     )
   }

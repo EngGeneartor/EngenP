@@ -79,10 +79,10 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Export failed'
-    console.error('[/api/export] Error for user', user.id, err)
+    const message = err instanceof Error ? err.message : 'unknown'
+    console.error('[/api/export] Error:', message)
     return NextResponse.json(
-      { error: message },
+      { error: '내보내기 중 오류가 발생했습니다.' },
       { status: 500, headers: rateLimitHeaders() }
     )
   }

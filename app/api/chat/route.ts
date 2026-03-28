@@ -65,8 +65,9 @@ export async function POST(request: NextRequest) {
 
   // Check API key
   if (!process.env.ANTHROPIC_API_KEY) {
+    console.error('[/api/chat] ANTHROPIC_API_KEY is not configured')
     return new Response(
-      JSON.stringify({ error: 'ANTHROPIC_API_KEY가 설정되지 않았습니다. 환경 변수를 확인해주세요.' }),
+      JSON.stringify({ error: 'AI 채팅 중 오류가 발생했습니다.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }
@@ -136,10 +137,11 @@ export async function POST(request: NextRequest) {
           controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'))
           controller.close()
         } catch (err) {
-          const message = err instanceof Error ? err.message : 'Streaming error'
+          const message = err instanceof Error ? err.message : 'unknown'
+          console.error('[/api/chat] Stream error:', message)
           controller.enqueue(
             new TextEncoder().encode(
-              `data: ${JSON.stringify({ error: message })}\n\n`
+              `data: ${JSON.stringify({ error: 'AI 채팅 중 오류가 발생했습니다.' })}\n\n`
             )
           )
           controller.close()
@@ -155,10 +157,10 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Claude API 호출 실패'
-    console.error('[/api/chat] Error for user', user.id, err)
+    const message = err instanceof Error ? err.message : 'unknown'
+    console.error('[/api/chat] Error:', message)
     return new Response(
-      JSON.stringify({ error: message }),
+      JSON.stringify({ error: 'AI 채팅 중 오류가 발생했습니다.' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }
