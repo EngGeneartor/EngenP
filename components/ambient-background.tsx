@@ -1,6 +1,18 @@
 "use client"
 
+import { useTheme } from "next-themes"
+import { useEffect, useState } from "react"
+
 export function AmbientBackground() {
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isDark = mounted ? resolvedTheme === "dark" : true
+
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
       {/* Primary purple orb - top left area */}
@@ -11,7 +23,9 @@ export function AmbientBackground() {
           height: '700px',
           top: '-15%',
           left: '15%',
-          background: 'radial-gradient(circle, oklch(0.45 0.22 280 / 0.18), oklch(0.35 0.15 280 / 0.06) 50%, transparent 70%)',
+          background: isDark
+            ? 'radial-gradient(circle, oklch(0.45 0.22 280 / 0.18), oklch(0.35 0.15 280 / 0.06) 50%, transparent 70%)'
+            : 'radial-gradient(circle, oklch(0.6 0.2 280 / 0.1), oklch(0.55 0.15 280 / 0.04) 50%, transparent 70%)',
           filter: 'blur(80px)',
           borderRadius: '50%',
         }}
@@ -25,7 +39,9 @@ export function AmbientBackground() {
           height: '550px',
           bottom: '-10%',
           right: '5%',
-          background: 'radial-gradient(circle, oklch(0.4 0.2 320 / 0.14), oklch(0.3 0.12 310 / 0.04) 50%, transparent 70%)',
+          background: isDark
+            ? 'radial-gradient(circle, oklch(0.4 0.2 320 / 0.14), oklch(0.3 0.12 310 / 0.04) 50%, transparent 70%)'
+            : 'radial-gradient(circle, oklch(0.6 0.18 320 / 0.08), oklch(0.55 0.12 310 / 0.03) 50%, transparent 70%)',
           filter: 'blur(80px)',
           borderRadius: '50%',
         }}
@@ -39,7 +55,9 @@ export function AmbientBackground() {
           height: '400px',
           top: '40%',
           left: '40%',
-          background: 'radial-gradient(circle, oklch(0.38 0.18 260 / 0.1), transparent 65%)',
+          background: isDark
+            ? 'radial-gradient(circle, oklch(0.38 0.18 260 / 0.1), transparent 65%)'
+            : 'radial-gradient(circle, oklch(0.58 0.16 260 / 0.06), transparent 65%)',
           filter: 'blur(90px)',
           borderRadius: '50%',
         }}
@@ -53,7 +71,9 @@ export function AmbientBackground() {
           height: '300px',
           top: '10%',
           right: '20%',
-          background: 'radial-gradient(circle, oklch(0.42 0.12 340 / 0.08), transparent 60%)',
+          background: isDark
+            ? 'radial-gradient(circle, oklch(0.42 0.12 340 / 0.08), transparent 60%)'
+            : 'radial-gradient(circle, oklch(0.62 0.1 340 / 0.05), transparent 60%)',
           filter: 'blur(70px)',
           borderRadius: '50%',
         }}
@@ -63,7 +83,7 @@ export function AmbientBackground() {
       <div
         className="absolute inset-0"
         style={{
-          opacity: 0.03,
+          opacity: isDark ? 0.03 : 0.015,
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
           backgroundRepeat: 'repeat',
           backgroundSize: '128px 128px',
@@ -74,7 +94,9 @@ export function AmbientBackground() {
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 55%, oklch(0.1 0.02 275 / 0.3) 100%)',
+          background: isDark
+            ? 'radial-gradient(ellipse at center, transparent 55%, oklch(0.1 0.02 275 / 0.3) 100%)'
+            : 'radial-gradient(ellipse at center, transparent 55%, oklch(0.9 0.01 280 / 0.15) 100%)',
         }}
       />
     </div>

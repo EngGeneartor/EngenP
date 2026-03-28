@@ -139,7 +139,7 @@ export function AIChatSidebar({ userEmail, onSignOut }: AIChatSidebarProps = {})
             <button
               key={idx}
               onClick={() => handleQuickPrompt(prompt.text)}
-              className="group flex items-center gap-1.5 rounded-xl border border-border/30 bg-muted/15 px-2.5 py-2 text-[11px] font-medium text-foreground/50 transition-smooth hover:border-purple-500/25 hover:bg-purple-500/[0.06] hover:text-purple-300"
+              className="group flex items-center gap-1.5 rounded-xl border border-border/30 bg-muted/15 px-2.5 py-2 text-[11px] font-medium text-foreground/50 transition-smooth hover:border-purple-500/25 hover:bg-purple-500/[0.06] hover:text-purple-700 dark:hover:text-purple-300"
             >
               <span className="flex size-5 items-center justify-center rounded-md bg-muted/30 text-[10px] font-bold text-muted-foreground/40 transition-smooth group-hover:bg-purple-500/15 group-hover:text-purple-400">
                 {prompt.icon}

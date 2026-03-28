@@ -227,7 +227,7 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
                 {isUploading ? (
                   <div className="flex flex-col items-center gap-2">
                     <Loader2 className="size-8 animate-spin text-purple-400" />
-                    <p className="text-[12px] font-medium text-purple-300">업로드 중...</p>
+                    <p className="text-[12px] font-medium text-purple-700 dark:text-purple-300">업로드 중...</p>
                   </div>
                 ) : (
                   <>
@@ -237,7 +237,7 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
                         ? "from-purple-500/30 to-indigo-500/30"
                         : "from-purple-500/15 to-indigo-500/15"
                     )}>
-                      <Upload className={cn("size-5", isDragging ? "text-purple-300" : "text-purple-400/80")} />
+                      <Upload className={cn("size-5", isDragging ? "text-purple-600 dark:text-purple-300" : "text-purple-500/80 dark:text-purple-400/80")} />
                     </div>
                     <p className="mt-3 text-[13px] font-medium text-foreground/80">
                       {isDragging ? "여기에 놓으세요!" : "파일을 드래그하거나 클릭"}
@@ -409,7 +409,7 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
                         className={cn(
                           "group/type flex cursor-pointer items-center gap-2 rounded-xl border px-2.5 py-2 text-xs transition-smooth",
                           selectedTypes.includes(type.id)
-                            ? "border-purple-500/30 bg-purple-500/10 text-purple-300 glow-sm"
+                            ? "border-purple-500/30 bg-purple-500/10 text-purple-700 dark:text-purple-300 glow-sm"
                             : "border-transparent bg-background/30 text-foreground/50 hover:bg-accent/40 hover:text-foreground/70"
                         )}
                       >

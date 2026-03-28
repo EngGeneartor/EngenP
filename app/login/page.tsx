@@ -185,7 +185,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-4 text-[13px] text-white placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
+                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-4 text-[13px] text-foreground placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
                 />
               </div>
             </div>
@@ -200,7 +200,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={isLogin ? "••••••••" : "8자 이상, 대소문자+숫자+특수문자"}
-                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-white placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
+                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-foreground placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
                 />
                 <button
                   type="button"

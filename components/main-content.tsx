@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { ThemeToggle } from "@/components/theme-toggle"
 import type { UploadedFile } from "@/lib/types"
 
 interface MainContentProps {
@@ -152,6 +153,7 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
               {questions.length}문항
             </Badge>
           )}
+          <ThemeToggle />
         </div>
       </header>
 
@@ -161,18 +163,18 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
       <div className="flex-1 overflow-hidden p-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex h-full flex-col">
           <TabsList className="w-fit rounded-2xl bg-muted/30 p-1 backdrop-blur-sm">
-            <TabsTrigger value="passage" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
+            <TabsTrigger value="passage" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300">
               <Eye className="size-4" />
               지문 원문
             </TabsTrigger>
-            <TabsTrigger value="viewer" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
+            <TabsTrigger value="viewer" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300">
               <Upload className="size-4" />
               타겟 지문
               {uploadedFiles.length > 0 && (
                 <span className="ml-1 flex size-5 items-center justify-center rounded-md bg-emerald-500/20 text-[10px] font-bold text-emerald-400">{uploadedFiles.length}</span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="questions" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-300">
+            <TabsTrigger value="questions" className="gap-2 rounded-xl px-5 py-2 text-[13px] font-semibold transition-smooth data-[state=active]:bg-purple-500/15 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300">
               <Sparkles className="size-4" />
               변형 문제
               <span className="ml-1 flex size-5 items-center justify-center rounded-md bg-purple-500/20 text-[10px] font-bold text-purple-400">{questions.length}</span>
@@ -268,7 +270,7 @@ export function MainContent({ selectedFile, uploadedFiles }: MainContentProps) {
                         <div className="mb-4 rounded-xl bg-background/30 border border-border/20 p-4 text-[13px] leading-[1.85] text-foreground/60">{q.content}</div>
                         <div className="flex flex-col gap-1.5">
                           {q.options.map((option, optIdx) => (
-                            <div key={optIdx} className={`rounded-xl border px-4 py-2.5 text-[13px] transition-smooth ${optIdx + 1 === q.answer ? "border-purple-500/25 bg-purple-500/[0.07] text-purple-300 font-medium" : "border-border/15 text-foreground/50 hover:bg-muted/20"}`}>
+                            <div key={optIdx} className={`rounded-xl border px-4 py-2.5 text-[13px] transition-smooth ${optIdx + 1 === q.answer ? "border-purple-500/25 bg-purple-500/[0.07] text-purple-700 dark:text-purple-300 font-medium" : "border-border/15 text-foreground/50 hover:bg-muted/20"}`}>
                               <span className="mr-2.5 font-semibold text-foreground/30">{String.fromCharCode(9312 + optIdx)}</span>
                               {option}
                             </div>
