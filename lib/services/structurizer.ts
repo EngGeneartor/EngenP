@@ -9,8 +9,9 @@
  * returns a validated StructuredPassage object.
  *
  * Public API:
- *   structurizeFromUrl(fileUrl)                          → StructuredPassage
- *   structurizeFromBase64(base64, mediaType, passageId)  → StructuredPassage
+ *   structurizePassage({ fileUrl } | { base64, mediaType }) → StructuredPassage
+ *   structurizeFromUrl(fileUrl)                              → StructuredPassage
+ *   structurizeFromBase64(base64, mediaType, passageId)      → StructuredPassage
  */
 
 import { createStructurizeRequest, extractJsonFromText, AnthropicServiceError } from './anthropic'
@@ -388,3 +389,29 @@ export async function structurizeFromBase64(
     `structurizeFromBase64(mediaType=${mediaType})`
   )
 }
+
+// -----------------------------------------------------------
+// Unified dispatcher used by the /api/structurize route
+// -----------------------------------------------------------
+
+export type StructurizeInput =
+  | { fileUrl: string; base64?: never; mediaType?: never }
+  | { base64: string; mediaType: string; fileUrl?: never }
+
+/**
+ * Unified dispatcher: accepts either a remote file URL or raw base64 + mediaType.
+ * This is the primary entry point used by the Next.js API route.
+ *
+ * @param input  Either `{ fileUrl }` or `{ base64, mediaType }`
+ */
+export async function structurizePassage(input: StructurizeInput): Promise<StructuredPassage> {
+  if (input.fileUrl) {
+    return structurizeFromUrl(input.fileUrl)
+  }
+  return structurizeFromBase64(input.base64, input.mediaType)
+}
+
+// -----------------------------------------------------------
+// Re-export types so API routes can import them from this module
+// -----------------------------------------------------------
+export type { StructuredPassage, UploadedFile } from '@/lib/types'

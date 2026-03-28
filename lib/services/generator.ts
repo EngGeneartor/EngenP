@@ -317,6 +317,14 @@ function renumber(questions: GeneratedQuestion[], startNumber: number): Generate
 // Public API
 // -----------------------------------------------------------
 
+/** Default generation options used when a caller omits them */
+const DEFAULT_GENERATION_OPTIONS: GenerationOptions = {
+  types: ['vocabulary_choice'],
+  difficulty: 3,
+  count: 5,
+  explanationLanguage: 'ko',
+}
+
 /**
  * Generate exam questions from a structured passage.
  *
@@ -329,25 +337,30 @@ function renumber(questions: GeneratedQuestion[], startNumber: number): Generate
  *  6. Return the final merged, re-numbered question list.
  *
  * @param passage   The structured passage to generate questions for
- * @param options   Generation options (types, difficulty, count, …)
+ * @param options   Generation options (types, difficulty, count, …); can be partial
  * @returns         Array of validated GeneratedQuestion objects
  */
 export async function generateQuestions(
   passage: StructuredPassage,
-  options: GenerationOptions
+  options: Partial<GenerationOptions> = {}
 ): Promise<GeneratedQuestion[]> {
+  // Merge caller-supplied options with defaults
+  const resolvedOptions: GenerationOptions = {
+    ...DEFAULT_GENERATION_OPTIONS,
+    ...options,
+  }
   // --- Step 1: Load templates ---
-  const templates = await loadTemplates(options)
+  const templates = await loadTemplates(resolvedOptions)
 
   // --- Step 2: Generate initial questions ---
   let questions = await withRetry(async () => {
-    const { raw } = await createGenerateRequest(passage, templates, options)
+    const { raw } = await createGenerateRequest(passage, templates, resolvedOptions)
     return parseGeneratedQuestions(raw)
   }, 'initial generation')
 
   console.info(
     `[generator] Generated ${questions.length} questions ` +
-      `(requested ${options.count}) for passage "${passage.id}"`
+      `(requested ${resolvedOptions.count}) for passage "${passage.id}"`
   )
 
   // --- Steps 3-5: Self-correction loop ---
@@ -394,7 +407,7 @@ export async function generateQuestions(
     }
 
     // Regenerate invalid questions
-    const regenOptions = buildRegenerationOptions(options, invalidQuestions)
+    const regenOptions = buildRegenerationOptions(resolvedOptions, invalidQuestions)
     const regenTemplates = templates.filter((t) =>
       regenOptions.types.includes(t.type_id)
     )
@@ -432,3 +445,15 @@ export async function generateQuestions(
 export function clearTemplateCache(): void {
   templateCache.clear()
 }
+
+// -----------------------------------------------------------
+// Re-export types so API routes can import them from this module
+// -----------------------------------------------------------
+export type {
+  StructuredPassage,
+  GeneratedQuestion,
+  GenerationOptions,
+  ValidationResult,
+  QuestionTypeTemplate,
+  QuestionTypeId,
+} from '@/lib/types'

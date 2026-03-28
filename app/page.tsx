@@ -123,6 +123,7 @@ export default function LandingPage() {
             <a href="#pricing" className="text-[13px] font-medium text-foreground/65 transition-smooth hover:text-foreground/80">요금</a>
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {userEmail ? (
               <>
                 <div className="flex items-center gap-2 rounded-xl bg-muted/30 px-3 py-2">
@@ -158,8 +159,8 @@ export default function LandingPage() {
       <section className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 pt-20 text-center">
         <FadeIn>
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-500/[0.06] px-4 py-1.5">
-            <Sparkles className="size-3.5 text-purple-400" />
-            <span className="text-[12px] font-semibold text-purple-300">AI 기반 영어 내신 대비 솔루션</span>
+            <Sparkles className="size-3.5 text-purple-500 dark:text-purple-400" />
+            <span className="text-[12px] font-semibold text-purple-600 dark:text-purple-300">AI 기반 영어 내신 대비 솔루션</span>
           </div>
         </FadeIn>
 
