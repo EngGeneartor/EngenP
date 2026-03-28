@@ -29,8 +29,13 @@ const DNA_MAX_TOKENS = 8192
 // -----------------------------------------------------------
 
 export interface ExamFileInput {
-  base64: string
-  mediaType: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
+  /** Base64-encoded image data (for image files) */
+  base64?: string
+  mediaType?: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
+  /** Public URL for document files (PDF, DOCX) — fetched server-side */
+  url?: string
+  /** MIME type for URL-based files */
+  urlMediaType?: 'application/pdf' | 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 }
 
 export interface ExamMetadata {
@@ -90,36 +95,89 @@ async function loadDnaPrompt(): Promise<string> {
 }
 
 // -----------------------------------------------------------
-// Build multimodal user message with all exam images
+// Fetch a URL and return its base64 content + mime type
 // -----------------------------------------------------------
 
-function buildDnaUserMessage(
+async function fetchFileAsBase64(
+  url: string
+): Promise<{ base64: string; mediaType: string }> {
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new DnaAnalyzerError(
+      `Failed to fetch file from URL: ${response.status} ${response.statusText}`,
+      'FETCH_FAILED'
+    )
+  }
+  const arrayBuffer = await response.arrayBuffer()
+  const base64 = Buffer.from(arrayBuffer).toString('base64')
+  const contentType = response.headers.get('content-type') ?? 'application/octet-stream'
+  return { base64, mediaType: contentType.split(';')[0].trim() }
+}
+
+// -----------------------------------------------------------
+// Build multimodal user message with all exam files
+// -----------------------------------------------------------
+
+async function buildDnaUserMessage(
   examFiles: ExamFileInput[],
   metadata?: ExamMetadata
-): Anthropic.Messages.MessageParam {
+): Promise<Anthropic.Messages.MessageParam> {
   const contentBlocks: Anthropic.Messages.ContentBlockParam[] = []
 
-  // Add all exam images
+  let imageCount = 0
+  let docCount = 0
+
+  // Add all exam files (images or documents)
   for (let i = 0; i < examFiles.length; i++) {
     const file = examFiles[i]
-    contentBlocks.push({
-      type: 'image',
-      source: {
-        type: 'base64',
-        media_type: file.mediaType,
-        data: file.base64,
-      },
-    })
+
+    if (file.base64 && file.mediaType) {
+      // Direct base64 image
+      contentBlocks.push({
+        type: 'image',
+        source: {
+          type: 'base64',
+          media_type: file.mediaType,
+          data: file.base64,
+        },
+      })
+      imageCount++
+    } else if (file.url) {
+      const isPdf = file.urlMediaType === 'application/pdf' ||
+        file.url.toLowerCase().endsWith('.pdf')
+
+      if (isPdf) {
+        // Fetch PDF and embed as base64 document block
+        const { base64 } = await fetchFileAsBase64(file.url)
+        contentBlocks.push({
+          type: 'document',
+          source: {
+            type: 'base64',
+            media_type: 'application/pdf',
+            data: base64,
+          },
+        } as unknown as Anthropic.Messages.ContentBlockParam)
+        docCount++
+      } else {
+        // DOCX or other: fetch text content and embed as text description
+        contentBlocks.push({
+          type: 'text',
+          text: `[Document file ${i + 1}: ${file.url} — this is a Word document (.docx) exam paper. Analyze its content as an exam paper.]`,
+        })
+        docCount++
+      }
+    }
   }
 
   // Add text instruction with optional metadata
-  let textContent = `Exam paper image(s) provided above (${examFiles.length} image(s) total).`
+  const totalFiles = imageCount + docCount
+  let textContent = `Exam paper file(s) provided above (${totalFiles} file(s) total: ${imageCount} image(s), ${docCount} document(s)).`
 
   if (metadata) {
     textContent += `\n\nExam Metadata (INPUT 2):\n\`\`\`json\n${JSON.stringify(metadata, null, 2)}\n\`\`\``
   }
 
-  textContent += '\n\nAnalyze the provided exam paper image(s) and output the Exam DNA profile JSON as instructed.'
+  textContent += '\n\nAnalyze the provided exam paper file(s) and output the Exam DNA profile JSON as instructed.'
 
   contentBlocks.push({
     type: 'text',
@@ -189,8 +247,8 @@ export async function analyzeExamDna(
   // Load the DNA analysis system prompt
   const systemPrompt = await loadDnaPrompt()
 
-  // Build the multimodal user message
-  const userMessage = buildDnaUserMessage(examFiles, metadata)
+  // Build the multimodal user message (async — may fetch remote files)
+  const userMessage = await buildDnaUserMessage(examFiles, metadata)
 
   // Call Claude Vision
   const client = getClient()

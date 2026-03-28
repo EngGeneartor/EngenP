@@ -47,18 +47,33 @@ export async function POST(request: NextRequest) {
   }
 
   // Validate each file entry
-  const validMediaTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+  const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+  const validUrlTypes = [
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ]
   for (let i = 0; i < files.length; i++) {
     const f = files[i]
-    if (!f.base64 || typeof f.base64 !== 'string') {
+    const hasBase64 = f.base64 && typeof f.base64 === 'string'
+    const hasUrl = f.url && typeof f.url === 'string'
+
+    if (!hasBase64 && !hasUrl) {
       return NextResponse.json(
-        { error: `files[${i}].base64 is required and must be a string` },
+        { error: `files[${i}] must have either base64 (image) or url (PDF/DOCX)` },
         { status: 400, headers: rateLimitHeaders() }
       )
     }
-    if (!f.mediaType || !validMediaTypes.includes(f.mediaType)) {
+
+    if (hasBase64 && (!f.mediaType || !validImageTypes.includes(f.mediaType))) {
       return NextResponse.json(
-        { error: `files[${i}].mediaType must be one of: ${validMediaTypes.join(', ')}` },
+        { error: `files[${i}].mediaType must be one of: ${validImageTypes.join(', ')}` },
+        { status: 400, headers: rateLimitHeaders() }
+      )
+    }
+
+    if (hasUrl && f.urlMediaType && !validUrlTypes.includes(f.urlMediaType)) {
+      return NextResponse.json(
+        { error: `files[${i}].urlMediaType must be one of: ${validUrlTypes.join(', ')}` },
         { status: 400, headers: rateLimitHeaders() }
       )
     }
