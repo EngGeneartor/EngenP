@@ -1,5 +1,3 @@
-'use server'
-
 /**
  * exporter.ts
  * Document Export Service — server-side only.

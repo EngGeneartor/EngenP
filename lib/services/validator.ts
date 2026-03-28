@@ -1,5 +1,3 @@
-'use server'
-
 /**
  * validator.ts
  * Question Validation Service — server-side only.
