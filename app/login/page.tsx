@@ -93,7 +93,7 @@ export default function LoginPage() {
           email,
           password,
           options: {
-            emailRedirectTo: "https://enggeneartor.github.io/EngenP/auth/callback/",
+            emailRedirectTo: `${window.location.origin}/auth/callback/`,
           },
         })
         if (error) {

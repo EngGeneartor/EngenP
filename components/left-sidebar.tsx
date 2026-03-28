@@ -161,7 +161,7 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
   return (
     <aside className="relative z-10 flex h-full w-[310px] flex-col sidebar-glass">
       {/* Logo - click to go home */}
-      <a href="/EngenP/" className="flex items-center gap-3 px-5 py-5 transition-smooth hover:opacity-80">
+      <a href="/" className="flex items-center gap-3 px-5 py-5 transition-smooth hover:opacity-80">
         <div className="relative flex size-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 glow-md">
           <Zap className="size-[18px] text-white" strokeWidth={2.5} />
         </div>
@@ -454,7 +454,7 @@ export function LeftSidebar({ uploadedFiles, setUploadedFiles, selectedFile, onF
         <button
           onClick={async () => {
             await supabase.auth.signOut()
-            window.location.href = "/EngenP/"
+            window.location.href = "/"
           }}
           className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-2 text-[12px] font-medium text-foreground/35 transition-smooth hover:bg-red-500/10 hover:text-red-400"
         >
