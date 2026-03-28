@@ -57,6 +57,44 @@
       "answer": "③",
       "explanation": "(B)에서 'smaller, manageable units'로 정보를 나누는 전략을 소개하고, (A)에서 'This technique'이 (B)의 방법을 지칭하며 'chunking'이라는 이름을 부여한다. 이후 (C)에서 'these chunks'가 (A)의 chunks를 받아 자동화 과정을 설명한다. 따라서 순서는 (B)→(A)→(C)이다.",
       "test_point": "지시표현(This technique, these chunks)과 개념 도입-명명-심화 구조를 통한 순서 파악"
+    },
+    {
+      "instruction": "주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?",
+      "intro_passage": "Making time for exercise with a busy schedule is not easy.",
+      "blocks": {
+        "(A)": "You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude.",
+        "(B)": "Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+        "(C)": "However, it's important to exercise regularly because it offers countless benefits."
+      },
+      "choices": [
+        "① (A) - (B) - (C)",
+        "② (A) - (C) - (B)",
+        "③ (B) - (A) - (C)",
+        "④ (B) - (C) - (A)",
+        "⑤ (C) - (A) - (B)"
+      ],
+      "answer": "⑤",
+      "explanation": "도입문에서 바쁜 일정 속 운동 시간 확보의 어려움을 언급한 뒤, (C)에서 'However'로 역접하여 규칙적 운동의 중요성과 이점을 제시한다. (A)에서 그 이점의 구체적 내용(에너지 증가, 자신감 향상 등)을 나열하고, (B)에서 'Whether you like...'로 결론을 맺어 운동 루틴 유지가 몸, 마음, 정신을 강화한다고 마무리한다. 따라서 순서는 (C)→(A)→(B)이다.",
+      "test_point": "역접 연결부사(However)를 통한 논리 전환 및 구체화→결론 흐름 파악"
+    },
+    {
+      "instruction": "주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?",
+      "intro_passage": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true.",
+      "blocks": {
+        "(A)": "If you pick someone in your social circle, you can directly ask for their guidance.",
+        "(B)": "Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist.",
+        "(C)": "If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school."
+      },
+      "choices": [
+        "① (A) - (B) - (C)",
+        "② (A) - (C) - (B)",
+        "③ (B) - (A) - (C)",
+        "④ (B) - (C) - (A)",
+        "⑤ (C) - (A) - (B)"
+      ],
+      "answer": "③",
+      "explanation": "(B)에서 롤모델의 유형(개인적으로 아는 사람 또는 유명인)을 소개하고, (A)에서 'someone in your social circle'은 (B)의 '개인적으로 아는 사람'을 받아 조언 구하기를 설명한다. (C)에서 'someone you can't meet in person'은 (B)의 유명인 유형을 받아 행동·전략 관찰을 설명하며 글을 마무리한다. 따라서 순서는 (B)→(A)→(C)이다.",
+      "test_point": "대조 구조(사회적 관계 vs. 직접 만날 수 없는 대상)와 지시 표현을 통한 순서 파악"
     }
   ]
 }

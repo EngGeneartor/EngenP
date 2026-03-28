@@ -42,6 +42,36 @@
       "answer": "③",
       "explanation": "글 전체가 재능보다 '의도적 연습(deliberate practice)'이 성공의 핵심임을 주장한다. 마지막 문장의 빈칸은 이 논지의 결론으로, '체계적이고 노력이 필요한 연습'을 의미하는 ③ 'structured, effortful practice'가 가장 적절하다. ①④는 글이 부정하는 타고난 능력에 해당하고, ②⑤는 지문에서 전혀 언급되지 않은 개념이다.",
       "test_point": "글 전체의 논지를 요약하는 결론 문장의 핵심어 추론"
+    },
+    {
+      "instruction": "다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B) 에 들어갈 말로 가장 적절한 것은?",
+      "passage_with_markers": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+      "summary_frame": "(A) physical exertion results in widespread (B) effects on one's entire being.",
+      "choices": [
+        "① (A) Consistent — (B) positive",
+        "② (A) Sustained — (B) productive",
+        "③ (A) Daily — (B) physical",
+        "④ (A) Vigorous — (B) advantageous",
+        "⑤ (A) Repeated — (B) noticeable"
+      ],
+      "answer": "①",
+      "explanation": "글은 규칙적인 운동이 신체뿐만 아니라 자신감, 긍정적 태도, 정신과 영혼까지 강화하는 광범위하고 긍정적인 효과가 있다고 주장한다. (A)에는 '규칙적인, 꾸준한'의 의미인 Consistent가, (B)에는 '긍정적인'의 의미인 positive가 가장 적절하다.",
+      "test_point": "이중 빈칸 요약문 — 글 전체의 핵심 논지를 함축하는 두 단어 추론"
+    },
+    {
+      "instruction": "다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B) 에 들어갈 말로 가장 적절한 것은?",
+      "passage_with_markers": "Choosing your career path is one of the most important decisions you can make, and having a role model can be a powerful tool for making your dreams come true. Looking into the lives of the people you admire can be an inspiration in itself. Your role model can be someone you know personally, such as a teacher or family member, or someone you admire, such as a famous athlete or artist. If you pick someone in your social circle, you can directly ask for their guidance. If it is someone you can't meet in person, you can study their actions and observe their strategies. What you learn from them will benefit you both during and long after high school.",
+      "summary_frame": "Emulating the conduct of (A) people can offer (B) direction for achieving life's ambitions.",
+      "choices": [
+        "① (A) influential — (B) personal",
+        "② (A) prominent — (B) helpful",
+        "③ (A) famous — (B) direct",
+        "④ (A) successful — (B) practical",
+        "⑤ (A) exemplary — (B) substantial"
+      ],
+      "answer": "⑤",
+      "explanation": "글은 롤모델의 행동과 전략을 배움으로써 진로 목표를 달성하는 데 실질적인 방향을 얻을 수 있다고 설명한다. (A) exemplary(모범적인)는 롤모델의 속성을, (B) substantial(실질적인, 상당한)은 그로부터 얻는 방향의 크기를 가장 잘 표현한다.",
+      "test_point": "요약문의 핵심어가 원문 논지와 의미적으로 정확히 대응하는지 판단"
     }
   ]
 }

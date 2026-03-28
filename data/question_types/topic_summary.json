@@ -51,6 +51,51 @@
       "answer": "②",
       "explanation": "글의 핵심 논지는 실패를 경험하고 극복하는 것이 진정한 능력과 회복 탄력성 형성에 필수적이라는 것이다. ② 'The Hidden Value of Failure in Building Resilience'는 이 논지를 가장 함축적으로 표현한다. ①은 글의 주장과 반대(실패 방지)이고, ③④⑤는 지문이 직접 다루지 않는 세부 주제이거나 너무 좁은 내용이다.",
       "test_point": "글 전체 논지를 포괄하는 제목 선택 — 지나치게 좁거나 반대 방향의 선택지 변별"
+    },
+    {
+      "instruction": "다음 글의 목적으로 가장 적절한 것은?",
+      "subtype": "main_idea",
+      "passage_with_markers": "These days, many teenagers spend too much time staring at smartphones and computer screens. Some even stay up late playing computer games and watching videos. This is fine as long as these devices enrich your life. However, excessive reliance on technology can exhaust your mental energy. To make it easier to focus on important things, set aside your devices for some time. For example, it's a good idea to finish surfing the Internet, watching videos, and sending instant messages during the week and turn everything off on the weekends. You can use your newly found time to connect with friends, family, and yourself. You might be surprised at how much more productive you can be when not glued to a screen.",
+      "choices": [
+        "① To analyze teenagers' technology usage patterns.",
+        "② To establish legal regulations for the use of electronic devices.",
+        "③ To introduce the latest features of electronic devices.",
+        "④ To explain various ways to enrich one's life.",
+        "⑤ To recommend balancing technology use for improved well-being."
+      ],
+      "answer": "⑤",
+      "explanation": "이 글은 십대들의 과도한 기술 사용이 정신 에너지를 소모할 수 있음을 지적하며, 중요한 일에 집중하고 생산성을 높이기 위해 기기 사용 시간을 제한하고 균형 잡힌 기술 사용을 권고하는 내용이다. 따라서 정답은 ⑤이다.",
+      "test_point": "글의 전체적 목적 파악 — 분석/규제/소개와 권고의 구분"
+    },
+    {
+      "instruction": "다음 글의 제목으로 가장 적절한 것은?",
+      "subtype": "title",
+      "passage_with_markers": "Making time for exercise with a busy schedule is not easy. However, it's important to exercise regularly because it offers countless benefits. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not limited to physical strength; exercise also boosts confidence and fosters a positive attitude. Whether you like lifting weights at the gym, jogging through the park, or riding a bicycle, establishing and sticking to an exercise routine will strengthen your body, mind, and spirit.",
+      "choices": [
+        "① Fitting Exercise into a Busy Schedule",
+        "② The Physical Benefits of Regular Exercise",
+        "③ Choosing the Right Exercise for You",
+        "④ Strengthening Body, Mind, and Spirit with a Regular Exercise Routine",
+        "⑤ How Exercise Boosts Self-Confidence"
+      ],
+      "answer": "④",
+      "explanation": "이 글은 바쁜 일정 속에서도 규칙적인 운동을 하는 것이 중요하며, 운동이 신체적 강화를 넘어 자신감 향상, 긍정적 태도 함양 등 몸, 마음, 정신을 모두 강화하는 이점을 제공한다고 설명한다. ④가 이 논지를 가장 포괄적으로 담고 있다. ①은 일정 관리에만 집중하고, ②⑤는 이점의 일부만 다루어 너무 좁으며, ③은 운동 선택에 관한 것으로 지문의 핵심이 아니다.",
+      "test_point": "글 전체의 다층적 이점(신체·정신·영혼)을 포괄하는 제목 선택"
+    },
+    {
+      "instruction": "다음 글의 주제로 가장 적절한 것은?",
+      "subtype": "topic",
+      "passage_with_markers": "Who you are now says a lot about who you'll be in the future. However, as the years pass, some of your current interests and perspectives may fade. You could try sending a note to your future self. Writing a letter to your future self will allow you to take a moment to reflect on where you are, where you're heading, and what's important to you right now. Furthermore, when you're older, this letter can serve as a reminder of the person you used to be. It might even give you a new sense of strength to live a more meaningful life.",
+      "choices": [
+        "① How to overcome challenges during high school",
+        "② The benefits of writing a letter to your future self.",
+        "③ The importance of setting long-term life goals",
+        "④ Ways to preserve memories from your youth",
+        "⑤ The positive effects of journaling on personal growth"
+      ],
+      "answer": "②",
+      "explanation": "현재의 모습이 미래를 말해주지만 시간이 지나면 현재의 관심사와 관점은 희미해질 수 있으므로, 미래의 자신에게 편지를 써보는 것이 좋다는 내용이다. 편지 쓰기의 이점(자기 성찰, 과거의 자신 상기, 의미 있는 삶의 힘)을 설명한다. 따라서 글의 주제로 가장 적절한 것은 ②이다.",
+      "test_point": "글 전체 논지(편지 쓰기의 이점)를 포괄하는 주제 선택 — 유사 주제(기억 보존, 일기 효과)와의 변별"
     }
   ]
 }

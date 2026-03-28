@@ -35,6 +35,30 @@
       "answer": "⑤",
       "explanation": "⑤ them은 어법상 틀렸다. 'found + 목적어 + 목적보어' 구문에서 목적어는 주절의 주어(Scholars)와 동일하므로 재귀대명사 themselves를 써야 한다. 'found themselves able to...'가 올바른 표현이다.",
       "test_point": "재귀대명사 vs. 인칭대명사 (주어와 목적어가 동일 지시 대상일 때 재귀대명사 사용)"
+    },
+    {
+      "instruction": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+      "passage_with_markers": "High school is the best time ① to spark your curiosity and passion. You can ② to explore, try new things, and ③ learning more about yourself. The three years pass quickly, so use this time wisely ④ setting yourself up for the future. Here are a few ways ⑤ doing just that.",
+      "choices": null,
+      "answer": "①",
+      "explanation": "to부정사구 'to spark your curiosity and passion'은 앞의 명사 'the best time'을 수식하는 형용사적 용법으로 올바르게 사용되었다. 따라서 정답은 ①이다. ② 조동사 can 다음에는 동사원형이 와야 하므로 to explore는 explore로 고쳐야 한다. ③ and에 의해 explore, try와 병렬 구조를 이루어야 하므로, learning은 동사원형 learn으로 고쳐야 한다. ④ '미래를 위해 자신을 준비하기 위해'라는 목적의 의미를 나타내야 하므로, setting은 to부정사인 to set으로 고쳐야 한다. ⑤ 앞의 명사 a few ways를 수식하는 형용사적 용법의 to부정사가 와야 하므로, doing은 to do로 고쳐야 한다.",
+      "test_point": "to부정사의 형용사적 용법 (명사 수식) 및 조동사 뒤 동사원형, 병렬 구조"
+    },
+    {
+      "instruction": "다음 글의 밑줄 친 부분 중 어법 상 틀린 것은?",
+      "passage_with_markers": "① Making time for exercise with a busy schedule is not ② easy. However, it's important to exercise ③ regularly because it offers countless ④ benefit. You can have more new experiences and complete more challenging tasks with increased energy. The benefits are not ⑤ limited to physical strength; exercise also boosts confidence and fosters a positive attitude.",
+      "choices": null,
+      "answer": "④",
+      "explanation": "'countless'는 '셀 수 없이 많은'이라는 의미로, 뒤에 셀 수 있는 명사의 복수형이 와야 한다. 'benefit'은 셀 수 있는 명사이므로 복수형인 'benefits'로 써야 한다. 따라서 'benefit'은 어법상 틀리다.",
+      "test_point": "가산명사의 단수/복수 형태 — countless 뒤 복수명사 사용"
+    },
+    {
+      "instruction": "다음 글의 밑줄 친 부분 중 어법 상 옳은 것은?",
+      "passage_with_markers": "Choosing your career path is one of the most important decisions you can make, and ① having a role model can be a ② powerfully tool for making your dreams ③ to come true. Looking into the lives of the people you ④ are admired can be an inspiration in itself. ⑤ That you learn from them will benefit you both during and long after high school.",
+      "choices": null,
+      "answer": "①",
+      "explanation": "동명사구(having a role model)가 문장의 주어로 사용되었으므로 어법상 옳다. 따라서 정답은 ①이다. ② 부사 powerfully는 명사 tool을 수식할 수 없으므로, 형용사 powerful로 고쳐야 한다. ③ 사역동사 make의 목적격 보어 자리이므로, to come true는 동사원형 come true로 고쳐야 한다. ④ admire의 주체는 you이므로, 수동태 are admired는 능동태 admire로 고쳐야 한다. ⑤ learn의 목적어가 없으므로, 선행사를 포함하는 관계대명사 What으로 시작하여 명사절을 이끌어야 한다.",
+      "test_point": "동명사의 주어 역할, 사역동사 make의 목적보어(동사원형), 관계대명사 What vs. That"
     }
   ]
 }
