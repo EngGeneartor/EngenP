@@ -41,10 +41,8 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const origin =
-    request.headers.get('origin') ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    'http://localhost:3000'
+  // Never trust user-controlled Origin header for redirect URLs
+  const origin = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
   try {
     const portalSession = await getStripe().billingPortal.sessions.create({

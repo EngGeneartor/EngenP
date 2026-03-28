@@ -26,6 +26,40 @@ function FadeIn({ children, className, delay = 0 }: { children: React.ReactNode;
   )
 }
 
+/* Animated counter that counts up when in view */
+function AnimatedCounter({ target, suffix = "", className }: { target: string; suffix?: string; className?: string }) {
+  const { ref, isInView } = useInView(0.1)
+  const [display, setDisplay] = useState(target)
+
+  useEffect(() => {
+    if (!isInView) return
+    // Try to parse numeric part
+    const numMatch = target.match(/^(\d+\.?\d*)(.*)$/)
+    if (!numMatch) { setDisplay(target); return }
+    const end = parseFloat(numMatch[1])
+    const textSuffix = numMatch[2] || suffix
+    const duration = 1600
+    const startTime = performance.now()
+
+    const tick = (now: number) => {
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3)
+      const current = eased * end
+      if (Number.isInteger(end)) {
+        setDisplay(`${Math.round(current)}${textSuffix}`)
+      } else {
+        setDisplay(`${current.toFixed(1)}${textSuffix}`)
+      }
+      if (progress < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [isInView, target, suffix])
+
+  return <span ref={ref} className={className}>{display}</span>
+}
+
 function SlideIn({ children, className, direction = "left", delay = 0 }: { children: React.ReactNode; className?: string; direction?: "left" | "right"; delay?: number }) {
   const { ref, isInView } = useInView(0.1)
   return (
@@ -196,7 +230,7 @@ export default function LandingPage() {
           <h1 className="max-w-4xl text-5xl font-extrabold leading-[1.15] tracking-tight md:text-7xl">
             <span className="text-foreground/90">시험 지문을 넣으면</span>
             <br />
-            <span className="text-gradient">변형 문제가 나온다</span>
+            <span className="hero-gradient-text">변형 문제가 나온다</span>
           </h1>
         </FadeIn>
 
@@ -231,8 +265,33 @@ export default function LandingPage() {
           <p className="mt-5 text-[12px] text-foreground/60">카드 등록 없이 무료로 시작 · 매월 10회 무료 생성</p>
         </FadeIn>
 
+        {/* Social Proof */}
+        <FadeIn delay={500}>
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <div className="flex items-center -space-x-2">
+              {["bg-purple-500", "bg-indigo-500", "bg-violet-500", "bg-fuchsia-500", "bg-blue-500"].map((bg, i) => (
+                <div key={i} className={`size-8 rounded-full ${bg} border-2 border-background flex items-center justify-center text-[10px] font-bold text-white`}>
+                  {["K", "J", "S", "M", "L"][i]}
+                </div>
+              ))}
+              <div className="size-8 rounded-full bg-muted/40 border-2 border-background flex items-center justify-center text-[9px] font-bold text-foreground/50">
+                +97
+              </div>
+            </div>
+            <p className="text-[12px] text-foreground/50">
+              <span className="font-bold text-foreground/70">100+</span> 학원에서 신뢰하는 서비스
+            </p>
+            <div className="flex items-center gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="size-3.5 fill-amber-400 text-amber-400" />
+              ))}
+              <span className="ml-1.5 text-[11px] text-foreground/50">4.9/5 만족도</span>
+            </div>
+          </div>
+        </FadeIn>
+
         {/* Hero Dashboard Preview */}
-        <FadeIn delay={500} className="mt-16 w-full max-w-5xl">
+        <FadeIn delay={600} className="mt-16 w-full max-w-5xl">
           <div className="gradient-border rounded-2xl overflow-hidden glow-lg">
             <div className="glass-card rounded-2xl p-1">
               <div className="rounded-xl bg-background/60 overflow-hidden">
@@ -292,10 +351,11 @@ export default function LandingPage() {
         </FadeIn>
 
         {/* Scroll indicator */}
-        <div className="mt-12 animate-bounce">
-          <div className="mx-auto h-8 w-5 rounded-full border-2 border-foreground/15 p-1">
-            <div className="mx-auto h-2 w-1 rounded-full bg-foreground/25 animate-[scroll-dot_2s_ease-in-out_infinite]" />
+        <div className="mt-12 flex flex-col items-center gap-2 animate-fade-in-up">
+          <div className="mx-auto h-10 w-6 rounded-full border-2 border-purple-500/25 p-1.5 shadow-[0_0_12px_rgba(139,92,246,0.1)]">
+            <div className="mx-auto h-2.5 w-1 rounded-full bg-gradient-to-b from-purple-400 to-indigo-400 animate-[scroll-dot_2s_ease-in-out_infinite]" />
           </div>
+          <span className="text-[10px] font-medium text-foreground/30 tracking-wider uppercase">Scroll</span>
         </div>
       </section>
 
@@ -303,11 +363,13 @@ export default function LandingPage() {
       <section className="relative z-10 py-16">
         <div className="mx-auto max-w-4xl px-6">
           <FadeIn>
-            <div className="glass-card rounded-2xl p-8">
+            <div className="glass-card rounded-2xl p-8 gradient-border">
               <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
                 {stats.map((stat, i) => (
                   <div key={i} className="text-center">
-                    <p className="text-3xl font-extrabold tracking-tight text-gradient">{stat.value}</p>
+                    <p className="text-3xl font-extrabold tracking-tight text-gradient">
+                      <AnimatedCounter target={stat.value} />
+                    </p>
                     <p className="mt-1 text-[12px] font-medium text-muted-foreground/70">{stat.label}</p>
                   </div>
                 ))}
@@ -562,7 +624,7 @@ export default function LandingPage() {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {/* Free */}
             <FadeIn delay={0}>
-              <div className="glass-card rounded-2xl p-8">
+              <div className="glass-card rounded-2xl p-8 pricing-card-free">
                 <h3 className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/70">Free</h3>
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-4xl font-extrabold text-foreground/90">₩0</span>
@@ -584,8 +646,8 @@ export default function LandingPage() {
 
             {/* Pro */}
             <FadeIn delay={100}>
-              <div className="gradient-border glass-card relative rounded-2xl p-8">
-                <div className="absolute -top-3 right-6 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-1 text-[11px] font-bold text-white shadow-lg shadow-purple-500/30">
+              <div className="gradient-border glass-card relative rounded-2xl p-8 pricing-card-pro">
+                <div className="absolute -top-3 right-6 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-1 text-[11px] font-bold text-white shadow-lg shadow-purple-500/30 animate-pulse-subtle">
                   추천
                 </div>
                 <h3 className="text-[13px] font-bold uppercase tracking-wider text-purple-400">Pro</h3>
@@ -655,6 +717,8 @@ export default function LandingPage() {
             © 2026 Haean. All rights reserved.
           </p>
           <div className="flex gap-6">
+            <a href="/terms" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">이용약관</a>
+            <a href="/privacy" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">개인정보처리방침</a>
             <a href="mailto:support@haean.app" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">문의</a>
           </div>
         </div>

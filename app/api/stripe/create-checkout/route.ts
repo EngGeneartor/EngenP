@@ -32,11 +32,8 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Determine the base URL for redirect URLs
-  const origin =
-    request.headers.get('origin') ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    'http://localhost:3000'
+  // Determine the base URL for redirect URLs (never trust user-controlled Origin header)
+  const origin = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
   // Look up existing Stripe customer ID if the user has one
   const db = createServerClient()
