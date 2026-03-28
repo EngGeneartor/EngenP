@@ -167,7 +167,7 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="dark relative min-h-screen overflow-x-hidden landing-page-root">
+    <div className="dark relative min-h-screen overflow-x-hidden" style={{ background: '#0a0118', color: '#f0eef5' }}>
       {/* Animated gradient mesh background */}
       <div className="landing-mesh-bg" aria-hidden="true" />
       <AmbientBackground />
