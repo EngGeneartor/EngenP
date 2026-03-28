@@ -9,10 +9,33 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { ThemeToggle } from "@/components/theme-toggle"
 import type { UploadedFile } from "@/lib/types"
 
+export interface MainContentContext {
+  passageText: string
+  passageTitle: string
+  questions: typeof sampleQuestionsShape
+}
+
+// Forward-declare shape type for the context callback (resolved below after sampleQuestions)
+type SampleQuestion = {
+  id: number
+  type: string
+  difficulty: number
+  question: string
+  content: string
+  options: string[]
+  answer: number
+  grammarPoint: string
+}
+
 interface MainContentProps {
   selectedFile: UploadedFile | null
   uploadedFiles: UploadedFile[]
+  onContextChange?: (ctx: { passageText: string; passageTitle: string; questions: SampleQuestion[] }) => void
 }
+
+// placeholder so the interface type resolves (will be inferred from sampleQuestions below)
+const sampleQuestionsShape: SampleQuestion[] = []
+void sampleQuestionsShape
 
 /* ═══ Sample Data (승규 원본) ═══ */
 

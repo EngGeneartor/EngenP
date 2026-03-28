@@ -10,7 +10,9 @@ import { ProjectHistory } from "@/components/project-history"
 import { AmbientBackground } from "@/components/ambient-background"
 import { supabase } from "@/lib/supabase"
 import type { User } from "@supabase/supabase-js"
-import type { UploadedFile } from "@/lib/types"
+import type { UploadedFile, StructuredPassage, GeneratedQuestion } from "@/lib/types"
+
+export type ProcessingStep = "idle" | "structurizing" | "generating" | "exporting" | "done"
 
 function DashboardContent() {
   const [user, setUser] = useState<User | null>(null)
@@ -19,6 +21,14 @@ function DashboardContent() {
   const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null)
   const [chatOpen, setChatOpen] = useState(true)
   const [historyCollapsed, setHistoryCollapsed] = useState(true)
+
+  // Pipeline state
+  const [structuredPassage, setStructuredPassage] = useState<StructuredPassage | null>(null)
+  const [generatedQuestions, setGeneratedQuestions] = useState<GeneratedQuestion[]>([])
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [processingStep, setProcessingStep] = useState<ProcessingStep>("idle")
+  const [pipelineError, setPipelineError] = useState<string | null>(null)
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const isDemo = searchParams.get("demo") === "true"
@@ -73,9 +83,26 @@ function DashboardContent() {
         setUploadedFiles={setUploadedFiles}
         selectedFile={selectedFile}
         onFileSelect={setSelectedFile}
+        isDemo={isDemo}
+        isProcessing={isProcessing}
+        processingStep={processingStep}
+        pipelineError={pipelineError}
+        onStructuredPassage={setStructuredPassage}
+        onGeneratedQuestions={setGeneratedQuestions}
+        onIsProcessing={setIsProcessing}
+        onProcessingStep={setProcessingStep}
+        onPipelineError={setPipelineError}
       />
       <div className="divider-v-gradient shrink-0" />
-      <MainContent selectedFile={selectedFile} uploadedFiles={uploadedFiles} />
+      <MainContent
+        selectedFile={selectedFile}
+        uploadedFiles={uploadedFiles}
+        structuredPassage={structuredPassage}
+        generatedQuestions={generatedQuestions}
+        isProcessing={isProcessing}
+        processingStep={processingStep}
+        isDemo={isDemo}
+      />
       {chatOpen ? (
         <>
           <div className="divider-v-gradient shrink-0" />
@@ -89,6 +116,7 @@ function DashboardContent() {
             </button>
             <AIChatSidebar
               userEmail={user?.email}
+              context={{ passage: structuredPassage, questions: generatedQuestions }}
               onSignOut={async () => {
                 await supabase.auth.signOut()
                 router.push("/")
