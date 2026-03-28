@@ -66,29 +66,33 @@ export function AmbientBackground() {
 
   const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const darkRef = useRef(true)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
   const isDark = mounted ? resolvedTheme === "dark" : true
+  darkRef.current = isDark
 
   // -----------------------------------------------------------------------
   // Initialise particles
   // -----------------------------------------------------------------------
   const initParticles = useCallback((w: number, h: number, dark: boolean) => {
-    const count = dark ? 80 : 55
+    const count = dark ? 120 : 55
     const particles: Particle[] = []
-    const colors = dark ? COLORS_DARK : COLORS_LIGHT
+    const colors = dark
+      ? ["#FFFFFF", "#E8DEFF", "#C4B5FD", "#A78BFA", "#8B5CF6", "#DDD6FE"]
+      : COLORS_LIGHT
 
     for (let i = 0; i < count; i++) {
       particles.push({
         x: rand(0, w),
         y: rand(0, h),
-        vx: rand(-0.3, 0.3),
-        vy: rand(-0.3, 0.3),
-        size: dark ? rand(1.2, 2.8) : rand(1.6, 3.2),
-        opacity: dark ? rand(0.25, 0.6) : rand(0.15, 0.35),
+        vx: rand(-0.2, 0.2),
+        vy: rand(-0.15, 0.15),
+        size: dark ? rand(1, 3.5) : rand(1.6, 3.2),
+        opacity: dark ? rand(0.4, 1.0) : rand(0.15, 0.35),
         color: colors[Math.floor(Math.random() * colors.length)],
       })
     }
@@ -375,12 +379,31 @@ export function AmbientBackground() {
         }
       }
 
-      // Draw particles
+      // Draw particles with glow (starfield effect)
       for (const p of particles) {
         const { r, g, b } = hexToRgb(p.color)
+
+        // Twinkle: modulate opacity with time
+        const twinkle = 0.5 + 0.5 * Math.sin(timeRef.current * 0.002 + p.x * 0.01 + p.y * 0.01)
+        const finalOpacity = p.opacity * (0.6 + twinkle * 0.4)
+
+        // Outer glow
+        if (p.size > 1.5 && darkRef.current) {
+          const glowRadius = p.size * 4
+          const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius)
+          gradient.addColorStop(0, `rgba(${r},${g},${b},${finalOpacity * 0.3})`)
+          gradient.addColorStop(0.5, `rgba(${r},${g},${b},${finalOpacity * 0.08})`)
+          gradient.addColorStop(1, `rgba(${r},${g},${b},0)`)
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2)
+          ctx.fillStyle = gradient
+          ctx.fill()
+        }
+
+        // Core dot
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${r},${g},${b},${p.opacity})`
+        ctx.fillStyle = `rgba(${r},${g},${b},${finalOpacity})`
         ctx.fill()
       }
     }
