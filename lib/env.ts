@@ -41,4 +41,5 @@ export const NEXT_PUBLIC_SUPABASE_ANON_KEY = requireEnv('NEXT_PUBLIC_SUPABASE_AN
 // ---------------------------------------------------------------------------
 export const ANTHROPIC_API_KEY = warnEnv('ANTHROPIC_API_KEY')
 export const SUPABASE_SERVICE_ROLE_KEY = warnEnv('SUPABASE_SERVICE_ROLE_KEY')
-export const STRIPE_SECRET_KEY = warnEnv('STRIPE_SECRET_KEY')
+export const TOSS_PAYMENTS_SECRET_KEY = warnEnv('TOSS_PAYMENTS_SECRET_KEY')
+export const NEXT_PUBLIC_TOSS_PAYMENTS_CLIENT_KEY = warnEnv('NEXT_PUBLIC_TOSS_PAYMENTS_CLIENT_KEY')

@@ -55,9 +55,9 @@ export default function PrivacyPage() {
                   </ul>
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground/75 mb-1">결제 시 수집 (Stripe 처리)</p>
+                  <p className="font-semibold text-foreground/75 mb-1">결제 시 수집 (토스페이먼츠 처리)</p>
                   <ul className="list-disc pl-5 space-y-0.5">
-                    <li>결제 카드 정보 (Stripe에서 직접 처리, 서비스 서버에 저장하지 않음)</li>
+                    <li>결제 카드 정보 (토스페이먼츠에서 직접 처리, 서비스 서버에 저장하지 않음)</li>
                     <li>결제 내역, 구독 상태</li>
                   </ul>
                 </div>
@@ -87,7 +87,7 @@ export default function PrivacyPage() {
                     <p className="text-[12.5px]">데이터베이스 호스팅, 사용자 인증(Authentication), 파일 저장소 제공</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="shrink-0 rounded-lg bg-indigo-500/10 px-2.5 py-1 text-[11px] font-bold text-indigo-400">Stripe</span>
+                    <span className="shrink-0 rounded-lg bg-indigo-500/10 px-2.5 py-1 text-[11px] font-bold text-indigo-400">토스페이먼츠</span>
                     <p className="text-[12.5px]">결제 처리, 구독 관리, 카드 정보 처리 (PCI DSS 준수)</p>
                   </div>
                   <div className="flex items-start gap-3">
@@ -118,7 +118,7 @@ export default function PrivacyPage() {
               <ul className="list-disc pl-5 space-y-1">
                 <li>전자적 파일: 복구 불가능한 방법으로 영구 삭제</li>
                 <li>데이터베이스 기록: Supabase에서 완전 삭제 처리</li>
-                <li>결제 정보: Stripe 내 고객 데이터 삭제 요청</li>
+                <li>결제 정보: 토스페이먼츠 내 고객 데이터 삭제 요청</li>
               </ul>
             </section>
 

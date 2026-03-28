@@ -4,8 +4,8 @@
  * components/upgrade-prompt.tsx
  *
  * Modal dialog shown when the user hits a free-tier limit or manually
- * clicks an upgrade button.  Clicking "업그레이드" calls
- * /api/stripe/create-checkout and redirects to Stripe Checkout.
+ * clicks an upgrade button.  Clicking "업그레이드" redirects to
+ * Toss Payments checkout page.
  * Clicking "나중에" dismisses the dialog.
  */
 
@@ -53,25 +53,29 @@ export function UpgradePrompt({ open, onClose, reason }: UpgradePromptProps) {
         return
       }
 
-      const res = await fetch("/api/stripe/create-checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
+      const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENTS_CLIENT_KEY
+      if (!clientKey) {
+        throw new Error("결제 설정이 완료되지 않았습니다.")
+      }
+
+      const userId = session.user?.id ?? "unknown"
+      const origin = window.location.origin
+      const orderId = `pro-${userId.slice(0, 8)}-${Date.now()}`
+
+      // Redirect to Toss Payments checkout page
+      const params = new URLSearchParams({
+        clientKey,
+        orderId,
+        orderName: "Abyss Pro 월간 구독",
+        amount: "29900",
+        currency: "KRW",
+        customerEmail: session.user?.email ?? "",
+        successUrl: `${origin}/payments/success`,
+        failUrl: `${origin}/payments/fail`,
+        method: "카드",
       })
 
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}))
-        throw new Error(body?.error ?? "결제 페이지를 열 수 없습니다.")
-      }
-
-      const { url } = await res.json()
-      if (url) {
-        window.location.href = url
-      } else {
-        throw new Error("결제 URL을 받지 못했습니다.")
-      }
+      window.location.href = `https://api.tosspayments.com/v1/payments?${params.toString()}`
     } catch (err) {
       setError(err instanceof Error ? err.message : "오류가 발생했습니다.")
       setLoading(false)
