@@ -160,7 +160,7 @@ export default function LandingPage() {
                 </div>
                 <button
                   onClick={async () => { await supabase.auth.signOut(); setUserEmail(null) }}
-                  className="rounded-lg p-2 text-foreground/30 transition-smooth hover:bg-red-500/10 hover:text-red-400"
+                  className="rounded-lg p-2 text-foreground/50 transition-smooth hover:bg-red-500/10 hover:text-red-400"
                   title="로그아웃"
                 >
                   <LogOut className="size-4" />
@@ -228,7 +228,7 @@ export default function LandingPage() {
         </FadeIn>
 
         <FadeIn delay={450}>
-          <p className="mt-5 text-[12px] text-foreground/40">카드 등록 없이 무료로 시작 · 매월 10회 무료 생성</p>
+          <p className="mt-5 text-[12px] text-foreground/60">카드 등록 없이 무료로 시작 · 매월 10회 무료 생성</p>
         </FadeIn>
 
         {/* Hero Dashboard Preview */}
@@ -244,7 +244,7 @@ export default function LandingPage() {
                     <div className="size-2.5 rounded-full bg-green-500/40" />
                   </div>
                   <div className="ml-4 flex-1 rounded-lg bg-muted/30 px-4 py-1.5">
-                    <span className="text-[11px] text-muted-foreground/40">app.engenp.com/dashboard</span>
+                    <span className="text-[11px] text-muted-foreground/65">app.engenp.com/dashboard</span>
                   </div>
                 </div>
                 {/* Mock dashboard */}
@@ -257,8 +257,8 @@ export default function LandingPage() {
                     </div>
                     <div className="space-y-2">
                       <div className="rounded-lg bg-purple-500/10 px-3 py-2"><span className="text-[10px] text-purple-600 dark:text-purple-300">타겟 지문 업로드</span></div>
-                      <div className="rounded-lg bg-muted/20 px-3 py-2"><span className="text-[10px] text-foreground/30">기출 스타일 분석</span></div>
-                      <div className="rounded-lg bg-muted/20 px-3 py-2"><span className="text-[10px] text-foreground/30">출제 옵션</span></div>
+                      <div className="rounded-lg bg-muted/20 px-3 py-2"><span className="text-[10px] text-foreground/50">기출 스타일 분석</span></div>
+                      <div className="rounded-lg bg-muted/20 px-3 py-2"><span className="text-[10px] text-foreground/50">출제 옵션</span></div>
                     </div>
                     <div className="mt-auto">
                       <div className="rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-3 py-2 text-center">
@@ -444,10 +444,10 @@ export default function LandingPage() {
                       </div>
                       <p className="text-[12px] font-semibold text-foreground/80 mb-2">밑줄 친 (A), (B)에서 어법에 맞는 표현으로 가장 적절한 것은?</p>
                       <div className="space-y-1">
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">① (A) refers - (B) is</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/65">① (A) refers - (B) is</div>
                         <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-700 dark:text-purple-300 font-medium">② (A) refers - (B) are ✓</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">③ (A) referring - (B) is</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">④ (A) referring - (B) are</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/65">③ (A) referring - (B) is</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/65">④ (A) referring - (B) are</div>
                       </div>
                     </div>
                   </div>
@@ -468,10 +468,10 @@ export default function LandingPage() {
                       <p className="text-[12px] font-semibold text-foreground/80 mb-2">다음 빈칸에 들어갈 말로 가장 적절한 것은?</p>
                       <div className="space-y-1">
                         <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-700 dark:text-purple-300 font-medium">① accumulating information ✓</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">② avoiding conflicts</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">③ expressing emotions</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">④ maintaining traditions</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/45">⑤ building relationships</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/65">② avoiding conflicts</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/65">③ expressing emotions</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/65">④ maintaining traditions</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-foreground/65">⑤ building relationships</div>
                       </div>
                     </div>
                   </div>
@@ -491,10 +491,10 @@ export default function LandingPage() {
                       </div>
                       <p className="text-[12px] font-semibold text-foreground/80 mb-2">밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?</p>
                       <div className="flex flex-wrap gap-1.5">
-                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">① perform</span>
-                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">② adapt</span>
-                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">③ valuable</span>
-                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/45">④ lack</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/65">① perform</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/65">② adapt</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/65">③ valuable</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-foreground/65">④ lack</span>
                         <span className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-2.5 py-1 text-[11px] text-purple-700 dark:text-purple-300 font-medium">⑤ succeed ✓</span>
                       </div>
                     </div>
@@ -505,7 +505,7 @@ export default function LandingPage() {
           </div>
 
           <FadeIn delay={400} className="mt-10 text-center">
-            <p className="text-[13px] text-foreground/40">
+            <p className="text-[13px] text-foreground/60">
               위 문제는 AI가 실제 지문을 분석하여 자동 생성한 예시입니다. 어법, 빈칸 추론, 어휘 등 10가지 유형을 지원합니다.
             </p>
           </FadeIn>
@@ -566,7 +566,7 @@ export default function LandingPage() {
                 <h3 className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground/70">Free</h3>
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-4xl font-extrabold text-foreground/90">₩0</span>
-                  <span className="text-[13px] text-muted-foreground/40">/월</span>
+                  <span className="text-[13px] text-muted-foreground/65">/월</span>
                 </div>
                 <ul className="mt-6 space-y-3">
                   {["매월 10회 생성", "5가지 기본 유형", "PDF/JPG 업로드", ".docx 추출"].map((item, i) => (
@@ -591,7 +591,7 @@ export default function LandingPage() {
                 <h3 className="text-[13px] font-bold uppercase tracking-wider text-purple-400">Pro</h3>
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-4xl font-extrabold text-gradient">₩29,900</span>
-                  <span className="text-[13px] text-muted-foreground/40">/월</span>
+                  <span className="text-[13px] text-muted-foreground/65">/월</span>
                 </div>
                 <ul className="mt-6 space-y-3">
                   {["무제한 생성", "10가지 전체 유형", "학교 기출 DNA 분석", "동형 모의고사 생성", "우선 처리 큐", "워크북 자동 생성"].map((item, i) => (

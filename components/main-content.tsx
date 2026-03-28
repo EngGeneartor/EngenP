@@ -35,11 +35,11 @@ function ImageViewer({ url, name }: { url: string; name: string }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-center gap-2 border-b border-border/20 py-3">
-        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/50 hover:text-foreground/80" onClick={() => setZoom(z => Math.max(25, z - 25))}><ZoomOut className="size-4" /></Button>
-        <span className="min-w-[50px] text-center text-[12px] font-medium text-foreground/50">{zoom}%</span>
-        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/50 hover:text-foreground/80" onClick={() => setZoom(z => Math.min(300, z + 25))}><ZoomIn className="size-4" /></Button>
+        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/65 hover:text-foreground/80" onClick={() => setZoom(z => Math.max(25, z - 25))}><ZoomOut className="size-4" /></Button>
+        <span className="min-w-[50px] text-center text-[12px] font-medium text-foreground/65">{zoom}%</span>
+        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/65 hover:text-foreground/80" onClick={() => setZoom(z => Math.min(300, z + 25))}><ZoomIn className="size-4" /></Button>
         <div className="mx-2 h-4 w-px bg-border/30" />
-        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/50 hover:text-foreground/80" onClick={() => setRotation(r => (r + 90) % 360)}><RotateCw className="size-4" /></Button>
+        <Button variant="ghost" size="icon" className="size-8 rounded-lg text-foreground/65 hover:text-foreground/80" onClick={() => setRotation(r => (r + 90) % 360)}><RotateCw className="size-4" /></Button>
       </div>
       <ScrollArea className="flex-1">
         <div className="flex min-h-full items-center justify-center p-8">
@@ -110,7 +110,7 @@ function ProcessingOverlay({ step }: { step: ProcessingStep }) {
       </div>
       <div className="text-center">
         <p className="text-[15px] font-bold text-foreground/70">{label}</p>
-        <p className="mt-1 text-[12px] text-foreground/40">Claude AI가 처리하고 있습니다</p>
+        <p className="mt-1 text-[12px] text-foreground/60">Claude AI가 처리하고 있습니다</p>
       </div>
       <div className="flex gap-1.5">
         {(["structurizing", "generating"] as ProcessingStep[]).map((s) => {
@@ -305,7 +305,7 @@ export function MainContent({
                         ].map((stat) => (
                           <div key={stat.label} className="rounded-xl bg-background/30 p-4 text-center">
                             <p className="text-2xl font-extrabold tracking-tight text-gradient">{stat.value}</p>
-                            <p className="mt-1 text-[11px] font-medium text-muted-foreground/50">{stat.label}</p>
+                            <p className="mt-1 text-[11px] font-medium text-muted-foreground/70">{stat.label}</p>
                           </div>
                         ))}
                       </div>
@@ -318,7 +318,7 @@ export function MainContent({
                             {structuredPassage.keyVocab.slice(0, 12).map((v, i) => (
                               <div key={i} className="group relative rounded-xl border border-border/20 bg-background/30 px-3 py-1.5">
                                 <span className="text-[12px] font-semibold text-foreground/70">{v.word}</span>
-                                <span className="ml-1.5 text-[10px] text-muted-foreground/50">{v.pos}</span>
+                                <span className="ml-1.5 text-[10px] text-muted-foreground/70">{v.pos}</span>
                                 {v.definitionKo && (
                                   <div className="absolute bottom-full left-0 z-10 mb-1.5 hidden rounded-xl border border-border/30 bg-background/95 px-3 py-2 shadow-xl group-hover:block">
                                     <p className="text-[11px] font-medium text-foreground/80">{v.definitionKo}</p>
@@ -340,7 +340,7 @@ export function MainContent({
                   </div>
                   <div>
                     <h3 className="text-[17px] font-bold text-foreground/70">지문을 생성해주세요</h3>
-                    <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/40">
+                    <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/60">
                       좌측에서 파일을 업로드하고<br />
                       &ldquo;문제 생성하기&rdquo; 버튼을 누르면<br />
                       AI가 지문을 분석합니다.
@@ -373,14 +373,14 @@ export function MainContent({
                   </div>
                   <div>
                     <h3 className="text-[17px] font-bold text-foreground/70">지문을 업로드해주세요</h3>
-                    <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/40">
+                    <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/60">
                       좌측에서 PDF, JPG, PNG, TXT 파일을 업로드하면<br />
                       여기에서 내용을 확인할 수 있습니다.
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
                     {["PDF", "JPG", "PNG", "TXT"].map(ext => (
-                      <span key={ext} className="pill border border-border/30 bg-muted/20 text-muted-foreground/50">{ext}</span>
+                      <span key={ext} className="pill border border-border/30 bg-muted/20 text-muted-foreground/70">{ext}</span>
                     ))}
                   </div>
                 </div>
@@ -408,7 +408,7 @@ export function MainContent({
                             <span className={`pill border ${getTypeColor(q.type_id)}`}>{getTypeLabel(q.type_id)}</span>
                             <span className={`pill border ${getDifficultyColor(q.difficulty)}`}>Lv.{q.difficulty}</span>
                             {q.test_point && (
-                              <span className="pill border border-border/20 bg-muted/15 text-muted-foreground/50">{q.test_point}</span>
+                              <span className="pill border border-border/20 bg-muted/15 text-muted-foreground/70">{q.test_point}</span>
                             )}
                           </div>
                           <p className="mb-3 text-[13px] font-semibold leading-relaxed text-foreground/85">{q.instruction}</p>
@@ -430,9 +430,9 @@ export function MainContent({
                                 return (
                                   <div
                                     key={optIdx}
-                                    className={`rounded-xl border px-4 py-2.5 text-[13px] transition-smooth ${isAnswer ? "border-purple-500/25 bg-purple-500/[0.07] text-purple-700 dark:text-purple-300 font-medium" : "border-border/15 text-foreground/50 hover:bg-muted/20"}`}
+                                    className={`rounded-xl border px-4 py-2.5 text-[13px] transition-smooth ${isAnswer ? "border-purple-500/25 bg-purple-500/[0.07] text-purple-700 dark:text-purple-300 font-medium" : "border-border/15 text-foreground/65 hover:bg-muted/20"}`}
                                   >
-                                    <span className="mr-2.5 font-semibold text-foreground/30">{circled}</span>
+                                    <span className="mr-2.5 font-semibold text-foreground/50">{circled}</span>
                                     {option}
                                   </div>
                                 )
@@ -447,10 +447,10 @@ export function MainContent({
                           )}
                         </div>
                         <div className="flex shrink-0 flex-col gap-0.5">
-                          <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/40 hover:text-red-400 hover:bg-red-500/10" onClick={() => handleDelete(q.question_number)}>
+                          <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/65 hover:text-red-400 hover:bg-red-500/10" onClick={() => handleDelete(q.question_number)}>
                             <Trash2 className="size-3.5" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/40 hover:text-indigo-400 hover:bg-indigo-500/10">
+                          <Button variant="ghost" size="icon" className="size-8 rounded-xl text-muted-foreground/65 hover:text-indigo-400 hover:bg-indigo-500/10">
                             <RefreshCw className="size-3.5" />
                           </Button>
                         </div>
@@ -466,7 +466,7 @@ export function MainContent({
                 </div>
                 <div>
                   <h3 className="text-[17px] font-bold text-foreground/70">생성된 문제가 없습니다</h3>
-                  <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/40">
+                  <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-foreground/60">
                     좌측에서 &ldquo;문제 생성하기&rdquo; 버튼을 누르면<br />
                     AI가 변형 문제를 생성합니다.
                   </p>
@@ -488,9 +488,9 @@ export function MainContent({
         )}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-[13px]">
-            <span className="font-medium text-foreground/50">총 {displayQuestions.length}문항</span>
+            <span className="font-medium text-foreground/65">총 {displayQuestions.length}문항</span>
             <span className="size-1 rounded-full bg-muted-foreground/20" />
-            <span className="font-medium text-foreground/50">평균 난이도 {avgDifficulty}</span>
+            <span className="font-medium text-foreground/65">평균 난이도 {avgDifficulty}</span>
           </div>
           <div className="flex items-center gap-2">
             {/* .docx download */}
@@ -500,7 +500,7 @@ export function MainContent({
               className={`btn-shine rounded-2xl px-5 py-5 text-[13px] font-bold text-white shadow-xl transition-smooth active:scale-[0.98] ${
                 displayQuestions.length > 0 && structuredPassage && !isExporting
                   ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 shadow-purple-500/15 hover:shadow-purple-500/25 hover:brightness-110"
-                  : "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
+                  : "bg-muted/30 text-foreground/50 shadow-none cursor-not-allowed"
               }`}
               size="lg"
             >
@@ -524,7 +524,7 @@ export function MainContent({
               className={`btn-shine rounded-2xl px-5 py-5 text-[13px] font-bold text-white shadow-xl transition-smooth active:scale-[0.98] ${
                 displayQuestions.length > 0 && structuredPassage && !isExporting
                   ? "bg-gradient-to-r from-teal-600 via-emerald-600 to-green-600 shadow-teal-500/15 hover:shadow-teal-500/25 hover:brightness-110"
-                  : "bg-muted/30 text-foreground/30 shadow-none cursor-not-allowed"
+                  : "bg-muted/30 text-foreground/50 shadow-none cursor-not-allowed"
               }`}
               size="lg"
             >

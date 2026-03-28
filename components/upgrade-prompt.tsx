@@ -97,7 +97,7 @@ export function UpgradePrompt({ open, onClose, reason }: UpgradePromptProps) {
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-xl p-2 text-foreground/30 transition-all hover:bg-muted/30 hover:text-foreground/60"
+          className="absolute right-4 top-4 rounded-xl p-2 text-foreground/50 transition-all hover:bg-muted/30 hover:text-foreground/60"
         >
           <X className="size-4" />
         </button>
@@ -128,7 +128,7 @@ export function UpgradePrompt({ open, onClose, reason }: UpgradePromptProps) {
           {/* Price */}
           <div className="mb-6 flex items-center justify-center gap-1.5">
             <span className="text-4xl font-extrabold text-gradient">₩29,900</span>
-            <span className="text-[13px] text-muted-foreground/50">/월</span>
+            <span className="text-[13px] text-muted-foreground/70">/월</span>
           </div>
 
           {/* Feature list */}
@@ -177,7 +177,7 @@ export function UpgradePrompt({ open, onClose, reason }: UpgradePromptProps) {
 
           <button
             onClick={onClose}
-            className="mt-3 flex w-full items-center justify-center rounded-xl py-3 text-[13px] font-medium text-foreground/40 transition-all hover:text-foreground/60"
+            className="mt-3 flex w-full items-center justify-center rounded-xl py-3 text-[13px] font-medium text-foreground/60 transition-all hover:text-foreground/60"
           >
             나중에
           </button>

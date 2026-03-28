@@ -131,8 +131,8 @@ function UsageBar({ label, used, limit, pct, limitReached }: UsageBarProps) {
     <div className="flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <TrendingUp className="size-3 text-foreground/30" />
-          <span className="text-[11px] font-medium text-foreground/50">{label}</span>
+          <TrendingUp className="size-3 text-foreground/65" />
+          <span className="text-[11px] font-medium text-foreground/65">{label}</span>
         </div>
         <span
           className={cn(

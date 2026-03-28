@@ -193,7 +193,7 @@ export default function LoginPage() {
             <button
               onClick={() => { if (!isLogin) switchMode() }}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
-                isLogin ? "bg-purple-500/20 text-purple-700 dark:text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
+                isLogin ? "bg-purple-500/20 text-purple-700 dark:text-purple-200 shadow-sm" : "text-foreground/60 hover:text-foreground/60"
               }`}
             >
               로그인
@@ -201,7 +201,7 @@ export default function LoginPage() {
             <button
               onClick={() => { if (isLogin) switchMode() }}
               className={`flex-1 rounded-xl py-2.5 text-[13px] font-bold transition-smooth ${
-                !isLogin ? "bg-purple-500/20 text-purple-700 dark:text-purple-200 shadow-sm" : "text-foreground/40 hover:text-foreground/60"
+                !isLogin ? "bg-purple-500/20 text-purple-700 dark:text-purple-200 shadow-sm" : "text-foreground/60 hover:text-foreground/60"
               }`}
             >
               회원가입
@@ -228,13 +228,13 @@ export default function LoginPage() {
             <div>
               <label className="mb-2 block text-[12px] font-bold text-foreground/70">이메일</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/30" />
+                <Mail className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/50" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-4 text-[13px] text-foreground placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
+                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-4 text-[13px] text-foreground placeholder:text-foreground/50 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
                 />
               </div>
             </div>
@@ -243,18 +243,18 @@ export default function LoginPage() {
             <div>
               <label className="mb-2 block text-[12px] font-bold text-foreground/70">비밀번호</label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/30" />
+                <Lock className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/50" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={isLogin ? "••••••••" : "8자 이상, 대소문자+숫자+특수문자"}
-                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-foreground placeholder:text-foreground/30 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
+                  className="w-full rounded-xl border border-border/40 bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-foreground placeholder:text-foreground/50 transition-smooth focus:border-purple-500/50 focus:bg-muted/30 focus:outline-none focus:ring-1 focus:ring-purple-500/20"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/35 transition-smooth hover:text-foreground/70"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/55 transition-smooth hover:text-foreground/70"
                 >
                   {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                 </button>
@@ -266,7 +266,7 @@ export default function LoginPage() {
                   {/* Strength bar */}
                   <div>
                     <div className="mb-1.5 flex items-center justify-between">
-                      <span className="text-[11px] font-medium text-foreground/40">비밀번호 강도</span>
+                      <span className="text-[11px] font-medium text-foreground/60">비밀번호 강도</span>
                       <span className={cn(
                         "text-[11px] font-bold",
                         strengthPercent <= 40 ? "text-red-400" :
@@ -291,11 +291,11 @@ export default function LoginPage() {
                         {ruleResults[i] ? (
                           <Check className="size-3.5 text-emerald-400" strokeWidth={3} />
                         ) : (
-                          <X className="size-3.5 text-foreground/20" strokeWidth={2} />
+                          <X className="size-3.5 text-foreground/45" strokeWidth={2} />
                         )}
                         <span className={cn(
                           "text-[11px] transition-smooth",
-                          ruleResults[i] ? "text-emerald-400/80 font-medium" : "text-foreground/30"
+                          ruleResults[i] ? "text-emerald-400/80 font-medium" : "text-foreground/50"
                         )}>
                           {rule.label}
                         </span>
@@ -311,14 +311,14 @@ export default function LoginPage() {
               <div>
                 <label className="mb-2 block text-[12px] font-bold text-foreground/70">비밀번호 확인</label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/30" />
+                  <Lock className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-foreground/50" />
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="비밀번호를 다시 입력해주세요"
                     className={cn(
-                      "w-full rounded-xl border bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-foreground placeholder:text-foreground/30 transition-smooth focus:bg-muted/30 focus:outline-none focus:ring-1",
+                      "w-full rounded-xl border bg-muted/20 py-3.5 pl-11 pr-12 text-[13px] text-foreground placeholder:text-foreground/50 transition-smooth focus:bg-muted/30 focus:outline-none focus:ring-1",
                       confirmPassword.length > 0
                         ? passwordsMatch
                           ? "border-emerald-500/40 focus:border-emerald-500/50 focus:ring-emerald-500/20"
@@ -329,7 +329,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/35 transition-smooth hover:text-foreground/70"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/55 transition-smooth hover:text-foreground/70"
                   >
                     {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>
@@ -379,7 +379,7 @@ export default function LoginPage() {
           {/* ── Social login divider ─────────────────────────────── */}
           <div className="mt-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-border/30" />
-            <span className="text-[12px] font-medium text-foreground/35">또는</span>
+            <span className="text-[12px] font-medium text-foreground/55">또는</span>
             <div className="h-px flex-1 bg-border/30" />
           </div>
 
@@ -424,7 +424,7 @@ export default function LoginPage() {
         </div>
 
         {/* Bottom text */}
-        <p className="mt-6 text-center text-[12px] text-foreground/40">
+        <p className="mt-6 text-center text-[12px] text-foreground/60">
           {isLogin ? "계정이 없으신가요?" : "이미 계정이 있으신가요?"}{" "}
           <button
             onClick={switchMode}
@@ -434,7 +434,7 @@ export default function LoginPage() {
           </button>
         </p>
 
-        <p className="mt-8 text-center text-[11px] text-foreground/30">
+        <p className="mt-8 text-center text-[11px] text-foreground/50">
           계속 진행하면 이용약관 및 개인정보처리방침에 동의하는 것으로 간주됩니다.
         </p>
       </div>
