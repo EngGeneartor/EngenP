@@ -1,44 +1,47 @@
 /**
  * generator.ts
- * Question Generation Service — server-side only.
+ * Question Generation Service -- server-side only.
  *
- * Takes a StructuredPassage and GenerationOptions, loads the appropriate
- * question-type templates from data/question_types/, assembles a rich
- * prompt, calls Claude, and returns a validated array of GeneratedQuestion.
+ * Implements the full AI pipeline with:
+ *   1. RAG: selectively load relevant question-type templates
+ *   2. Prompt Assembly: static system prompt + dynamic RAG-injected user message
+ *   3. Agent Loop: generate -> validate -> correct (with feedback)
+ *   4. Passage Fairness: ensure all parts of the passage are utilized
  *
- * Includes a self-correction loop: after initial generation, questions are
- * validated by Claude and any that fail are regenerated (up to MAX_CORRECTION_ROUNDS).
+ * Uses:
+ *   - rag.ts for selective template loading and few-shot examples
+ *   - prompt-builder.ts for prompt assembly (file-based system prompts)
+ *   - validator.ts for per-question detailed validation
+ *   - anthropic.ts for Claude API calls
  *
  * Public API:
- *   generateQuestions(passage, options) → GeneratedQuestion[]
+ *   generateQuestions(passage, options) -> GeneratedQuestion[]
  */
 
-import path from 'path'
-import fs from 'fs/promises'
 import {
-  createGenerateRequest,
-  createValidateRequest,
+  callClaude,
   extractJsonFromText,
   AnthropicServiceError,
 } from './anthropic'
+import { loadQuestionTypeContext, loadFewShotExamples } from './rag'
+import {
+  buildGenerateSystemPrompt,
+  buildGenerateUserMessage,
+  buildCorrectionMessage,
+} from './prompt-builder'
+import { validateQuestionsDetailed } from './validator'
 import type {
   StructuredPassage,
   GeneratedQuestion,
   GenerationOptions,
-  ValidationResult,
-  QuestionTypeTemplate,
+  DetailedValidationResult,
+  TypeContext,
   QuestionTypeId,
 } from '@/lib/types'
 
 // -----------------------------------------------------------
 // Constants
 // -----------------------------------------------------------
-
-/** Path to the directory containing question-type JSON templates */
-const QUESTION_TYPES_DIR = path.join(process.cwd(), 'data', 'question_types')
-
-/** Path to the directory containing system prompts (reserved for future use) */
-// const PROMPTS_DIR = path.join(process.cwd(), 'data', 'prompts')
 
 /** Maximum validation + regeneration rounds before giving up */
 const MAX_CORRECTION_ROUNDS = 2
@@ -48,6 +51,9 @@ const MAX_RETRIES = 3
 
 /** Base delay (ms) for exponential back-off */
 const RETRY_BASE_DELAY_MS = 800
+
+/** Number of few-shot examples to include per type */
+const FEW_SHOT_COUNT_PER_TYPE = 1
 
 // -----------------------------------------------------------
 // Error class
@@ -91,7 +97,7 @@ async function withRetry<T>(fn: () => Promise<T>, label: string): Promise<T> {
       const delay = RETRY_BASE_DELAY_MS * 2 ** (attempt - 1)
       console.warn(
         `[generator] ${label} failed (attempt ${attempt}/${MAX_RETRIES}), ` +
-          `retrying in ${delay}ms…`,
+          `retrying in ${delay}ms...`,
         err
       )
       await sleep(delay)
@@ -101,84 +107,7 @@ async function withRetry<T>(fn: () => Promise<T>, label: string): Promise<T> {
 }
 
 // -----------------------------------------------------------
-// Template loading
-// -----------------------------------------------------------
-
-/** In-process cache for loaded templates (avoid repeated disk reads) */
-const templateCache: Map<QuestionTypeId, QuestionTypeTemplate> = new Map()
-
-/**
- * Load a single question-type template from disk.
- * Results are cached in memory for the lifetime of the process.
- */
-async function loadTemplate(typeId: QuestionTypeId): Promise<QuestionTypeTemplate> {
-  if (templateCache.has(typeId)) {
-    return templateCache.get(typeId)!
-  }
-
-  const filePath = path.join(QUESTION_TYPES_DIR, `${typeId}.json`)
-  let raw: string
-  try {
-    raw = await fs.readFile(filePath, 'utf-8')
-  } catch (err) {
-    throw new GeneratorError(
-      `Question type template not found: "${typeId}" (expected at ${filePath})`,
-      'TEMPLATE_NOT_FOUND'
-    )
-  }
-
-  let template: QuestionTypeTemplate
-  try {
-    template = JSON.parse(raw) as QuestionTypeTemplate
-  } catch (err) {
-    throw new GeneratorError(
-      `Failed to parse template JSON for type "${typeId}": ${(err as Error).message}`,
-      'TEMPLATE_PARSE_ERROR'
-    )
-  }
-
-  // Basic sanity check
-  if (!template.type_id || !template.generation_rules || !template.output_schema) {
-    throw new GeneratorError(
-      `Template for type "${typeId}" is missing required fields (type_id, generation_rules, output_schema)`,
-      'TEMPLATE_INVALID'
-    )
-  }
-
-  templateCache.set(typeId, template)
-  return template
-}
-
-/**
- * Load all templates required for the given options.
- * Falls back gracefully: if a template is missing it is logged and skipped.
- */
-async function loadTemplates(options: GenerationOptions): Promise<QuestionTypeTemplate[]> {
-  const results: QuestionTypeTemplate[] = []
-  for (const typeId of options.types) {
-    try {
-      results.push(await loadTemplate(typeId))
-    } catch (err) {
-      if (err instanceof GeneratorError && err.code === 'TEMPLATE_NOT_FOUND') {
-        console.error(`[generator] Skipping unknown question type "${typeId}":`, err.message)
-      } else {
-        throw err
-      }
-    }
-  }
-
-  if (results.length === 0) {
-    throw new GeneratorError(
-      `None of the requested question types could be loaded: ${options.types.join(', ')}`,
-      'NO_TEMPLATES'
-    )
-  }
-
-  return results
-}
-
-// -----------------------------------------------------------
-// Output parsing + validation
+// Output parsing
 // -----------------------------------------------------------
 
 /**
@@ -235,71 +164,21 @@ function parseGeneratedQuestions(raw: string): GeneratedQuestion[] {
   return questions
 }
 
-/**
- * Parse the raw text from Claude into a ValidationResult.
- */
-function parseValidationResult(raw: string): ValidationResult {
-  let parsed: unknown
-  try {
-    parsed = extractJsonFromText(raw)
-  } catch (err) {
-    throw new GeneratorError(
-      `Failed to parse validation result JSON: ${(err as Error).message}`,
-      'VALIDATION_JSON_PARSE_ERROR',
-      /* retryable */ true
-    )
-  }
-
-  const result = parsed as ValidationResult
-  if (typeof result.valid !== 'boolean' || !Array.isArray(result.issues)) {
-    throw new GeneratorError(
-      'Validation result has unexpected shape (missing "valid" or "issues" fields)',
-      'VALIDATION_SHAPE_ERROR',
-      /* retryable */ true
-    )
-  }
-
-  // Ensure invalidQuestionNumbers is always an array
-  if (!Array.isArray(result.invalidQuestionNumbers)) {
-    result.invalidQuestionNumbers = result.issues
-      .filter((i) => i.severity === 'error')
-      .map((i) => i.questionNumber)
-  }
-
-  return result
-}
-
 // -----------------------------------------------------------
 // Self-correction loop helpers
 // -----------------------------------------------------------
 
 /**
- * Split a question list into passing and failing subsets.
+ * Split questions into passing and failing subsets based on validation.
  */
 function partitionByValidation(
   questions: GeneratedQuestion[],
-  invalidNumbers: number[]
-): { valid: GeneratedQuestion[]; invalid: GeneratedQuestion[] } {
-  const invalidSet = new Set(invalidNumbers)
+  failedResults: DetailedValidationResult[]
+): { valid: GeneratedQuestion[]; failed: GeneratedQuestion[] } {
+  const failedNumbers = new Set(failedResults.map((r) => r.question_number))
   return {
-    valid: questions.filter((q) => !invalidSet.has(q.question_number)),
-    invalid: questions.filter((q) => invalidSet.has(q.question_number)),
-  }
-}
-
-/**
- * Build GenerationOptions narrowed to the question types of the given
- * invalid questions, preserving count = number of invalid questions.
- */
-function buildRegenerationOptions(
-  baseOptions: GenerationOptions,
-  invalidQuestions: GeneratedQuestion[]
-): GenerationOptions {
-  const types = [...new Set(invalidQuestions.map((q) => q.type_id))]
-  return {
-    ...baseOptions,
-    types,
-    count: invalidQuestions.length,
+    valid: questions.filter((q) => !failedNumbers.has(q.question_number)),
+    failed: questions.filter((q) => failedNumbers.has(q.question_number)),
   }
 }
 
@@ -309,6 +188,204 @@ function buildRegenerationOptions(
  */
 function renumber(questions: GeneratedQuestion[], startNumber: number): GeneratedQuestion[] {
   return questions.map((q, idx) => ({ ...q, question_number: startNumber + idx }))
+}
+
+/**
+ * Merge corrected questions back into the question list, replacing
+ * the failed originals with the corrected versions.
+ */
+function mergeCorrections(
+  allQuestions: GeneratedQuestion[],
+  corrected: GeneratedQuestion[],
+  failedNumbers: Set<number>
+): GeneratedQuestion[] {
+  const validOriginals = allQuestions.filter(
+    (q) => !failedNumbers.has(q.question_number)
+  )
+  return renumber([...validOriginals, ...corrected], 1)
+}
+
+// -----------------------------------------------------------
+// Passage fairness check
+// -----------------------------------------------------------
+
+/**
+ * Check whether all paragraphs of the passage are utilized by at least
+ * one question. If not, log a warning (future: could trigger regeneration
+ * for underrepresented paragraphs).
+ */
+function checkPassageFairness(
+  questions: GeneratedQuestion[],
+  passage: StructuredPassage
+): void {
+  const totalParagraphs = passage.paragraphs.length
+  if (totalParagraphs <= 1) return // nothing to check
+
+  // Collect paragraph indices referenced in source_sentences
+  const referencedParagraphs = new Set<number>()
+  for (const q of questions) {
+    const sources = (q as any).source_sentences as
+      | Array<{ paragraph_index: number }>
+      | undefined
+    if (sources) {
+      for (const s of sources) {
+        referencedParagraphs.add(s.paragraph_index)
+      }
+    }
+  }
+
+  // Also check passage_with_markers for content from each paragraph
+  for (const q of questions) {
+    if (q.passage_with_markers) {
+      for (const para of passage.paragraphs) {
+        // Check if at least a significant portion of the paragraph appears
+        const firstSentence = para.sentences[0]?.text
+        if (firstSentence && q.passage_with_markers.includes(firstSentence.substring(0, 30))) {
+          referencedParagraphs.add(para.index)
+        }
+      }
+    }
+  }
+
+  const missingParagraphs = passage.paragraphs
+    .filter((p) => !referencedParagraphs.has(p.index))
+    .map((p) => p.index)
+
+  if (missingParagraphs.length > 0) {
+    console.warn(
+      `[generator] Passage fairness: paragraphs ${missingParagraphs.join(', ')} ` +
+        `are not referenced by any question. Consider adding questions that cover these sections.`
+    )
+  }
+}
+
+// -----------------------------------------------------------
+// Core pipeline
+// -----------------------------------------------------------
+
+/**
+ * The main generation pipeline with RAG, prompt assembly, and agent loop.
+ *
+ * @param passage         The structured passage to generate questions for
+ * @param typeContexts    RAG-loaded type contexts (pre-loaded by caller or loaded here)
+ * @param fewShotExamples Formatted few-shot examples string
+ * @param options         Generation options
+ */
+async function generateWithCorrection(
+  passage: StructuredPassage,
+  typeContexts: TypeContext[],
+  fewShotExamples: string,
+  options: GenerationOptions
+): Promise<GeneratedQuestion[]> {
+  // --- Step 1: Build prompts ---
+  const systemPrompt = await buildGenerateSystemPrompt()
+  const userMessage = buildGenerateUserMessage(
+    passage,
+    typeContexts,
+    fewShotExamples,
+    options
+  )
+
+  // --- Step 2: Initial generation ---
+  let questions = await withRetry(async () => {
+    const { raw } = await callClaude(systemPrompt, userMessage, 'generate')
+    return parseGeneratedQuestions(raw)
+  }, 'initial generation')
+
+  console.info(
+    `[generator] Generated ${questions.length} questions ` +
+      `(requested ${options.count}) for passage "${passage.id}"`
+  )
+
+  // --- Step 3: Validation + self-correction loop ---
+  for (let round = 1; round <= MAX_CORRECTION_ROUNDS; round++) {
+    // Validate current batch with detailed per-question analysis
+    let validationResults: DetailedValidationResult[]
+    try {
+      validationResults = await validateQuestionsDetailed(questions, passage)
+    } catch (err) {
+      console.warn(
+        `[generator] Validation round ${round} failed -- skipping correction:`,
+        err
+      )
+      break
+    }
+
+    // Separate failed questions
+    const failedResults = validationResults.filter(
+      (v) => v.overall_verdict === 'FAIL'
+    )
+
+    if (failedResults.length === 0) {
+      console.info(
+        `[generator] All questions passed validation after round ${round - 1} correction(s)`
+      )
+      break
+    }
+
+    console.warn(
+      `[generator] Correction round ${round}: ` +
+        `${failedResults.length} question(s) failed validation ` +
+        `(#${failedResults.map((r) => r.question_number).join(', ')})`
+    )
+
+    if (round === MAX_CORRECTION_ROUNDS) {
+      // Last round -- accept valid ones and log the remaining failures
+      const { valid: validQuestions } = partitionByValidation(
+        questions,
+        failedResults
+      )
+      console.error(
+        `[generator] Max correction rounds reached. ` +
+          `${failedResults.length} question(s) could not be corrected and will be excluded.`
+      )
+      questions = renumber(validQuestions, 1)
+      break
+    }
+
+    // --- Step 4: Re-generate only failed questions with feedback ---
+    const { valid: validQuestions, failed: failedQuestions } =
+      partitionByValidation(questions, failedResults)
+
+    // Build correction prompt with validation feedback
+    const correctionUserMessage = buildCorrectionMessage(
+      failedQuestions,
+      failedResults,
+      passage,
+      typeContexts
+    )
+
+    let corrected: GeneratedQuestion[]
+    try {
+      corrected = await withRetry(async () => {
+        const { raw } = await callClaude(
+          systemPrompt,
+          correctionUserMessage,
+          'generate'
+        )
+        return parseGeneratedQuestions(raw)
+      }, `correction round ${round}`)
+    } catch (err) {
+      console.error(
+        `[generator] Correction round ${round} failed -- keeping originals:`,
+        err
+      )
+      break
+    }
+
+    // Merge corrections and re-number
+    const failedNumbers = new Set(failedResults.map((r) => r.question_number))
+    questions = mergeCorrections(questions, corrected, failedNumbers)
+
+    console.info(
+      `[generator] After correction round ${round}: ${questions.length} question(s) in set`
+    )
+  }
+
+  // --- Step 5: Passage fairness check ---
+  checkPassageFairness(questions, passage)
+
+  return questions
 }
 
 // -----------------------------------------------------------
@@ -326,16 +403,16 @@ const DEFAULT_GENERATION_OPTIONS: GenerationOptions = {
 /**
  * Generate exam questions from a structured passage.
  *
- * Workflow:
- *  1. Load question-type templates from data/question_types/.
- *  2. Call Claude to generate questions.
- *  3. Parse and structurally validate Claude's output.
- *  4. Run a Claude validation pass (createValidateRequest).
- *  5. If any questions fail, regenerate only those (up to MAX_CORRECTION_ROUNDS).
- *  6. Return the final merged, re-numbered question list.
+ * Full pipeline:
+ *  1. RAG: Load only the relevant question-type templates and few-shot examples
+ *  2. Prompt Assembly: Build system prompt (from file) + dynamic user message
+ *  3. Generation: Call Claude with assembled prompts
+ *  4. Validation: Per-question 7-check detailed validation
+ *  5. Self-Correction: Re-generate failed questions with validation feedback
+ *  6. Fairness Check: Ensure all passage parts are utilized
  *
  * @param passage   The structured passage to generate questions for
- * @param options   Generation options (types, difficulty, count, …); can be partial
+ * @param options   Generation options (types, difficulty, count, ...); can be partial
  * @returns         Array of validated GeneratedQuestion objects
  */
 export async function generateQuestions(
@@ -347,101 +424,26 @@ export async function generateQuestions(
     ...DEFAULT_GENERATION_OPTIONS,
     ...options,
   }
-  // --- Step 1: Load templates ---
-  const templates = await loadTemplates(resolvedOptions)
 
-  // --- Step 2: Generate initial questions ---
-  let questions = await withRetry(async () => {
-    const { raw } = await createGenerateRequest(passage, templates, resolvedOptions)
-    return parseGeneratedQuestions(raw)
-  }, 'initial generation')
-
-  console.info(
-    `[generator] Generated ${questions.length} questions ` +
-      `(requested ${resolvedOptions.count}) for passage "${passage.id}"`
+  // --- RAG Step: Load only the relevant type contexts and examples ---
+  const typeContexts = await loadQuestionTypeContext(resolvedOptions.types)
+  const fewShotExamples = await loadFewShotExamples(
+    resolvedOptions.types,
+    FEW_SHOT_COUNT_PER_TYPE
   )
 
-  // --- Steps 3-5: Self-correction loop ---
-  for (let round = 1; round <= MAX_CORRECTION_ROUNDS; round++) {
-    // Validate current batch
-    let validationResult: ValidationResult
-    try {
-      validationResult = await withRetry(async () => {
-        const { raw } = await createValidateRequest(questions, passage)
-        return parseValidationResult(raw)
-      }, `validation round ${round}`)
-    } catch (err) {
-      console.warn(
-        `[generator] Validation round ${round} failed — skipping correction:`,
-        err
-      )
-      break
-    }
+  console.info(
+    `[generator] RAG loaded: ${typeContexts.length} type context(s), ` +
+      `few-shot examples for [${resolvedOptions.types.join(', ')}]`
+  )
 
-    if (validationResult.valid || validationResult.invalidQuestionNumbers.length === 0) {
-      console.info(`[generator] All questions valid after round ${round - 1} correction(s)`)
-      break
-    }
-
-    const { valid: validQuestions, invalid: invalidQuestions } = partitionByValidation(
-      questions,
-      validationResult.invalidQuestionNumbers
-    )
-
-    console.warn(
-      `[generator] Correction round ${round}: ` +
-        `${invalidQuestions.length} question(s) failed validation ` +
-        `(#${validationResult.invalidQuestionNumbers.join(', ')})`
-    )
-
-    if (round === MAX_CORRECTION_ROUNDS) {
-      // Last round — accept valid ones and log the remaining failures
-      console.error(
-        `[generator] Max correction rounds reached. ` +
-          `${invalidQuestions.length} question(s) could not be corrected and will be excluded.`
-      )
-      questions = validQuestions
-      break
-    }
-
-    // Regenerate invalid questions
-    const regenOptions = buildRegenerationOptions(resolvedOptions, invalidQuestions)
-    const regenTemplates = templates.filter((t) =>
-      regenOptions.types.includes(t.type_id)
-    )
-
-    let regenQuestions: GeneratedQuestion[]
-    try {
-      regenQuestions = await withRetry(async () => {
-        const { raw } = await createGenerateRequest(passage, regenTemplates, regenOptions)
-        return parseGeneratedQuestions(raw)
-      }, `regeneration round ${round}`)
-    } catch (err) {
-      console.error(`[generator] Regeneration round ${round} failed — keeping originals:`, err)
-      break
-    }
-
-    // Merge: keep valid originals + newly regenerated, then re-number sequentially
-    const merged = [
-      ...validQuestions,
-      ...regenQuestions,
-    ]
-    questions = renumber(merged, 1)
-
-    console.info(
-      `[generator] After correction round ${round}: ${questions.length} question(s) in set`
-    )
-  }
-
-  return questions
-}
-
-/**
- * Clear the in-memory template cache.
- * Useful in tests or when templates are updated at runtime.
- */
-export function clearTemplateCache(): void {
-  templateCache.clear()
+  // --- Run the generation pipeline with self-correction ---
+  return generateWithCorrection(
+    passage,
+    typeContexts,
+    fewShotExamples,
+    resolvedOptions
+  )
 }
 
 // -----------------------------------------------------------
@@ -451,7 +453,6 @@ export type {
   StructuredPassage,
   GeneratedQuestion,
   GenerationOptions,
-  ValidationResult,
-  QuestionTypeTemplate,
+  DetailedValidationResult,
   QuestionTypeId,
 } from '@/lib/types'
