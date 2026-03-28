@@ -111,6 +111,8 @@ interface LeftSidebarProps {
   onPipelineError?: (err: string | null) => void
   /** Authenticated user ID — used to render usage stats */
   userId?: string
+  /** Current project (passage) ID — files are scoped to this project */
+  currentProjectId?: string | null
   /** Current DNA profile (from Dashboard state) */
   dnaProfile?: SchoolDnaProfile | null
   /** Callback to update DNA profile in Dashboard state */
@@ -132,6 +134,7 @@ export function LeftSidebar({
   onProcessingStep,
   onPipelineError,
   userId,
+  currentProjectId,
   dnaProfile,
   onDnaProfile,
 }: LeftSidebarProps) {
@@ -154,16 +157,25 @@ export function LeftSidebar({
   const [isDnaDragging, setIsDnaDragging] = useState(false)
   const dnaFileInputRef = useRef<HTMLInputElement>(null)
 
-  // ─── Load persisted files from DB on mount ─────────────────────────────────
+  // ─── Load persisted files from DB (scoped to current project) ─────────────
 
   useEffect(() => {
     if (!userId) return
 
     const loadFiles = async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from("user_files")
         .select("*")
         .order("uploaded_at", { ascending: true })
+
+      if (currentProjectId) {
+        query = query.eq("project_id", currentProjectId)
+      } else {
+        // No project selected yet — show files with no project_id
+        query = query.is("project_id", null)
+      }
+
+      const { data, error } = await query
 
       if (error || !data) return
 
@@ -186,10 +198,13 @@ export function LeftSidebar({
       }))
 
       setUploadedFiles(files)
+      // Clear selected file if it no longer belongs to this project
+      onFileSelect(null)
     }
 
     loadFiles()
-  }, [userId])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, currentProjectId])
 
   const toggleType = (typeId: string) => {
     setSelectedTypes((prev) =>
@@ -254,6 +269,7 @@ export function LeftSidebar({
           public_url: urlData.publicUrl,
           file_type: file.type,
           file_size: file.size,
+          ...(currentProjectId ? { project_id: currentProjectId } : {}),
         })
         .select("id")
         .single()
@@ -282,7 +298,7 @@ export function LeftSidebar({
     } finally {
       setIsUploading(false)
     }
-  }, [uploadedFiles])
+  }, [uploadedFiles, currentProjectId])
 
   const deleteFile = async (file: UploadedFile) => {
     const { error: storageError } = await supabase.storage
@@ -343,8 +359,13 @@ export function LeftSidebar({
       reader.readAsDataURL(file)
     })
 
-  const DNA_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"]
-  const DNA_MAX_SIZE = 10 * 1024 * 1024 // 10MB per image
+  const DNA_ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"]
+  const DNA_ALLOWED_DOC_TYPES = [
+    "application/pdf",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ]
+  const DNA_ALLOWED_TYPES = [...DNA_ALLOWED_IMAGE_TYPES, ...DNA_ALLOWED_DOC_TYPES]
+  const DNA_MAX_SIZE = 20 * 1024 * 1024 // 20MB per file
 
   const handleDnaFiles = useCallback(async (files: File[]) => {
     setDnaError("")
@@ -353,11 +374,11 @@ export function LeftSidebar({
     // Validate all files
     for (const file of files) {
       if (!DNA_ALLOWED_TYPES.includes(file.type)) {
-        setDnaError("이미지 파일만 지원됩니다. (JPG, PNG, WEBP, GIF)")
+        setDnaError("지원하지 않는 파일 형식입니다. (JPG, PNG, WEBP, GIF, PDF, DOCX)")
         return
       }
       if (file.size > DNA_MAX_SIZE) {
-        setDnaError(`${file.name}: 파일 크기가 10MB를 초과합니다.`)
+        setDnaError(`${file.name}: 파일 크기가 20MB를 초과합니다.`)
         return
       }
     }
@@ -366,12 +387,33 @@ export function LeftSidebar({
     onDnaProfile?.(null)
 
     try {
-      // Convert all files to base64
+      const { data: { user } } = await supabase.auth.getUser()
+
+      // Build examFiles array — images as base64, docs uploaded to storage → URL
       const examFiles = await Promise.all(
-        files.map(async (file) => ({
-          base64: await fileToBase64(file),
-          mediaType: file.type as "image/jpeg" | "image/png" | "image/gif" | "image/webp",
-        }))
+        files.map(async (file) => {
+          if (DNA_ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            return {
+              base64: await fileToBase64(file),
+              mediaType: file.type as "image/jpeg" | "image/png" | "image/gif" | "image/webp",
+            }
+          }
+
+          // PDF or DOCX: upload to storage and get public URL
+          if (!user) throw new Error("로그인이 필요합니다.")
+          const ext = file.name.split('.').pop() || 'bin'
+          const safeName = `dna_${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`
+          const filePath = `${user.id}/dna/${safeName}`
+          const { error: uploadError } = await supabase.storage
+            .from("passages")
+            .upload(filePath, file)
+          if (uploadError) throw new Error(`파일 업로드 실패: ${uploadError.message}`)
+          const { data: urlData } = supabase.storage.from("passages").getPublicUrl(filePath)
+          return {
+            url: urlData.publicUrl,
+            urlMediaType: file.type as "application/pdf" | "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          }
+        })
       )
 
       const profile = await analyzeExamDna(examFiles)
@@ -382,6 +424,7 @@ export function LeftSidebar({
     } finally {
       setIsDnaAnalyzing(false)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onDnaProfile])
 
   const handleDnaFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -641,11 +684,11 @@ export function LeftSidebar({
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="pt-2">
-              {/* Hidden file input for DNA images */}
+              {/* Hidden file input for DNA files */}
               <input
                 ref={dnaFileInputRef}
                 type="file"
-                accept=".jpg,.jpeg,.png,.webp,.gif"
+                accept=".jpg,.jpeg,.png,.webp,.gif,.pdf,.docx"
                 multiple
                 onChange={handleDnaFileSelect}
                 className="hidden"
@@ -680,13 +723,13 @@ export function LeftSidebar({
                       <BarChart3 className={cn("size-4", isDnaDragging ? "text-indigo-400" : "text-indigo-400/80")} />
                     </div>
                     <p className="mt-2 text-[13px] font-medium text-foreground/80">
-                      {isDnaDragging ? "여기에 놓으세요!" : "기출 시험지 이미지 업로드"}
+                      {isDnaDragging ? "여기에 놓으세요!" : "기출 시험지 파일 업로드"}
                     </p>
                     <p className="mt-0.5 text-[11px] text-muted-foreground/60">
-                      JPG, PNG, WEBP (복수 선택 가능)
+                      JPG, PNG, WEBP, PDF, DOCX (복수 선택 가능)
                     </p>
                     <p className="mt-1 text-[10px] text-muted-foreground/65">
-                      이미지가 많을수록 분석 정확도 향상
+                      파일이 많을수록 분석 정확도 향상
                     </p>
                   </>
                 )}

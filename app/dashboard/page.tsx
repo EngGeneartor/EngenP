@@ -271,6 +271,7 @@ function DashboardContent() {
         dnaProfile={dnaProfile}
         onDnaProfile={setDnaProfile}
         userId={user?.id}
+        currentProjectId={currentPassageId}
       />
       <div className="divider-v-gradient shrink-0" />
       <MainContent
