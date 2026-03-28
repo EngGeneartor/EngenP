@@ -37,6 +37,14 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Input size validation
+  if (questions.length > 100) {
+    return NextResponse.json(
+      { error: 'questions array must not exceed 100 items' },
+      { status: 400, headers: rateLimitHeaders() }
+    )
+  }
+
   if (!passage) {
     return NextResponse.json(
       { error: 'passage is required' },

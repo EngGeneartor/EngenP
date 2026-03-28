@@ -32,6 +32,14 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Input size validation
+  if (files.length > 20) {
+    return NextResponse.json(
+      { error: 'files array must not exceed 20 items' },
+      { status: 400, headers: rateLimitHeaders() }
+    )
+  }
+
   // Validate each file entry
   const validMediaTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
   for (let i = 0; i < files.length; i++) {

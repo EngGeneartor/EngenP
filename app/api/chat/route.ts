@@ -92,6 +92,22 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Input size validation
+  if (messages.length > 100) {
+    return new Response(
+      JSON.stringify({ error: 'messages array must not exceed 100 items' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    )
+  }
+  for (const m of messages) {
+    if (typeof m.content === 'string' && m.content.length > 50_000) {
+      return new Response(
+        JSON.stringify({ error: 'Each message content must not exceed 50000 characters' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+  }
+
   const anthropic = new Anthropic()
 
   try {
