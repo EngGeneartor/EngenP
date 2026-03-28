@@ -10,6 +10,7 @@ export type Json =
   | Json[]
 
 export type Database = {
+  PostgrestVersion: "12"
   public: {
     Tables: {
       // ----------------------------------------------------------
