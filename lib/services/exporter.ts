@@ -853,6 +853,35 @@ export async function exportToJson(
   }
 }
 
+// ---------------------------------------------------------------------------
+// HWPX wrapper — adapts exportToHwpx (returns Buffer) to ExportResult
+// ---------------------------------------------------------------------------
+
+async function exportToHwpxResult(
+  questions: GeneratedQuestion[],
+  passage: StructuredPassage,
+  options: Partial<ExportOptions> = {}
+): Promise<ExportResult> {
+  const resolvedOptions: ExportOptions = {
+    format: 'hwpx',
+    includeAnswers:      options.includeAnswers      ?? false,
+    includeExplanations: options.includeExplanations ?? false,
+    schoolName: options.schoolName,
+    examTitle:  options.examTitle ?? passage.title ?? '영어 시험',
+    examDate:   options.examDate  ?? new Date().toISOString().slice(0, 10),
+  }
+
+  const buffer = await exportToHwpx(questions, passage, resolvedOptions)
+  const blob = new Blob([buffer], { type: 'application/hwp+zip' })
+
+  return {
+    blob,
+    filename:  buildFilename('exam', 'hwpx'),
+    mimeType:  'application/hwp+zip',
+    sizeBytes: blob.size,
+  }
+}
+
 /**
  * Dispatcher: route to the correct exporter based on options.format.
  *
@@ -872,14 +901,16 @@ export async function exportQuestions(
       return exportToDocx(questions, passage, options)
     case 'json':
       return exportToJson(questions, passage, options)
+    case 'hwpx':
+      return exportToHwpxResult(questions, passage, options)
     case 'pdf':
       throw new ExporterError(
-        'PDF export is not yet implemented. Use "docx" or "json" for now.',
+        'PDF export is not yet implemented. Use "docx", "hwpx", or "json" for now.',
         'PDF_NOT_IMPLEMENTED'
       )
     default:
       throw new ExporterError(
-        `Unknown export format: "${format}". Supported formats: docx, json`,
+        `Unknown export format: "${format}". Supported formats: docx, hwpx, json`,
         'UNKNOWN_FORMAT'
       )
   }
@@ -892,7 +923,7 @@ export async function exportQuestions(
 export interface ExportDocumentInput {
   questions: GeneratedQuestion[]
   passage: StructuredPassage
-  format?: 'docx' | 'json' | 'pdf'
+  format?: 'docx' | 'hwpx' | 'json' | 'pdf'
   options?: Partial<ExportOptions>
 }
 

@@ -18,7 +18,9 @@ import type {
   GeneratedQuestion,
   GenerationOptions,
   QuestionTypeId,
+  SchoolDnaProfile,
 } from '@/lib/types'
+import type { ExamFileInput, ExamMetadata } from '@/lib/services/dna-analyzer'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -144,17 +146,46 @@ export async function structurizeFile(fileUrl: string): Promise<StructuredPassag
  *
  * @param passage         Result from structurizeFile()
  * @param options         Generation options (types, difficulty, count)
+ * @param dnaProfile      Optional school DNA profile to bias generation style
  */
 export async function generateQuestions(
   passage: StructuredPassage,
-  options: Partial<GenerationOptions>
+  options: Partial<GenerationOptions>,
+  dnaProfile?: SchoolDnaProfile
 ): Promise<GeneratedQuestion[]> {
-  return apiFetch<GeneratedQuestion[]>('/api/generate', { passage, options })
+  return apiFetch<GeneratedQuestion[]>('/api/generate', { passage, options, dnaProfile })
+}
+
+/**
+ * Call /api/analyze-dna with base64-encoded exam paper images.
+ * Returns a SchoolDnaProfile extracted by Claude Vision.
+ *
+ * @param files     Array of { base64, mediaType } exam paper images
+ * @param metadata  Optional exam metadata (school name, grade, etc.)
+ */
+export async function analyzeExamDna(
+  files: ExamFileInput[],
+  metadata?: ExamMetadata
+): Promise<SchoolDnaProfile> {
+  return apiFetch<SchoolDnaProfile>('/api/analyze-dna', { files, metadata })
+}
+
+/**
+ * Trigger a browser download from an ArrayBuffer.
+ */
+function triggerDownload(buffer: ArrayBuffer, mimeType: string, filename: string): void {
+  const blob = new Blob([buffer], { type: mimeType })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(url)
 }
 
 /**
  * Call /api/export to produce a .docx ArrayBuffer, then trigger a browser
- * download.  Returns true on success.
+ * download.
  *
  * @param questions   Array of GeneratedQuestion from generateQuestions()
  * @param passage     The StructuredPassage the questions were generated from
@@ -165,20 +196,27 @@ export async function exportDocx(
   passage: StructuredPassage,
   filename = 'exam-questions.docx'
 ): Promise<void> {
-  const buffer = await apiFetchBinary('/api/export', {
-    questions,
-    passage,
-    format: 'docx',
-  })
+  const buffer = await apiFetchBinary('/api/export', { questions, passage, format: 'docx' })
+  triggerDownload(
+    buffer,
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    filename
+  )
+}
 
-  // Trigger browser download
-  const blob = new Blob([buffer], {
-    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  a.click()
-  URL.revokeObjectURL(url)
+/**
+ * Call /api/export to produce a .hwpx ArrayBuffer, then trigger a browser
+ * download.
+ *
+ * @param questions   Array of GeneratedQuestion from generateQuestions()
+ * @param passage     The StructuredPassage the questions were generated from
+ * @param filename    Optional custom filename (default: "exam-questions.hwpx")
+ */
+export async function exportHwpx(
+  questions: GeneratedQuestion[],
+  passage: StructuredPassage,
+  filename = 'exam-questions.hwpx'
+): Promise<void> {
+  const buffer = await apiFetchBinary('/api/export', { questions, passage, format: 'hwpx' })
+  triggerDownload(buffer, 'application/hwp+zip', filename)
 }

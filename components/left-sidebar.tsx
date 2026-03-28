@@ -4,13 +4,14 @@ import { useState, useRef, useCallback } from "react"
 import { Upload, FileText, BarChart3, Settings2, ChevronDown, Zap, Sparkles, LogOut, X, Loader2, CheckCircle2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { supabase } from "@/lib/supabase"
+import { UsageIndicator } from "@/components/usage-indicator"
 import { Slider } from "@/components/ui/slider"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
-import type { UploadedFile, StructuredPassage, GeneratedQuestion } from "@/lib/types"
-import { structurizeFile, generateQuestions, mapSidebarTypes } from "@/lib/api-client"
+import type { UploadedFile, StructuredPassage, GeneratedQuestion, SchoolDnaProfile } from "@/lib/types"
+import { structurizeFile, generateQuestions, analyzeExamDna, mapSidebarTypes } from "@/lib/api-client"
 import type { ProcessingStep } from "@/app/dashboard/page"
 
 const questionTypes = [
@@ -108,6 +109,12 @@ interface LeftSidebarProps {
   onIsProcessing?: (v: boolean) => void
   onProcessingStep?: (step: ProcessingStep) => void
   onPipelineError?: (err: string | null) => void
+  /** Authenticated user ID — used to render usage stats */
+  userId?: string
+  /** Current DNA profile (from Dashboard state) */
+  dnaProfile?: SchoolDnaProfile | null
+  /** Callback to update DNA profile in Dashboard state */
+  onDnaProfile?: (profile: SchoolDnaProfile | null) => void
 }
 
 export function LeftSidebar({
@@ -124,6 +131,9 @@ export function LeftSidebar({
   onIsProcessing,
   onProcessingStep,
   onPipelineError,
+  userId,
+  dnaProfile,
+  onDnaProfile,
 }: LeftSidebarProps) {
   const [difficulty, setDifficulty] = useState([3])
   const [questionCount, setQuestionCount] = useState([5])
@@ -137,6 +147,12 @@ export function LeftSidebar({
   const [uploadError, setUploadError] = useState("")
   const [isDragging, setIsDragging] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // DNA analysis state
+  const [isDnaAnalyzing, setIsDnaAnalyzing] = useState(false)
+  const [dnaError, setDnaError] = useState("")
+  const [isDnaDragging, setIsDnaDragging] = useState(false)
+  const dnaFileInputRef = useRef<HTMLInputElement>(null)
 
   const toggleType = (typeId: string) => {
     setSelectedTypes((prev) =>
@@ -244,6 +260,91 @@ export function LeftSidebar({
     setIsDragging(false)
   }
 
+  // ─── DNA Analysis ─────────────────────────────────────────────────────────
+
+  /**
+   * Convert a File to base64 string (no data-URL prefix).
+   */
+  const fileToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const result = reader.result as string
+        // Strip the "data:<mime>;base64," prefix
+        resolve(result.split(',')[1])
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
+
+  const DNA_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"]
+  const DNA_MAX_SIZE = 10 * 1024 * 1024 // 10MB per image
+
+  const handleDnaFiles = useCallback(async (files: File[]) => {
+    setDnaError("")
+    if (files.length === 0) return
+
+    // Validate all files
+    for (const file of files) {
+      if (!DNA_ALLOWED_TYPES.includes(file.type)) {
+        setDnaError("이미지 파일만 지원됩니다. (JPG, PNG, WEBP, GIF)")
+        return
+      }
+      if (file.size > DNA_MAX_SIZE) {
+        setDnaError(`${file.name}: 파일 크기가 10MB를 초과합니다.`)
+        return
+      }
+    }
+
+    setIsDnaAnalyzing(true)
+    onDnaProfile?.(null)
+
+    try {
+      // Convert all files to base64
+      const examFiles = await Promise.all(
+        files.map(async (file) => ({
+          base64: await fileToBase64(file),
+          mediaType: file.type as "image/jpeg" | "image/png" | "image/gif" | "image/webp",
+        }))
+      )
+
+      const profile = await analyzeExamDna(examFiles)
+      onDnaProfile?.(profile)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "DNA 분석 중 오류가 발생했습니다."
+      setDnaError(msg)
+    } finally {
+      setIsDnaAnalyzing(false)
+    }
+  }, [onDnaProfile])
+
+  const handleDnaFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+      handleDnaFiles(Array.from(files))
+    }
+    if (dnaFileInputRef.current) dnaFileInputRef.current.value = ""
+  }
+
+  const handleDnaDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDnaDragging(false)
+    const files = e.dataTransfer.files
+    if (files) {
+      handleDnaFiles(Array.from(files))
+    }
+  }, [handleDnaFiles])
+
+  const handleDnaDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDnaDragging(true)
+  }
+
+  const handleDnaDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    setIsDnaDragging(false)
+  }
+
   // ─── Generate Pipeline ─────────────────────────────────────────────────────
 
   const handleGenerate = async () => {
@@ -279,14 +380,18 @@ export function LeftSidebar({
       const passage = await structurizeFile(targetFile.publicUrl)
       onStructuredPassage?.(passage)
 
-      // Step 2: Generate questions
+      // Step 2: Generate questions (pass DNA profile if available)
       onProcessingStep?.("generating")
       const mappedTypes = mapSidebarTypes(selectedTypes)
-      const questions = await generateQuestions(passage, {
-        types: mappedTypes.length > 0 ? mappedTypes : undefined,
-        difficulty: difficulty[0],
-        count: questionCount[0],
-      })
+      const questions = await generateQuestions(
+        passage,
+        {
+          types: mappedTypes.length > 0 ? mappedTypes : undefined,
+          difficulty: difficulty[0],
+          count: questionCount[0],
+        },
+        dnaProfile ?? undefined
+      )
       onGeneratedQuestions?.(questions)
       onProcessingStep?.("done")
     } catch (err) {
@@ -445,7 +550,7 @@ export function LeftSidebar({
             </CollapsibleContent>
           </Collapsible>
 
-          {/* Past Exam Style Analysis */}
+          {/* Past Exam Style Analysis (DNA) */}
           <Collapsible
             open={sectionsOpen.analysis}
             onOpenChange={(open) => setSectionsOpen((s) => ({ ...s, analysis: open }))}
@@ -457,25 +562,151 @@ export function LeftSidebar({
                 </div>
                 <span>기출 스타일 분석</span>
               </div>
-              <ChevronDown
-                className={cn(
-                  "size-4 text-muted-foreground/50 transition-transform duration-300",
-                  sectionsOpen.analysis && "rotate-180"
+              <div className="flex items-center gap-2">
+                {dnaProfile && (
+                  <span className="pill border border-indigo-500/20 bg-indigo-500/10 text-indigo-400">적용됨</span>
                 )}
-              />
+                <ChevronDown
+                  className={cn(
+                    "size-4 text-muted-foreground/50 transition-transform duration-300",
+                    sectionsOpen.analysis && "rotate-180"
+                  )}
+                />
+              </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="pt-2">
-              <div className="rounded-2xl border border-dashed border-border/60 bg-muted/20 p-4 text-center transition-smooth hover:border-indigo-500/40 hover:bg-indigo-500/[0.03]">
-                <div className="mx-auto flex size-9 items-center justify-center rounded-xl bg-indigo-500/15">
-                  <BarChart3 className="size-4 text-indigo-400" />
-                </div>
-                <p className="mt-2 text-xs font-medium text-foreground/70">
-                  과거 기출 파일 업로드
-                </p>
-                <p className="mt-0.5 text-[11px] text-muted-foreground/60">
-                  AI가 출제 스타일을 분석합니다
-                </p>
+              {/* Hidden file input for DNA images */}
+              <input
+                ref={dnaFileInputRef}
+                type="file"
+                accept=".jpg,.jpeg,.png,.webp,.gif"
+                multiple
+                onChange={handleDnaFileSelect}
+                className="hidden"
+              />
+
+              {/* DNA Drop zone */}
+              <div
+                onClick={() => !isDnaAnalyzing && dnaFileInputRef.current?.click()}
+                onDrop={handleDnaDrop}
+                onDragOver={handleDnaDragOver}
+                onDragLeave={handleDnaDragLeave}
+                className={cn(
+                  "cursor-pointer rounded-2xl border border-dashed p-4 text-center transition-smooth",
+                  isDnaDragging
+                    ? "border-indigo-500 bg-indigo-500/10"
+                    : "border-border/60 bg-muted/20 hover:border-indigo-500/40 hover:bg-indigo-500/[0.03]",
+                  isDnaAnalyzing && "pointer-events-none opacity-60"
+                )}
+              >
+                {isDnaAnalyzing ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <Loader2 className="size-7 animate-spin text-indigo-400" />
+                    <p className="text-[12px] font-medium text-indigo-700 dark:text-indigo-300">DNA 분석 중...</p>
+                    <p className="text-[11px] text-muted-foreground/60">시험지를 분석하고 있습니다</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className={cn(
+                      "mx-auto flex size-9 items-center justify-center rounded-xl bg-gradient-to-br transition-smooth",
+                      isDnaDragging ? "from-indigo-500/30 to-blue-500/30" : "from-indigo-500/15 to-blue-500/15"
+                    )}>
+                      <BarChart3 className={cn("size-4", isDnaDragging ? "text-indigo-400" : "text-indigo-400/80")} />
+                    </div>
+                    <p className="mt-2 text-[13px] font-medium text-foreground/80">
+                      {isDnaDragging ? "여기에 놓으세요!" : "기출 시험지 이미지 업로드"}
+                    </p>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground/60">
+                      JPG, PNG, WEBP (복수 선택 가능)
+                    </p>
+                    <p className="mt-1 text-[10px] text-muted-foreground/40">
+                      이미지가 많을수록 분석 정확도 향상
+                    </p>
+                  </>
+                )}
               </div>
+
+              {/* DNA Error */}
+              {dnaError && (
+                <div className="mt-2 flex items-center gap-2 rounded-xl bg-red-500/10 border border-red-500/15 px-3 py-2">
+                  <X className="size-3.5 shrink-0 text-red-400" />
+                  <p className="text-[11px] text-red-700 dark:text-red-300">{dnaError}</p>
+                </div>
+              )}
+
+              {/* DNA Profile Summary (when analysis is done) */}
+              {dnaProfile && !isDnaAnalyzing && (
+                <div className="mt-2.5 rounded-2xl border border-indigo-500/20 bg-indigo-500/[0.06] p-3.5">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-3.5 text-indigo-400" />
+                      <span className="text-[12px] font-semibold text-indigo-700 dark:text-indigo-300">
+                        DNA 분석 완료
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => { onDnaProfile?.(null); setDnaError("") }}
+                      className="text-[10px] text-muted-foreground/40 hover:text-red-400 transition-smooth"
+                    >
+                      초기화
+                    </button>
+                  </div>
+
+                  {/* Confidence badge */}
+                  <div className="flex items-center gap-1.5 mb-2.5">
+                    <span className={cn(
+                      "rounded-md px-2 py-0.5 text-[10px] font-bold",
+                      dnaProfile.analysis_basis.confidence_level === "HIGH"
+                        ? "bg-emerald-500/15 text-emerald-400"
+                        : dnaProfile.analysis_basis.confidence_level === "MEDIUM"
+                        ? "bg-yellow-500/15 text-yellow-400"
+                        : "bg-red-500/15 text-red-400"
+                    )}>
+                      신뢰도: {dnaProfile.analysis_basis.confidence_level}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground/50">
+                      {dnaProfile.analysis_basis.total_exams_analyzed}회 시험 · {dnaProfile.analysis_basis.total_questions_analyzed}문항
+                    </span>
+                  </div>
+
+                  {/* Key stats */}
+                  <div className="flex flex-col gap-1.5 text-[11px]">
+                    {dnaProfile.school_name && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground/60">학교</span>
+                        <span className="font-medium text-foreground/70 truncate max-w-[140px]">{dnaProfile.school_name}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground/60">평균 난이도</span>
+                      <span className="font-medium text-foreground/70">{dnaProfile.average_difficulty.toFixed(1)}/5</span>
+                    </div>
+                    {dnaProfile.preferred_question_types.length > 0 && (
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-muted-foreground/60 shrink-0">선호 유형</span>
+                        <span className="font-medium text-foreground/70 text-right">
+                          {dnaProfile.preferred_question_types.slice(0, 3).join(', ')}
+                        </span>
+                      </div>
+                    )}
+                    {dnaProfile.grammar_focus.top_grammar_points.length > 0 && (
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-muted-foreground/60 shrink-0">문법 집중</span>
+                        <span className="font-medium text-foreground/70 text-right">
+                          {dnaProfile.grammar_focus.top_grammar_points
+                            .slice(0, 2)
+                            .map((g) => g.grammar_point_ko)
+                            .join(', ')}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="mt-2.5 text-[10px] text-indigo-600/70 dark:text-indigo-400/60">
+                    다음 문제 생성 시 이 스타일이 자동 적용됩니다
+                  </p>
+                </div>
+              )}
             </CollapsibleContent>
           </Collapsible>
 
@@ -628,6 +859,18 @@ export function LeftSidebar({
             : "파일을 업로드하면 문제를 생성할 수 있습니다"
           }
         </p>
+
+        {/* Usage indicator — only shown for logged-in non-demo users */}
+        {userId && !isDemo && (
+          <div className="mt-4 rounded-2xl border border-border/20 bg-muted/10 px-3 py-3">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-foreground/30">이번 달 사용량</p>
+            <UsageIndicator
+              userId={userId}
+              onUpgradeClick={() => window.location.href = "/pricing/"}
+            />
+          </div>
+        )}
+
         <button
           onClick={async () => {
             await supabase.auth.signOut()
