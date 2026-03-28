@@ -22,13 +22,15 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  metadataBase: new URL('https://haean.vercel.app'),
   openGraph: {
     title: 'Haean - AI 영어 내신 변형 문제 생성기',
     description: '시험 지문을 넣으면 변형 문제가 나온다. 모의고사, 교과서, 추가지문을 업로드하면 AI가 고품질 변형 문제를 자동 생성합니다.',
+    url: 'https://haean.vercel.app',
     siteName: 'Haean',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://haean.vercel.app/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Haean - AI 영어 내신 변형 문제 생성기',
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Haean - AI 영어 내신 변형 문제 생성기',
     description: '시험 지문을 넣으면 변형 문제가 나온다.',
-    images: ['/og-image.png'],
+    images: ['https://haean.vercel.app/og-image.png'],
   },
 }
 
