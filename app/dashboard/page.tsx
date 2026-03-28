@@ -53,6 +53,7 @@ function DashboardContent() {
   const searchParams = useSearchParams()
   const isDemo = searchParams.get("demo") === "true"
   const upgraded = searchParams.get("upgraded") === "true"
+  const wantsUpgrade = searchParams.get("upgrade") === "true"
 
   // ─── Auth ────────────────────────────────────────────────────────────────────
 
@@ -101,6 +102,13 @@ function DashboardContent() {
       setUserPlan("pro")
     }
   }, [upgraded])
+
+  // Open upgrade prompt when redirected from usage indicator
+  useEffect(() => {
+    if (wantsUpgrade && userPlan === "free") {
+      setUpgradePromptOpen(true)
+    }
+  }, [wantsUpgrade, userPlan])
 
   const openUpgradePrompt = (reason?: string) => {
     setUpgradeReason(reason)

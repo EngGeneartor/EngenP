@@ -655,9 +655,7 @@ export default function LandingPage() {
             © 2026 Haean. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">이용약관</a>
-            <a href="#" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">개인정보처리방침</a>
-            <a href="#" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">문의</a>
+            <a href="mailto:support@haean.app" className="text-[12px] text-muted-foreground/50 transition-smooth hover:text-foreground/60">문의</a>
           </div>
         </div>
       </footer>
