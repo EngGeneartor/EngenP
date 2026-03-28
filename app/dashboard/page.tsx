@@ -63,30 +63,42 @@ function DashboardContent() {
       return
     }
 
-    // Use onAuthStateChange as the PRIMARY auth check
-    // This handles both initial session recovery and subsequent changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session?.user) {
-        // Give Supabase a moment to recover session from storage
-        // Only redirect if there's truly no session after a brief wait
-        setTimeout(() => {
-          supabase.auth.getSession().then(({ data: { session: s } }) => {
-            if (!s?.user) {
-              window.location.href = "/login"
-            } else {
-              setUser(s.user)
-              setLoading(false)
-            }
-          })
-        }, 500)
-      } else {
+    let redirectTimer: NodeJS.Timeout | null = null
+
+    // Step 1: Check existing session first
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("[dashboard] getSession:", !!session?.user)
+      if (session?.user) {
         setUser(session.user)
         setLoading(false)
+      } else {
+        // No session yet — wait a bit then redirect
+        // (gives time for onAuthStateChange to fire with recovered session)
+        redirectTimer = setTimeout(() => {
+          console.log("[dashboard] no session after timeout, redirecting to login")
+          window.location.href = "/login"
+        }, 2000)
       }
     })
 
-    return () => subscription.unsubscribe()
-  }, [router, isDemo])
+    // Step 2: Listen for auth changes (handles sign-in, sign-out, token refresh)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log("[dashboard] onAuthStateChange:", _event, !!session?.user)
+      if (session?.user) {
+        // Cancel redirect if session recovered
+        if (redirectTimer) { clearTimeout(redirectTimer); redirectTimer = null }
+        setUser(session.user)
+        setLoading(false)
+      } else if (_event === "SIGNED_OUT") {
+        window.location.href = "/login"
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+      if (redirectTimer) clearTimeout(redirectTimer)
+    }
+  }, [isDemo])
 
   // Mark plan as pro immediately when redirected back after Toss Payments checkout
   useEffect(() => {
