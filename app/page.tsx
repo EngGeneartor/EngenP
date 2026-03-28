@@ -167,11 +167,13 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <div className="relative min-h-screen bg-background overflow-x-hidden">
+    <div className="dark relative min-h-screen overflow-x-hidden landing-page-root">
+      {/* Animated gradient mesh background */}
+      <div className="landing-mesh-bg" aria-hidden="true" />
       <AmbientBackground />
 
       {/* ═══ Navigation ═══ */}
-      <nav className="fixed top-0 z-50 w-full sidebar-glass">
+      <nav className="fixed top-0 z-50 w-full landing-nav">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="/" onClick={(e) => { e.preventDefault(); window.location.reload() }} className="flex items-center gap-2.5 cursor-pointer">
             <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 glow-sm">
@@ -180,21 +182,21 @@ export default function LandingPage() {
             <span className="text-lg font-extrabold tracking-tight text-gradient-bright">Haean</span>
           </a>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-[13px] font-medium text-gray-700 dark:text-gray-300 transition-smooth hover:text-purple-600 dark:hover:text-purple-400">기능</a>
-            <a href="#how-it-works" className="text-[13px] font-medium text-gray-700 dark:text-gray-300 transition-smooth hover:text-purple-600 dark:hover:text-purple-400">사용 방법</a>
-            <a href="#pricing" className="text-[13px] font-medium text-gray-700 dark:text-gray-300 transition-smooth hover:text-purple-600 dark:hover:text-purple-400">요금</a>
+            <a href="#features" className="text-[13px] font-medium text-gray-300 transition-smooth hover:text-purple-400">기능</a>
+            <a href="#how-it-works" className="text-[13px] font-medium text-gray-300 transition-smooth hover:text-purple-400">사용 방법</a>
+            <a href="#pricing" className="text-[13px] font-medium text-gray-300 transition-smooth hover:text-purple-400">요금</a>
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
             {userEmail ? (
               <>
-                <div className="flex items-center gap-2 rounded-xl bg-muted/30 px-3 py-2">
+                <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-3 py-2">
                   <User className="size-3.5 text-purple-400" />
-                  <span className="text-[12px] font-medium text-gray-600 dark:text-gray-300">{userEmail}</span>
+                  <span className="text-[12px] font-medium text-gray-300">{userEmail}</span>
                 </div>
                 <button
                   onClick={async () => { await supabase.auth.signOut(); setUserEmail(null) }}
-                  className="rounded-lg p-2 text-gray-500 dark:text-gray-400 transition-smooth hover:bg-red-500/10 hover:text-red-400"
+                  className="rounded-lg p-2 text-gray-400 transition-smooth hover:bg-red-500/10 hover:text-red-400"
                   title="로그아웃"
                 >
                   <LogOut className="size-4" />
@@ -202,7 +204,7 @@ export default function LandingPage() {
               </>
             ) : (
               <>
-                <Link href="/login" className="text-[13px] font-semibold text-gray-700 dark:text-gray-300 transition-smooth hover:text-purple-600 dark:hover:text-purple-400 px-4 py-2">
+                <Link href="/login" className="text-[13px] font-semibold text-gray-300 transition-smooth hover:text-purple-400 px-4 py-2">
                   로그인
                 </Link>
                 <Link
@@ -227,22 +229,22 @@ export default function LandingPage() {
         </div>
 
         <FadeIn>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-purple-500/[0.06] px-4 py-1.5">
-            <Sparkles className="size-3.5 text-purple-500 dark:text-purple-400" />
-            <span className="text-[12px] font-semibold text-purple-600 dark:text-purple-300">AI 기반 영어 내신 대비 솔루션</span>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-400/30 bg-purple-500/10 px-4 py-1.5">
+            <Sparkles className="size-3.5 text-purple-400" />
+            <span className="text-[12px] font-semibold text-purple-300">AI 기반 영어 내신 대비 솔루션</span>
           </div>
         </FadeIn>
 
         <FadeIn delay={100}>
           <h1 className="max-w-4xl text-5xl font-extrabold leading-[1.15] tracking-tight md:text-7xl">
-            <span className="text-foreground">시험 지문을 넣으면</span>
+            <span className="text-white">시험 지문을 넣으면</span>
             <br />
             <span className="hero-gradient-text">변형 문제가 나온다</span>
           </h1>
         </FadeIn>
 
         <FadeIn delay={200}>
-          <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-gray-600 dark:text-gray-400 md:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-gray-400 md:text-lg">
             모의고사, 교과서, 추가지문을 업로드하면 AI가 분석하여
             <br className="hidden md:block" />
             고품질 변형 문제, 워크북, 동형 모의고사를 자동으로 생성합니다.
@@ -260,7 +262,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/dashboard?demo=true"
-              className="flex items-center gap-2 rounded-2xl border border-purple-300/40 dark:border-border/40 bg-purple-50/50 dark:bg-muted/20 px-8 py-4 text-[15px] font-semibold text-gray-700 dark:text-gray-300 transition-smooth hover:bg-purple-100/60 dark:hover:bg-muted/40 hover:text-purple-700 dark:hover:text-purple-300"
+              className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-[15px] font-semibold text-gray-300 transition-smooth hover:bg-white/10 hover:text-white"
             >
               데모 체험하기
               <ChevronRight className="size-4" />
@@ -269,7 +271,7 @@ export default function LandingPage() {
         </FadeIn>
 
         <FadeIn delay={450}>
-          <p className="mt-5 text-[12px] text-gray-500 dark:text-gray-400">카드 등록 없이 무료로 시작 · 매월 10회 무료 생성</p>
+          <p className="mt-5 text-[12px] text-gray-500">카드 등록 없이 무료로 시작 · 매월 10회 무료 생성</p>
         </FadeIn>
 
         {/* Social Proof */}
@@ -281,18 +283,18 @@ export default function LandingPage() {
                   {["K", "J", "S", "M", "L"][i]}
                 </div>
               ))}
-              <div className="size-8 rounded-full bg-gray-200 dark:bg-muted/40 border-2 border-background flex items-center justify-center text-[9px] font-bold text-gray-600 dark:text-gray-400">
+              <div className="size-8 rounded-full bg-white/10 border-2 border-[#0a0118] flex items-center justify-center text-[9px] font-bold text-gray-400">
                 +97
               </div>
             </div>
-            <p className="text-[12px] text-gray-500 dark:text-gray-400">
-              <span className="font-bold text-gray-700 dark:text-gray-200">100+</span> 학원에서 신뢰하는 서비스
+            <p className="text-[12px] text-gray-500">
+              <span className="font-bold text-gray-200">100+</span> 학원에서 신뢰하는 서비스
             </p>
             <div className="flex items-center gap-0.5">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="size-3.5 fill-amber-400 text-amber-400" />
               ))}
-              <span className="ml-1.5 text-[11px] text-gray-500 dark:text-gray-400">4.9/5 만족도</span>
+              <span className="ml-1.5 text-[11px] text-gray-500">4.9/5 만족도</span>
             </div>
           </div>
         </FadeIn>
@@ -301,30 +303,30 @@ export default function LandingPage() {
         <FadeIn delay={600} className="mt-16 w-full max-w-5xl">
           <div className="gradient-border rounded-2xl overflow-hidden animate-glow-pulse">
             <div className="glass-card rounded-2xl p-1">
-              <div className="rounded-xl bg-background/60 overflow-hidden">
+              <div className="rounded-xl bg-[#0d021f]/80 overflow-hidden">
                 {/* Mock browser chrome */}
-                <div className="flex items-center gap-2 border-b border-border/20 px-4 py-3">
+                <div className="flex items-center gap-2 border-b border-white/5 px-4 py-3">
                   <div className="flex gap-1.5">
                     <div className="size-2.5 rounded-full bg-red-500/40" />
                     <div className="size-2.5 rounded-full bg-yellow-500/40" />
                     <div className="size-2.5 rounded-full bg-green-500/40" />
                   </div>
-                  <div className="ml-4 flex-1 rounded-lg bg-gray-100 dark:bg-muted/30 px-4 py-1.5">
-                    <span className="text-[11px] text-gray-500 dark:text-muted-foreground">app.engenp.com/dashboard</span>
+                  <div className="ml-4 flex-1 rounded-lg bg-white/5 px-4 py-1.5">
+                    <span className="text-[11px] text-gray-500">app.engenp.com/dashboard</span>
                   </div>
                 </div>
                 {/* Mock dashboard */}
                 <div className="flex h-[340px] md:h-[420px]">
                   {/* Mock sidebar */}
-                  <div className="hidden sm:flex w-[200px] shrink-0 flex-col border-r border-border/15 p-4">
+                  <div className="hidden sm:flex w-[200px] shrink-0 flex-col border-r border-white/5 p-4">
                     <div className="flex items-center gap-2 mb-6">
                       <div className="size-6 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600" />
-                      <span className="text-[11px] font-bold text-gray-700 dark:text-gray-300">Haean</span>
+                      <span className="text-[11px] font-bold text-gray-300">Haean</span>
                     </div>
                     <div className="space-y-2">
-                      <div className="rounded-lg bg-purple-500/10 px-3 py-2"><span className="text-[10px] text-purple-600 dark:text-purple-300">타겟 지문 업로드</span></div>
-                      <div className="rounded-lg bg-muted/20 px-3 py-2"><span className="text-[10px] text-gray-500 dark:text-gray-400">기출 스타일 분석</span></div>
-                      <div className="rounded-lg bg-muted/20 px-3 py-2"><span className="text-[10px] text-gray-500 dark:text-gray-400">출제 옵션</span></div>
+                      <div className="rounded-lg bg-purple-500/15 px-3 py-2"><span className="text-[10px] text-purple-300">타겟 지문 업로드</span></div>
+                      <div className="rounded-lg bg-white/5 px-3 py-2"><span className="text-[10px] text-gray-500">기출 스타일 분석</span></div>
+                      <div className="rounded-lg bg-white/5 px-3 py-2"><span className="text-[10px] text-gray-500">출제 옵션</span></div>
                     </div>
                     <div className="mt-auto">
                       <div className="rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 px-3 py-2 text-center">
@@ -338,7 +340,7 @@ export default function LandingPage() {
                       <span className="pill border border-purple-500/20 bg-purple-500/8 text-purple-400">EBS 수능특강</span>
                       <span className="pill border border-emerald-500/20 bg-emerald-500/8 text-emerald-400">3문항 생성</span>
                     </div>
-                    <div className="mb-3 text-[13px] font-bold text-gray-700 dark:text-gray-300">Cultural Intelligence in a Globalized World</div>
+                    <div className="mb-3 text-[13px] font-bold text-gray-300">Cultural Intelligence in a Globalized World</div>
                     <div className="space-y-2">
                       {[1, 2, 3].map((n) => (
                         <div key={n} className="flex items-center gap-3 rounded-xl bg-muted/15 border border-border/10 p-3">
@@ -362,7 +364,7 @@ export default function LandingPage() {
           <div className="mx-auto h-10 w-6 rounded-full border-2 border-purple-500/25 p-1.5 shadow-[0_0_12px_rgba(139,92,246,0.1)]">
             <div className="mx-auto h-2.5 w-1 rounded-full bg-gradient-to-b from-purple-400 to-indigo-400 animate-[scroll-dot_2s_ease-in-out_infinite]" />
           </div>
-          <span className="text-[10px] font-medium text-foreground/30 tracking-wider uppercase">Scroll</span>
+          <span className="text-[10px] font-medium text-white/30 tracking-wider uppercase">Scroll</span>
         </div>
       </section>
 
@@ -377,7 +379,7 @@ export default function LandingPage() {
                     <p className="text-3xl font-extrabold tracking-tight text-gradient">
                       <AnimatedCounter target={stat.value} />
                     </p>
-                    <p className="mt-1 text-[12px] font-medium text-gray-500 dark:text-gray-400">{stat.label}</p>
+                    <p className="mt-1 text-[12px] font-medium text-gray-500">{stat.label}</p>
                   </div>
                 ))}
               </div>
@@ -391,10 +393,10 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6">
           <FadeIn className="text-center">
             <span className="pill border border-purple-500/20 bg-purple-500/[0.06] text-purple-400">핵심 기능</span>
-            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
+            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
               내신 대비의 모든 것을<br /><span className="text-gradient">AI가 해결합니다</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-[15px] text-gray-600 dark:text-gray-400">
+            <p className="mx-auto mt-4 max-w-xl text-[15px] text-gray-400">
               수동으로 문제를 만드는 시대는 끝났습니다. 지문을 넣기만 하면 됩니다.
             </p>
           </FadeIn>
@@ -402,12 +404,12 @@ export default function LandingPage() {
           <div className="mt-16 grid gap-5 md:grid-cols-2">
             {features.map((f, i) => (
               <FadeIn key={i} delay={i * 100}>
-                <div className="glass-card hover-lift group rounded-2xl p-7">
+                <div className="landing-card hover-lift group rounded-2xl p-7">
                   <div className={`mb-5 flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br ${f.color} glow-sm transition-smooth group-hover:glow-md`}>
                     <f.icon className="size-5 text-white" />
                   </div>
-                  <h3 className="text-[17px] font-bold text-foreground">{f.title}</h3>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-gray-600 dark:text-gray-400">{f.desc}</p>
+                  <h3 className="text-[17px] font-bold text-white">{f.title}</h3>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-gray-400">{f.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -420,7 +422,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl px-6">
           <FadeIn className="text-center">
             <span className="pill border border-indigo-500/20 bg-indigo-500/[0.06] text-indigo-400">사용 방법</span>
-            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
+            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
               <span className="text-gradient">3단계</span>로 끝나는 문제 생성
             </h2>
           </FadeIn>
@@ -431,21 +433,21 @@ export default function LandingPage() {
                 <div className="relative text-center">
                   {/* Connector line */}
                   {i < steps.length - 1 && (
-                    <div className="absolute right-0 top-12 hidden h-px w-full translate-x-1/2 bg-gradient-to-r from-purple-500/20 to-transparent md:block" />
+                    <div className="absolute right-0 top-12 hidden h-px w-full translate-x-1/2 bg-gradient-to-r from-purple-500/30 to-transparent md:block" />
                   )}
                   <div className="relative mx-auto mb-6 flex size-24 items-center justify-center">
                     {/* Ring */}
-                    <div className="absolute inset-0 rounded-full border border-purple-500/15" />
-                    <div className="absolute inset-2 rounded-full border border-purple-500/10" />
-                    <div className="flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500/15 to-indigo-500/15">
+                    <div className="absolute inset-0 rounded-full border border-purple-500/20" />
+                    <div className="absolute inset-2 rounded-full border border-purple-500/15" />
+                    <div className="flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-500/20">
                       <step.icon className="size-7 text-purple-400" />
                     </div>
                     <span className="absolute -right-1 -top-1 flex size-7 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 text-[11px] font-extrabold text-white shadow-lg shadow-purple-500/30">
                       {step.num.replace('0', '')}
                     </span>
                   </div>
-                  <h3 className="text-[16px] font-bold text-foreground">{step.title}</h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-gray-600 dark:text-gray-400">{step.desc}</p>
+                  <h3 className="text-[16px] font-bold text-white">{step.title}</h3>
+                  <p className="mt-2 text-[13px] leading-relaxed text-gray-400">{step.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -458,10 +460,10 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6">
           <FadeIn className="text-center">
             <span className="pill border border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-400">미리보기</span>
-            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
+            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
               이런 문제가 <span className="text-gradient">자동으로</span> 만들어집니다
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-[15px] text-gray-600 dark:text-gray-400">
+            <p className="mx-auto mt-4 max-w-xl text-[15px] text-gray-400">
               실제 수능특강 지문을 기반으로 AI가 생성한 변형 문제 예시입니다.
             </p>
           </FadeIn>
@@ -472,26 +474,26 @@ export default function LandingPage() {
               <div className="glass-card rounded-2xl p-6 h-full">
                 <div className="mb-4 flex items-center gap-2">
                   <span className="pill border border-purple-500/20 bg-purple-500/8 text-purple-400">EBS 수능특강</span>
-                  <span className="pill border border-border/30 bg-muted/20 text-gray-500 dark:text-gray-400">영어</span>
-                  <span className="pill border border-border/30 bg-muted/20 text-gray-500 dark:text-gray-400">2024</span>
+                  <span className="pill border border-white/10 bg-white/5 text-gray-400">영어</span>
+                  <span className="pill border border-white/10 bg-white/5 text-gray-400">2024</span>
                 </div>
-                <h3 className="mb-4 text-[16px] font-bold text-foreground">Cultural Intelligence in a Globalized World</h3>
-                <p className="text-[12.5px] leading-[1.85] text-gray-600 dark:text-gray-400">
+                <h3 className="mb-4 text-[16px] font-bold text-white">Cultural Intelligence in a Globalized World</h3>
+                <p className="text-[12.5px] leading-[1.85] text-gray-400">
                   The concept of &quot;cultural intelligence&quot; has emerged as a critical competency in our increasingly globalized world. Unlike traditional measures of intelligence, cultural intelligence (CQ) refers to an individual&apos;s capability to function effectively across various cultural contexts. Research has shown that individuals with high CQ are better equipped to navigate the complexities of cross-cultural interactions...
                 </p>
-                <div className="mt-5 rounded-xl bg-background/30 border border-border/15 p-4">
+                <div className="mt-5 rounded-xl bg-white/[0.03] border border-white/10 p-4">
                   <div className="grid grid-cols-3 gap-3 text-center">
                     <div>
                       <p className="text-xl font-extrabold text-gradient">247</p>
-                      <p className="text-[10px] text-gray-500 dark:text-gray-400">단어 수</p>
+                      <p className="text-[10px] text-gray-500">단어 수</p>
                     </div>
                     <div>
                       <p className="text-xl font-extrabold text-gradient">12.4</p>
-                      <p className="text-[10px] text-gray-500 dark:text-gray-400">평균 문장 길이</p>
+                      <p className="text-[10px] text-gray-500">평균 문장 길이</p>
                     </div>
                     <div>
                       <p className="text-xl font-extrabold text-gradient">B2</p>
-                      <p className="text-[10px] text-gray-500 dark:text-gray-400">CEFR 레벨</p>
+                      <p className="text-[10px] text-gray-500">CEFR 레벨</p>
                     </div>
                   </div>
                 </div>
@@ -509,14 +511,14 @@ export default function LandingPage() {
                       <div className="mb-2 flex flex-wrap items-center gap-1.5">
                         <span className="pill border border-sky-500/25 bg-sky-500/8 text-sky-400 text-[10px]">어법</span>
                         <span className="pill border border-amber-500/25 bg-amber-500/8 text-amber-400 text-[10px]">Lv.3</span>
-                        <span className="pill border border-border/20 bg-muted/15 text-gray-500 dark:text-gray-400 text-[10px]">주어-동사 수일치</span>
+                        <span className="pill border border-border/20 bg-muted/15 text-gray-500 text-[10px]">주어-동사 수일치</span>
                       </div>
-                      <p className="text-[12px] font-semibold text-foreground mb-2">밑줄 친 (A), (B)에서 어법에 맞는 표현으로 가장 적절한 것은?</p>
+                      <p className="text-[12px] font-semibold text-white mb-2">밑줄 친 (A), (B)에서 어법에 맞는 표현으로 가장 적절한 것은?</p>
                       <div className="space-y-1">
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-600 dark:text-gray-300">① (A) refers - (B) is</div>
-                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-700 dark:text-purple-300 font-medium">② (A) refers - (B) are ✓</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-600 dark:text-gray-300">③ (A) referring - (B) is</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-600 dark:text-gray-300">④ (A) referring - (B) are</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-300">① (A) refers - (B) is</div>
+                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-300 font-medium">② (A) refers - (B) are ✓</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-300">③ (A) referring - (B) is</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-300">④ (A) referring - (B) are</div>
                       </div>
                     </div>
                   </div>
@@ -532,15 +534,15 @@ export default function LandingPage() {
                       <div className="mb-2 flex flex-wrap items-center gap-1.5">
                         <span className="pill border border-teal-500/25 bg-teal-500/8 text-teal-400 text-[10px]">빈칸 추론</span>
                         <span className="pill border border-rose-500/25 bg-rose-500/8 text-rose-400 text-[10px]">Lv.4</span>
-                        <span className="pill border border-border/20 bg-muted/15 text-gray-500 dark:text-gray-400 text-[10px]">글의 흐름 파악</span>
+                        <span className="pill border border-border/20 bg-muted/15 text-gray-500 text-[10px]">글의 흐름 파악</span>
                       </div>
-                      <p className="text-[12px] font-semibold text-foreground mb-2">다음 빈칸에 들어갈 말로 가장 적절한 것은?</p>
+                      <p className="text-[12px] font-semibold text-white mb-2">다음 빈칸에 들어갈 말로 가장 적절한 것은?</p>
                       <div className="space-y-1">
-                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-700 dark:text-purple-300 font-medium">① accumulating information ✓</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-600 dark:text-gray-300">② avoiding conflicts</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-600 dark:text-gray-300">③ expressing emotions</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-600 dark:text-gray-300">④ maintaining traditions</div>
-                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-600 dark:text-gray-300">⑤ building relationships</div>
+                        <div className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-3 py-1.5 text-[11px] text-purple-300 font-medium">① accumulating information ✓</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-300">② avoiding conflicts</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-300">③ expressing emotions</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-300">④ maintaining traditions</div>
+                        <div className="rounded-lg border border-border/15 px-3 py-1.5 text-[11px] text-gray-300">⑤ building relationships</div>
                       </div>
                     </div>
                   </div>
@@ -556,15 +558,15 @@ export default function LandingPage() {
                       <div className="mb-2 flex flex-wrap items-center gap-1.5">
                         <span className="pill border border-purple-500/25 bg-purple-500/8 text-purple-400 text-[10px]">어휘</span>
                         <span className="pill border border-emerald-500/25 bg-emerald-500/8 text-emerald-400 text-[10px]">Lv.2</span>
-                        <span className="pill border border-border/20 bg-muted/15 text-gray-500 dark:text-gray-400 text-[10px]">문맥상 어휘 선택</span>
+                        <span className="pill border border-border/20 bg-muted/15 text-gray-500 text-[10px]">문맥상 어휘 선택</span>
                       </div>
-                      <p className="text-[12px] font-semibold text-foreground mb-2">밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?</p>
+                      <p className="text-[12px] font-semibold text-white mb-2">밑줄 친 부분 중, 문맥상 낱말의 쓰임이 적절하지 않은 것은?</p>
                       <div className="flex flex-wrap gap-1.5">
-                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-gray-600 dark:text-gray-300">① perform</span>
-                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-gray-600 dark:text-gray-300">② adapt</span>
-                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-gray-600 dark:text-gray-300">③ valuable</span>
-                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-gray-600 dark:text-gray-300">④ lack</span>
-                        <span className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-2.5 py-1 text-[11px] text-purple-700 dark:text-purple-300 font-medium">⑤ succeed ✓</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-gray-300">① perform</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-gray-300">② adapt</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-gray-300">③ valuable</span>
+                        <span className="rounded-lg border border-border/15 px-2.5 py-1 text-[11px] text-gray-300">④ lack</span>
+                        <span className="rounded-lg border border-purple-500/25 bg-purple-500/[0.07] px-2.5 py-1 text-[11px] text-purple-300 font-medium">⑤ succeed ✓</span>
                       </div>
                     </div>
                   </div>
@@ -574,7 +576,7 @@ export default function LandingPage() {
           </div>
 
           <FadeIn delay={400} className="mt-10 text-center">
-            <p className="text-[13px] text-gray-600 dark:text-gray-400">
+            <p className="text-[13px] text-gray-400">
               위 문제는 AI가 실제 지문을 분석하여 자동 생성한 예시입니다. 어법, 빈칸 추론, 어휘 등 10가지 유형을 지원합니다.
             </p>
           </FadeIn>
@@ -587,10 +589,10 @@ export default function LandingPage() {
           <div className="grid gap-12 md:grid-cols-2 md:items-center">
             <SlideIn direction="left">
               <span className="pill border border-violet-500/20 bg-violet-500/[0.06] text-violet-400">누구를 위한 서비스인가요?</span>
-              <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
+              <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-white md:text-4xl">
                 선생님도, 학생도<br /><span className="text-gradient">더 이상 시간 낭비 없이</span>
               </h2>
-              <p className="mt-4 text-[14px] leading-relaxed text-gray-600 dark:text-gray-400">
+              <p className="mt-4 text-[14px] leading-relaxed text-gray-400">
 
                 기존에 몇 시간이 걸리던 변형 문제 제작을 몇 분으로 단축합니다.
                 학생들은 자기 학교 스타일에 맞는 문제로 효율적으로 대비할 수 있습니다.
@@ -608,8 +610,8 @@ export default function LandingPage() {
                       <item.icon className="size-5 text-purple-400/80" />
                     </div>
                     <div>
-                      <h4 className="text-[14px] font-bold text-foreground">{item.title}</h4>
-                      <p className="mt-1 text-[12.5px] text-gray-600 dark:text-gray-400">{item.desc}</p>
+                      <h4 className="text-[14px] font-bold text-white">{item.title}</h4>
+                      <p className="mt-1 text-[12.5px] text-gray-400">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -624,7 +626,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-4xl px-6">
           <FadeIn className="text-center">
             <span className="pill border border-fuchsia-500/20 bg-fuchsia-500/[0.06] text-fuchsia-400">요금제</span>
-            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
+            <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
               심플한 <span className="text-gradient">요금제</span>
             </h2>
           </FadeIn>
@@ -633,20 +635,20 @@ export default function LandingPage() {
             {/* Free */}
             <FadeIn delay={0}>
               <div className="glass-card rounded-2xl p-8 pricing-card-free">
-                <h3 className="text-[13px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Free</h3>
+                <h3 className="text-[13px] font-bold uppercase tracking-wider text-gray-500">Free</h3>
                 <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-extrabold text-foreground">₩0</span>
-                  <span className="text-[13px] text-gray-500 dark:text-gray-400">/월</span>
+                  <span className="text-4xl font-extrabold text-white">₩0</span>
+                  <span className="text-[13px] text-gray-500">/월</span>
                 </div>
                 <ul className="mt-6 space-y-3">
                   {["매월 10회 생성", "5가지 기본 유형", "PDF/JPG 업로드", ".docx 추출"].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2.5 text-[13px] text-gray-600 dark:text-gray-400">
+                    <li key={i} className="flex items-center gap-2.5 text-[13px] text-gray-400">
                       <Star className="size-3.5 text-purple-400/60" />
                       {item}
                     </li>
                   ))}
                 </ul>
-                <Link href="/login" className="mt-8 flex w-full items-center justify-center rounded-xl border border-border/30 bg-muted/20 py-3 text-[13px] font-semibold text-gray-600 dark:text-gray-400 transition-smooth hover:bg-muted/40">
+                <Link href="/login" className="mt-8 flex w-full items-center justify-center rounded-xl border border-border/30 bg-muted/20 py-3 text-[13px] font-semibold text-gray-400 transition-smooth hover:bg-muted/40">
                   무료로 시작
                 </Link>
               </div>
@@ -661,11 +663,11 @@ export default function LandingPage() {
                 <h3 className="text-[13px] font-bold uppercase tracking-wider text-purple-400">Pro</h3>
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-4xl font-extrabold text-gradient">₩29,900</span>
-                  <span className="text-[13px] text-gray-500 dark:text-gray-400">/월</span>
+                  <span className="text-[13px] text-gray-500">/월</span>
                 </div>
                 <ul className="mt-6 space-y-3">
                   {["무제한 생성", "10가지 전체 유형", "학교 기출 DNA 분석", "동형 모의고사 생성", "우선 처리 큐", "워크북 자동 생성"].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2.5 text-[13px] text-gray-600 dark:text-gray-400">
+                    <li key={i} className="flex items-center gap-2.5 text-[13px] text-gray-400">
                       <Star className="size-3.5 text-purple-400" />
                       {item}
                     </li>
@@ -695,10 +697,10 @@ export default function LandingPage() {
       <section className="relative z-10 py-24">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <FadeIn>
-            <h2 className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
+            <h2 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
               지금 바로<br /><span className="text-gradient">변형 문제를 만들어보세요</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-lg text-[15px] text-gray-600 dark:text-gray-400">
+            <p className="mx-auto mt-4 max-w-lg text-[15px] text-gray-400">
               회원가입 후 바로 사용할 수 있습니다. 첫 10회는 완전 무료.
             </p>
             <Link
@@ -713,7 +715,7 @@ export default function LandingPage() {
       </section>
 
       {/* ═══ Footer ═══ */}
-      <footer className="relative z-10 border-t border-border/20 py-12">
+      <footer className="relative z-10 border-t border-white/5 py-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 md:flex-row">
           <div className="flex items-center gap-2.5">
             <div className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600">
@@ -721,13 +723,13 @@ export default function LandingPage() {
             </div>
             <span className="text-[14px] font-bold text-gradient-bright">Haean</span>
           </div>
-          <p className="text-[12px] text-gray-500 dark:text-gray-400">
+          <p className="text-[12px] text-gray-500">
             © 2026 Haean. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a href="/terms" className="text-[12px] text-gray-500 dark:text-gray-400 transition-smooth hover:text-gray-600 dark:text-gray-400">이용약관</a>
-            <a href="/privacy" className="text-[12px] text-gray-500 dark:text-gray-400 transition-smooth hover:text-gray-600 dark:text-gray-400">개인정보처리방침</a>
-            <a href="mailto:support@haean.app" className="text-[12px] text-gray-500 dark:text-gray-400 transition-smooth hover:text-gray-600 dark:text-gray-400">문의</a>
+            <a href="/terms" className="text-[12px] text-gray-500 transition-smooth hover:text-gray-400">이용약관</a>
+            <a href="/privacy" className="text-[12px] text-gray-500 transition-smooth hover:text-gray-400">개인정보처리방침</a>
+            <a href="mailto:support@haean.app" className="text-[12px] text-gray-500 transition-smooth hover:text-gray-400">문의</a>
           </div>
         </div>
       </footer>
