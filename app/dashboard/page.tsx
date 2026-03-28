@@ -322,6 +322,10 @@ function DashboardContent() {
             <AIChatSidebar
               userEmail={user?.email}
               context={{ passage: structuredPassage, questions: generatedQuestions }}
+              onQuestionsUpdate={(updatedQuestions) => {
+                handleGeneratedQuestions(updatedQuestions)
+                setProcessingStep("done")
+              }}
               onSignOut={async () => {
                 await supabase.auth.signOut()
                 router.push("/")

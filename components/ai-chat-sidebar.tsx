@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { useChat } from "@/hooks/use-chat"
-import type { ChatContext } from "@/hooks/use-chat"
+import type { ChatContext, OnQuestionsUpdate } from "@/hooks/use-chat"
 import type { StructuredPassage, GeneratedQuestion } from "@/lib/types"
 
 const quickPrompts = [
@@ -25,15 +25,16 @@ interface AIChatSidebarProps {
     passage?: StructuredPassage | null
     questions?: GeneratedQuestion[] | null
   }
+  onQuestionsUpdate?: OnQuestionsUpdate
 }
 
-export function AIChatSidebar({ userEmail, onSignOut, context }: AIChatSidebarProps = {}) {
+export function AIChatSidebar({ userEmail, onSignOut, context, onQuestionsUpdate }: AIChatSidebarProps = {}) {
   const chatContext: ChatContext = {
     passage: context?.passage,
     questions: context?.questions,
   }
 
-  const { messages, isLoading, error, sendMessage, clearMessages } = useChat(chatContext)
+  const { messages, isLoading, error, sendMessage, clearMessages } = useChat(chatContext, onQuestionsUpdate)
   const [input, setInput] = useState("")
   const scrollRef = useRef<HTMLDivElement>(null)
   const viewportRef = useRef<HTMLDivElement>(null)

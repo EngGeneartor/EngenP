@@ -16,6 +16,41 @@ export interface ChatContext {
   questions?: GeneratedQuestion[] | null
 }
 
+/** Callback when the AI provides updated questions via chat */
+export type OnQuestionsUpdate = (questions: GeneratedQuestion[]) => void
+
+/**
+ * Extract <questions_update>...</questions_update> JSON from the assistant
+ * response, parse it, and return the cleaned text + parsed questions (if any).
+ */
+function extractQuestionsUpdate(text: string): {
+  cleanText: string
+  questions: GeneratedQuestion[] | null
+} {
+  const regex = /<questions_update>\s*([\s\S]*?)\s*<\/questions_update>/
+  const match = text.match(regex)
+  if (!match) return { cleanText: text, questions: null }
+
+  try {
+    const parsed = JSON.parse(match[1])
+    if (!Array.isArray(parsed) || parsed.length === 0) return { cleanText: text, questions: null }
+    // Basic shape check
+    const valid = parsed.every(
+      (q: Record<string, unknown>) =>
+        typeof q.question_number === 'number' &&
+        typeof q.instruction === 'string' &&
+        typeof q.answer === 'string'
+    )
+    if (!valid) return { cleanText: text, questions: null }
+
+    // Remove the tag block from displayed text
+    const cleanText = text.replace(regex, '').trim()
+    return { cleanText, questions: parsed as GeneratedQuestion[] }
+  } catch {
+    return { cleanText: text, questions: null }
+  }
+}
+
 const WELCOME_MESSAGE: ChatMessage = {
   id: 'welcome',
   role: 'assistant',
@@ -24,7 +59,7 @@ const WELCOME_MESSAGE: ChatMessage = {
   timestamp: new Date(),
 }
 
-export function useChat(context?: ChatContext) {
+export function useChat(context?: ChatContext, onQuestionsUpdate?: OnQuestionsUpdate) {
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -120,6 +155,21 @@ export function useChat(context?: ChatContext) {
 
             const data = trimmed.slice('data:'.length).trim()
             if (data === '[DONE]') {
+              // Extract questions update from completed assistant message
+              setMessages((prev) => {
+                const last = prev.find((m) => m.id === assistantId)
+                if (last && onQuestionsUpdate) {
+                  const { cleanText, questions } = extractQuestionsUpdate(last.content)
+                  if (questions) {
+                    // Update displayed text (remove JSON block) and notify parent
+                    setTimeout(() => onQuestionsUpdate(questions), 0)
+                    return prev.map((m) =>
+                      m.id === assistantId ? { ...m, content: cleanText } : m
+                    )
+                  }
+                }
+                return prev
+              })
               setIsLoading(false)
               return
             }
@@ -163,7 +213,7 @@ export function useChat(context?: ChatContext) {
         setIsLoading(false)
       }
     },
-    [messages, isLoading, context]
+    [messages, isLoading, context, onQuestionsUpdate]
   )
 
   const clearMessages = useCallback(() => {
