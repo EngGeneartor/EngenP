@@ -320,7 +320,7 @@ function DashboardContent() {
         <button
           onClick={() => setChatOpen(true)}
           className="fixed bottom-6 right-6 z-50 flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-600 text-white shadow-xl shadow-purple-500/25 transition-smooth hover:shadow-purple-500/40 hover:brightness-110 active:scale-95"
-          title="Abyss AI 열기"
+          title="Haean AI 열기"
         >
           <MessageCircle className="size-6" />
         </button>

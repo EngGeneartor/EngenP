@@ -20,7 +20,7 @@ const WELCOME_MESSAGE: ChatMessage = {
   id: 'welcome',
   role: 'assistant',
   content:
-    '안녕하세요! 영어 내신 변형 문제 전문 AI 튜터 Abyss AI입니다. 지문 분석, 문제 수정, 해설 요청 등 무엇이든 도와드리겠습니다.',
+    '안녕하세요! 영어 내신 변형 문제 전문 AI 튜터 Haean AI입니다. 지문 분석, 문제 수정, 해설 요청 등 무엇이든 도와드리겠습니다.',
   timestamp: new Date(),
 }
 

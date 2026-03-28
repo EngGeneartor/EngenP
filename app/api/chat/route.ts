@@ -14,7 +14,7 @@ interface ChatContext {
 }
 
 function buildSystemPrompt(context?: ChatContext): string {
-  let system = `당신은 영어 내신 변형 문제 전문 AI 튜터 'Abyss AI'입니다. 현재 사용자의 지문과 생성된 문제를 기반으로 도움을 줍니다.
+  let system = `당신은 영어 내신 변형 문제 전문 AI 튜터 'Haean AI'입니다. 현재 사용자의 지문과 생성된 문제를 기반으로 도움을 줍니다.
 
 당신의 역할:
 - 영어 지문 분석 및 해설

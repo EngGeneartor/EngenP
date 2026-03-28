@@ -3,7 +3,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  title: 'Abyss - AI 영어 내신 변형 문제 생성기',
+  title: 'Haean - AI 영어 내신 변형 문제 생성기',
   description: '시험 지문을 넣으면 변형 문제가 나온다. AI 기반 고등학교 영어 내신 변형 문제 자동 생성 서비스.',
   icons: {
     icon: [
@@ -23,15 +23,15 @@ export const metadata: Metadata = {
     apple: '/apple-icon.png',
   },
   openGraph: {
-    title: 'Abyss - AI 영어 내신 변형 문제 생성기',
+    title: 'Haean - AI 영어 내신 변형 문제 생성기',
     description: '시험 지문을 넣으면 변형 문제가 나온다. 모의고사, 교과서, 추가지문을 업로드하면 AI가 고품질 변형 문제를 자동 생성합니다.',
-    siteName: 'Abyss',
+    siteName: 'Haean',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Abyss - AI 영어 내신 변형 문제 생성기',
+        alt: 'Haean - AI 영어 내신 변형 문제 생성기',
       },
     ],
     locale: 'ko_KR',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Abyss - AI 영어 내신 변형 문제 생성기',
+    title: 'Haean - AI 영어 내신 변형 문제 생성기',
     description: '시험 지문을 넣으면 변형 문제가 나온다.',
     images: ['/og-image.png'],
   },

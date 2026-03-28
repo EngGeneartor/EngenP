@@ -130,7 +130,7 @@ function CallbackContent() {
                 회원가입을 환영합니다!
               </h1>
               <p className="mt-2 text-[14px] text-foreground/50">
-                Abyss와 함께 내신 변형 문제를 만들어보세요.
+                Haean와 함께 내신 변형 문제를 만들어보세요.
               </p>
             </div>
 
