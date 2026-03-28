@@ -1,0 +1,42 @@
+{
+  "type_id": "sentence_insertion",
+  "type_name_ko": "문장 삽입",
+  "type_name_en": "Sentence Insertion",
+  "description": "지문 내 다섯 곳에 표시된 위치(①~⑤) 중, 주어진 한 문장이 들어가기에 가장 적절한 위치를 고르는 문제. 지시어, 연결어, 논리적 흐름을 통해 삽입 위치를 판단하는 능력을 평가한다.",
+  "difficulty_range": [2, 5],
+  "instruction_template": "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳은?",
+  "output_schema": {
+    "question_number": "number",
+    "difficulty": "number (1-5)",
+    "instruction": "string",
+    "insert_sentence": "string (the sentence to be inserted)",
+    "passage_with_markers": "string (passage with ① ② ③ ④ ⑤ markers placed between sentences to indicate possible insertion points)",
+    "choices": ["① ", "② ", "③ ", "④ ", "⑤ "],
+    "answer": "string (e.g. '③')",
+    "explanation": "string (Korean explanation: what linguistic/logical cues confirm the correct position)",
+    "test_point": "string (what cohesion/discourse skill is tested, in Korean)"
+  },
+  "generation_rules": [
+    "지문은 6~8개 문장으로 구성된 완결된 단락(총 150~200 단어)으로 작성하며, 삽입 위치 기호 ①~⑤를 문장 사이에 배치한다.",
+    "삽입할 문장(insert_sentence)은 지문의 흐름을 심화하거나 반전시키는 문장으로, 그 자체만으로 완전한 의미를 지녀야 한다.",
+    "삽입 문장에는 반드시 앞 문맥과 연결되는 단서를 포함시킨다: 지시사(this, these, such, it), 대명사, 연결부사(however, furthermore, in contrast, as a result), 또는 앞 문장의 핵심어를 받는 어구.",
+    "정답 위치의 바로 뒤 문장도 삽입 문장과 자연스럽게 연결되어야 한다. 삽입 문장의 마지막 어구가 다음 문장의 시작과 논리적으로 이어지는지 확인한다.",
+    "오답 위치에 삽입하면 지시어가 가리키는 대상이 없거나, 논리 순서가 뒤집히거나, 불필요한 중복이 발생해야 한다.",
+    "①~⑤ 기호는 지문 내에서 균등하게 분포되도록 배치한다. ①은 지문 첫 문장 바로 뒤, ⑤는 마지막 문장 바로 앞에 위치시킨다.",
+    "정답은 ①~⑤ 중 무작위로 배정하되, 특정 번호에 편중되지 않도록 한다.",
+    "삽입 문장이 역접(however, yet, but)을 포함할 경우, 정답 위치 앞 문장은 반드시 반대 방향의 내용을 담아야 한다.",
+    "explanation은 한국어로 작성하며, (1) 삽입 문장의 핵심 단서어, (2) 정답 위치 앞 문장과의 연결 근거, (3) 정답 위치 뒷 문장과의 연결 근거를 명시한다.",
+    "test_point는 삽입 문장의 핵심 연결 장치(지시어, 연결부사 등)를 중심으로 서술한다."
+  ],
+  "examples": [
+    {
+      "instruction": "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳은?",
+      "insert_sentence": "This shift, however, came with an unexpected cost: the loss of deep, sustained concentration.",
+      "passage_with_markers": "The digital revolution has transformed the way people access and consume information. ① Within seconds, anyone with a smartphone can look up facts, read news, and connect with others across the globe. ② Many educators and researchers initially celebrated this unprecedented access, arguing that it would democratize knowledge and accelerate learning. ③ Studies began to show that constant connectivity was fragmenting attention spans, making it harder for individuals to focus on a single task for extended periods. ④ Psychologists now warn that the habit of switching rapidly between apps, messages, and feeds is restructuring how the brain processes information. ⑤ As a result, educators are reconsidering how to design learning environments that rebuild the capacity for focused thought.",
+      "choices": ["① ", "② ", "③ ", "④ ", "⑤ "],
+      "answer": "③",
+      "explanation": "삽입 문장의 'This shift'는 앞 문장 ②에서 언급된 '디지털 접근성에 대한 낙관적 평가'를 받고, 'however'는 그에 반하는 내용이 이어짐을 예고한다. ③ 뒤에 오는 문장은 주의력 저하 연구 결과를 제시하여 삽입 문장의 'unexpected cost'를 구체적으로 뒷받침한다. 따라서 삽입 위치는 ③이다.",
+      "test_point": "역접 연결부사(however)와 지시사(This shift)를 통한 삽입 위치 파악"
+    }
+  ]
+}

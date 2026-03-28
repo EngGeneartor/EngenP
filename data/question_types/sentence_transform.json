@@ -1,0 +1,80 @@
+{
+  "type_id": "sentence_transform",
+  "type_name_ko": "서술형/문장 변환",
+  "type_name_en": "Sentence Transformation (Subjective)",
+  "description": "주어진 문장을 특정 조건에 따라 변환하거나, 두 문장을 하나로 합치거나, 주어진 단어를 활용하여 문장을 완성하는 서술형 문제. 내신 시험 서술형 배점 문항으로 영어 문법 구조의 생산적 운용 능력을 평가한다.",
+  "difficulty_range": [2, 5],
+  "instruction_template_rewrite": "주어진 단어를 이용하여 다음 문장과 같은 의미의 문장을 완성하시오.",
+  "instruction_template_combine": "주어진 두 문장을 관계사를 이용하여 한 문장으로 쓰시오.",
+  "instruction_template_correct": "다음 문장에서 어법상 틀린 부분을 찾아 바르게 고쳐 쓰시오.",
+  "instruction_template_condition": "다음 조건에 맞게 주어진 우리말을 영어로 쓰시오.",
+  "output_schema": {
+    "question_number": "number",
+    "difficulty": "number (1-5)",
+    "subtype": "string — one of: 'rewrite' | 'combine' | 'error_correction' | 'korean_to_english' | 'sentence_completion'",
+    "instruction": "string (includes specific conditions such as word count limits, required words, or structural constraints)",
+    "source_sentences": ["string — original sentence(s) or Korean sentence to transform"],
+    "given_words": "array of strings or null (hint words to use, e.g. ['despite', 'the fact'])",
+    "target_sentence_frame": "string or null (partial sentence with ___ blanks to fill in)",
+    "conditions": ["string — explicit constraint, e.g. '제시된 단어를 반드시 포함할 것', '5단어로 쓸 것', '관계대명사를 사용할 것'"],
+    "answer": "string (model answer — if multiple correct forms exist, list the primary model answer)",
+    "answer_variants": ["array of alternative acceptable answers, or empty array if only one form is correct"],
+    "scoring_rubric": "string (Korean description of how partial credit is awarded, e.g. '2점: 완전 정답 / 1점: 의미는 맞으나 철자 오류 1개')",
+    "explanation": "string (Korean explanation of the grammar rule applied and why the model answer is correct)",
+    "test_point": "string (the specific grammar/structure being tested, in Korean)"
+  },
+  "generation_rules": [
+    "서술형 문항은 명확한 '조건(conditions)'을 반드시 명시해야 한다. 예: 사용할 단어, 단어 수 제한, 사용할 문법 구조, 문두 제시 등.",
+    "rewrite 유형: 원문 문장과 의미가 완전히 동일해야 하며, 변환 후 문장의 문두를 제시하거나 핵심 변환 단어를 힌트로 제공한다. 주요 변환 패턴: 능동↔수동, so~that↔too~to/enough to, because↔because of, although↔despite, 분사구문 전환.",
+    "combine 유형: 두 개의 단문을 관계대명사(who/which/that), 관계부사(where/when/why), 분사(having p.p.), 접속사 등을 활용하여 하나의 복합문으로 결합한다.",
+    "error_correction 유형: 문법적으로 틀린 부분이 정확히 하나 포함된 문장을 제시하고, 학생이 틀린 부분을 찾아 올바르게 고쳐 쓴다. 틀린 표현과 올바른 표현 모두를 answer에 명시한다.",
+    "korean_to_english 유형: 한국어 문장을 영어로 쓰는 과제. 조건에 사용할 어휘, 문법 구조, 단어 수 등을 명시한다.",
+    "sentence_completion 유형: 문장의 일부가 빈칸으로 제시되고, 학생이 문맥과 문법에 맞게 빈칸을 완성한다.",
+    "정답이 두 가지 이상인 경우 answer_variants에 모두 기재하고 채점 시 동등하게 인정함을 명시한다.",
+    "scoring_rubric은 내신 시험 서술형 채점 기준(완전 정답/부분 점수/0점) 형식으로 작성한다.",
+    "explanation은 한국어로 작성하며, 적용된 문법 규칙과 변환 근거를 단계적으로 설명한다.",
+    "난이도 2: 단순 능동/수동 전환. 난이도 3: so~that, because of 변환. 난이도 4: 분사구문 전환, 복합관계사. 난이도 5: 복잡한 복합 구문 변환 또는 복수 조건 영작."
+  ],
+  "examples": [
+    {
+      "instruction": "주어진 단어를 모두 사용하여 두 문장이 같은 의미가 되도록 빈칸을 완성하시오. (단어 형태를 바꾸지 말 것)",
+      "subtype": "rewrite",
+      "source_sentences": [
+        "He was so tired that he couldn't finish the report."
+      ],
+      "given_words": ["too", "to"],
+      "target_sentence_frame": "He was ___ tired ___ finish the report.",
+      "conditions": [
+        "제시된 단어(too, to)를 반드시 사용할 것",
+        "단어 형태를 변경하지 말 것",
+        "빈칸은 각 1단어씩 쓸 것"
+      ],
+      "answer": "too / to",
+      "answer_variants": [],
+      "scoring_rubric": "2점: too와 to 모두 정확히 기입 / 1점: 하나만 정답 / 0점: 모두 틀리거나 미작성",
+      "explanation": "'so ~ that + 주어 + couldn't + 동사원형' 구문은 'too ~ to + 동사원형' 구문으로 전환할 수 있다. 주어가 동일하므로 'for him'은 생략 가능하다. 따라서 'He was too tired to finish the report.'가 완성된 문장이다.",
+      "test_point": "so ~ that 부정 구문을 too ~ to 구문으로 전환"
+    },
+    {
+      "instruction": "다음 두 문장을 관계대명사를 이용하여 한 문장으로 쓰시오.",
+      "subtype": "combine",
+      "source_sentences": [
+        "The scientist made a groundbreaking discovery.",
+        "The discovery changed our understanding of genetics."
+      ],
+      "given_words": null,
+      "target_sentence_frame": null,
+      "conditions": [
+        "관계대명사를 사용하여 한 문장으로 쓸 것",
+        "주어진 두 문장의 내용을 모두 포함할 것"
+      ],
+      "answer": "The scientist made a groundbreaking discovery that changed our understanding of genetics.",
+      "answer_variants": [
+        "The scientist made a groundbreaking discovery which changed our understanding of genetics."
+      ],
+      "scoring_rubric": "3점: 문법과 의미 모두 완전 정답 / 2점: 의미는 맞으나 관계사 선택 오류(who 사용 등) / 1점: 내용을 포함했으나 구조적 오류 있음 / 0점: 미작성 또는 전혀 다른 문장",
+      "explanation": "두 번째 문장의 주어 'The discovery'가 첫 번째 문장의 목적어 'a groundbreaking discovery'를 가리키므로, 사물을 선행사로 하는 관계대명사 that 또는 which를 사용하여 두 문장을 연결한다.",
+      "test_point": "사물 선행사에 대한 목적격/주격 관계대명사(that/which) 활용"
+    }
+  ]
+}

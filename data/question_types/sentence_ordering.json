@@ -1,0 +1,62 @@
+{
+  "type_id": "sentence_ordering",
+  "type_name_ko": "순서 배열",
+  "type_name_en": "Sentence Ordering",
+  "description": "주어진 첫 문장(도입부) 다음에 이어질 (A), (B), (C) 세 단락 또는 문장 블록을 논리적 순서에 맞게 배열하는 문제. 글의 논리적 흐름, 지시어, 연결어 파악 능력을 평가한다.",
+  "difficulty_range": [2, 4],
+  "instruction_template": "주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?",
+  "output_schema": {
+    "question_number": "number",
+    "difficulty": "number (1-5)",
+    "instruction": "string",
+    "intro_passage": "string (the given introductory paragraph, 2-4 sentences)",
+    "blocks": {
+      "(A)": "string (paragraph block A, 2-4 sentences)",
+      "(B)": "string (paragraph block B, 2-4 sentences)",
+      "(C)": "string (paragraph block C, 2-4 sentences)"
+    },
+    "choices": [
+      "① (A) - (B) - (C)",
+      "② (A) - (C) - (B)",
+      "③ (B) - (A) - (C)",
+      "④ (B) - (C) - (A)",
+      "⑤ (C) - (A) - (B)"
+    ],
+    "answer": "string (e.g. '④')",
+    "explanation": "string (Korean explanation: logical connectors and referential cues that determine the correct order)",
+    "test_point": "string (what discourse/cohesion skill is tested, in Korean)"
+  },
+  "generation_rules": [
+    "도입 문장(주어진 글)은 화제를 제시하거나 문제 상황을 소개하는 2~4문장으로 구성한다. 마지막 문장은 (A)(B)(C) 중 하나와 자연스럽게 연결되어야 한다.",
+    "(A)(B)(C) 각 블록은 2~4문장으로 구성하며, 전체 지문의 총 길이는 150~220 단어가 되도록 한다.",
+    "각 블록의 시작 문장에는 이전 블록과의 연결을 나타내는 단서(지시어, 연결어, 대명사, 관사 등)를 반드시 포함한다. 예: 'This approach...', 'However, ...', 'As a result, ...', 'Such findings...'",
+    "정답 순서는 5가지 보기 중 무작위로 설정하되, ④(B)-(C)-(A) 순서가 정답인 경우가 지나치게 많지 않도록 한다.",
+    "단서의 종류를 다양하게 구성한다: (1) 지시대명사(it, this, these, they), (2) 정관사(the + noun이 앞 블록의 명사를 가리킴), (3) 연결부사(therefore, however, moreover, consequently), (4) 시간 순서(first, then, finally).",
+    "블록 간 연결이 인위적이지 않도록 전체 글의 내용 흐름이 자연스러운 하나의 글이 되어야 한다.",
+    "잘못된 순서로 배열하면 논리적 오류(원인 없는 결과, 정의 없는 지시어 등)가 발생하도록 단서를 명확하게 설계한다.",
+    "5개의 보기는 수능 표준 형식(①~⑤)을 따르며, 흔히 출제되는 5가지 조합을 제공한다.",
+    "explanation은 한국어로 작성하며, 각 블록 간 연결 단서를 구체적으로 지적하여 순서를 설명한다.",
+    "test_point는 어떤 응집성(cohesion) 장치가 핵심 단서인지 서술한다."
+  ],
+  "examples": [
+    {
+      "instruction": "주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?",
+      "intro_passage": "The concept of 'cognitive load' refers to the total amount of mental effort being used in working memory at any given time. Educators have long tried to find ways to reduce unnecessary cognitive load in the classroom.",
+      "blocks": {
+        "(A)": "This technique, known as 'chunking,' allows learners to treat a group of items as a single unit, freeing up mental resources for higher-order thinking. Musicians, for example, do not read each note individually but perceive entire phrases at once.",
+        "(B)": "One effective strategy is to break complex information into smaller, manageable units before presenting it to students. Rather than overwhelming learners with an entire concept at once, teachers introduce components gradually.",
+        "(C)": "Over time, these chunks become automated, meaning the learner can process them with minimal conscious effort. This automation is what distinguishes novices from experts in any domain."
+      },
+      "choices": [
+        "① (A) - (B) - (C)",
+        "② (A) - (C) - (B)",
+        "③ (B) - (A) - (C)",
+        "④ (B) - (C) - (A)",
+        "⑤ (C) - (A) - (B)"
+      ],
+      "answer": "③",
+      "explanation": "(B)에서 'smaller, manageable units'로 정보를 나누는 전략을 소개하고, (A)에서 'This technique'이 (B)의 방법을 지칭하며 'chunking'이라는 이름을 부여한다. 이후 (C)에서 'these chunks'가 (A)의 chunks를 받아 자동화 과정을 설명한다. 따라서 순서는 (B)→(A)→(C)이다.",
+      "test_point": "지시표현(This technique, these chunks)과 개념 도입-명명-심화 구조를 통한 순서 파악"
+    }
+  ]
+}
