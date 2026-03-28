@@ -1,18 +1,27 @@
 /**
  * structurizer.ts
- * Passage Structurization Service — server-side only.
+ * Passage Structurization Service -- server-side only.
  *
  * Fetches a file from a Supabase storage URL (or accepts raw base64),
  * forwards the image to Claude Vision via the anthropic service, and
  * returns a validated StructuredPassage object.
  *
+ * Uses file-based prompts from data/prompts/structurize_passage.txt
+ * via prompt-builder.ts (never hardcodes the prompt).
+ *
  * Public API:
- *   structurizePassage({ fileUrl } | { base64, mediaType }) → StructuredPassage
- *   structurizeFromUrl(fileUrl)                              → StructuredPassage
- *   structurizeFromBase64(base64, mediaType, passageId)      → StructuredPassage
+ *   structurizePassage({ fileUrl } | { base64, mediaType }) -> StructuredPassage
+ *   structurizeFromUrl(fileUrl)                              -> StructuredPassage
+ *   structurizeFromBase64(base64, mediaType, passageId)      -> StructuredPassage
+ *   structurizeMultiPage(pages)                              -> StructuredPassage
  */
 
-import { createStructurizeRequest, extractJsonFromText, AnthropicServiceError } from './anthropic'
+import {
+  callClaudeWithVision,
+  extractJsonFromText,
+  AnthropicServiceError,
+} from './anthropic'
+import { buildStructurizeSystemPrompt } from './prompt-builder'
 import type { StructuredPassage, UploadedFile } from '@/lib/types'
 
 // -----------------------------------------------------------
@@ -128,7 +137,7 @@ async function withRetry<T>(
       const delay = RETRY_BASE_DELAY_MS * 2 ** (attempt - 1)
       console.warn(
         `[structurizer] ${label} failed (attempt ${attempt}/${MAX_RETRIES}), ` +
-          `retrying in ${delay}ms…`,
+          `retrying in ${delay}ms...`,
         err
       )
       await sleep(delay)
@@ -237,7 +246,7 @@ function validateStructuredPassage(passage: StructuredPassage): void {
   }
   if (!Array.isArray(passage.paragraphs) || passage.paragraphs.length === 0) {
     throw new StructurizerError(
-      'StructuredPassage has no paragraphs — Claude may not have found a readable passage',
+      'StructuredPassage has no paragraphs -- Claude may not have found a readable passage',
       'NO_PARAGRAPHS'
     )
   }
@@ -249,13 +258,13 @@ function validateStructuredPassage(passage: StructuredPassage): void {
   }
   if (passage.wordCount < 1) {
     throw new StructurizerError(
-      'StructuredPassage wordCount must be ≥ 1',
+      'StructuredPassage wordCount must be >= 1',
       'INVALID_WORD_COUNT'
     )
   }
   if (passage.estimatedDifficulty < 1 || passage.estimatedDifficulty > 5) {
     throw new StructurizerError(
-      `estimatedDifficulty must be 1–5, got ${passage.estimatedDifficulty}`,
+      `estimatedDifficulty must be 1-5, got ${passage.estimatedDifficulty}`,
       'INVALID_DIFFICULTY'
     )
   }
@@ -263,6 +272,7 @@ function validateStructuredPassage(passage: StructuredPassage): void {
 
 /**
  * Core function: send base64 image to Claude, parse + validate the result.
+ * Now uses file-based prompts from data/prompts/structurize_passage.txt.
  */
 async function runStructurize(
   imageBase64: string,
@@ -270,7 +280,15 @@ async function runStructurize(
   passageId: string,
   sourceFile?: UploadedFile
 ): Promise<StructuredPassage> {
-  const { raw } = await createStructurizeRequest(imageBase64, mediaType, passageId)
+  // Build the system prompt from the file-based template
+  const systemPrompt = await buildStructurizeSystemPrompt(passageId)
+
+  // Call Claude Vision with the assembled prompt
+  const { raw } = await callClaudeWithVision(
+    systemPrompt,
+    imageBase64,
+    mediaType
+  )
 
   // Parse the JSON Claude returned
   let parsed: ClaudePassageResponse
@@ -304,16 +322,6 @@ async function runStructurize(
 
 /**
  * Structurize a passage from a publicly accessible file URL.
- *
- * The function fetches the file, converts it to base64, and forwards it to
- * Claude Vision. Only image formats (JPEG, PNG, GIF, WebP) are supported
- * directly; PDF handling must be done by the caller (e.g. with pdf.js in
- * the browser, rendering each page to a canvas and calling
- * structurizeFromBase64 for each page image).
- *
- * @param fileUrl   Public URL of the image file (e.g. a Supabase Storage URL)
- * @param passageId Optional ID to assign; a UUID is generated if omitted
- * @param sourceFile Optional UploadedFile metadata to embed in the result
  */
 export async function structurizeFromUrl(
   fileUrl: string,
@@ -342,7 +350,6 @@ export async function structurizeFromUrl(
     }
 
     const contentType = response.headers.get('content-type') ?? ''
-    // Strip parameters like "; charset=utf-8"
     const mimeType = contentType.split(';')[0].trim()
 
     if (!SUPPORTED_IMAGE_TYPES.has(mimeType)) {
@@ -364,15 +371,6 @@ export async function structurizeFromUrl(
 
 /**
  * Structurize a passage from a raw base64-encoded image.
- *
- * Use this when you already have the image data (e.g. after rendering a PDF
- * page to a canvas in the browser and obtaining a data URL, or after a
- * server-side resize/conversion step).
- *
- * @param base64     Base64-encoded image data, WITHOUT the "data:…;base64," prefix
- * @param mediaType  MIME type string, e.g. "image/jpeg"
- * @param passageId  Optional ID; a UUID is generated if omitted
- * @param sourceFile Optional UploadedFile metadata to embed in the result
  */
 export async function structurizeFromBase64(
   base64: string,
@@ -388,6 +386,110 @@ export async function structurizeFromBase64(
   )
 }
 
+/**
+ * Structurize a multi-page document by processing each page image
+ * and merging the results into a single StructuredPassage.
+ *
+ * @param pages  Array of { base64, mediaType } for each page image
+ * @param passageId  Optional ID to assign to the merged result
+ * @param sourceFile Optional source file metadata
+ */
+export async function structurizeMultiPage(
+  pages: Array<{ base64: string; mediaType: string }>,
+  passageId: string = crypto.randomUUID(),
+  sourceFile?: UploadedFile
+): Promise<StructuredPassage> {
+  if (pages.length === 0) {
+    throw new StructurizerError('No pages provided', 'NO_PAGES')
+  }
+
+  if (pages.length === 1) {
+    return structurizeFromBase64(pages[0].base64, pages[0].mediaType, passageId, sourceFile)
+  }
+
+  // Process each page independently
+  const pageResults: StructuredPassage[] = []
+  for (let i = 0; i < pages.length; i++) {
+    const page = pages[i]
+    const pageId = `${passageId}_page_${i}`
+    try {
+      const result = await structurizeFromBase64(page.base64, page.mediaType, pageId)
+      pageResults.push(result)
+    } catch (err) {
+      console.warn(`[structurizer] Page ${i} structurization failed:`, err)
+      // Continue with other pages
+    }
+  }
+
+  if (pageResults.length === 0) {
+    throw new StructurizerError(
+      'All pages failed structurization',
+      'ALL_PAGES_FAILED'
+    )
+  }
+
+  // Merge results: concatenate paragraphs, merge vocab, combine metadata
+  return mergePageResults(pageResults, passageId, sourceFile)
+}
+
+/**
+ * Merge multiple per-page StructuredPassage objects into one.
+ */
+function mergePageResults(
+  pages: StructuredPassage[],
+  passageId: string,
+  sourceFile?: UploadedFile
+): StructuredPassage {
+  const allParagraphs: StructuredPassage['paragraphs'] = []
+  const allVocab: Map<string, StructuredPassage['keyVocab'][number]> = new Map()
+  const allTopics: Set<string> = new Set()
+  let paragraphOffset = 0
+
+  for (const page of pages) {
+    // Re-index paragraphs to be globally sequential
+    for (const para of page.paragraphs) {
+      allParagraphs.push({
+        ...para,
+        index: paragraphOffset + para.index,
+      })
+    }
+    paragraphOffset += page.paragraphs.length
+
+    // Merge vocabulary (deduplicate by word)
+    for (const v of page.keyVocab) {
+      if (!allVocab.has(v.word)) {
+        allVocab.set(v.word, v)
+      }
+    }
+
+    // Merge topics
+    for (const t of page.topics) {
+      allTopics.add(t)
+    }
+  }
+
+  const fullText = allParagraphs.map((p) => p.rawText).join('\n\n')
+  const wordCount = fullText.split(/\s+/).filter(Boolean).length
+
+  // Average difficulty across pages, rounded
+  const avgDifficulty = Math.round(
+    pages.reduce((sum, p) => sum + p.estimatedDifficulty, 0) / pages.length
+  )
+
+  return {
+    id: passageId,
+    title: pages[0].title, // Use first page's title
+    paragraphs: allParagraphs,
+    keyVocab: [...allVocab.values()],
+    fullText,
+    wordCount,
+    estimatedDifficulty: Math.min(5, Math.max(1, avgDifficulty)),
+    topics: [...allTopics],
+    structurizedAt: new Date().toISOString(),
+    ...(sourceFile ? { sourceFile } : {}),
+  }
+}
+
 // -----------------------------------------------------------
 // Unified dispatcher used by the /api/structurize route
 // -----------------------------------------------------------
@@ -399,14 +501,11 @@ export type StructurizeInput =
 /**
  * Unified dispatcher: accepts either a remote file URL or raw base64 + mediaType.
  * This is the primary entry point used by the Next.js API route.
- *
- * @param input  Either `{ fileUrl }` or `{ base64, mediaType }`
  */
 export async function structurizePassage(input: StructurizeInput): Promise<StructuredPassage> {
   if ('fileUrl' in input && input.fileUrl != null) {
     return structurizeFromUrl(input.fileUrl)
   }
-  // Discriminated union: fileUrl branch is exhausted, base64 and mediaType are present
   const { base64, mediaType } = input as { base64: string; mediaType: string }
   return structurizeFromBase64(base64, mediaType)
 }
