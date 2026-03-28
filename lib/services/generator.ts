@@ -1,5 +1,3 @@
-'use server'
-
 /**
  * generator.ts
  * Question Generation Service — server-side only.

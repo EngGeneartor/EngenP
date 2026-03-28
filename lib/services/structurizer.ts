@@ -1,5 +1,3 @@
-'use server'
-
 /**
  * structurizer.ts
  * Passage Structurization Service — server-side only.

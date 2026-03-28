@@ -1,5 +1,3 @@
-'use server'
-
 /**
  * anthropic.ts
  * Low-level wrapper around the Anthropic SDK.
