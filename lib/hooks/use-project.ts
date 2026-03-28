@@ -93,7 +93,8 @@ export function useProject(userId: string | undefined) {
         )
 
       // Build a map: passage_id → latest question_set
-      const latestQSet = new Map<string, (typeof qSets)[number]>()
+      type QSetRow = NonNullable<typeof qSets>[number]
+      const latestQSet = new Map<string, QSetRow>()
       for (const qs of qSets ?? []) {
         if (!latestQSet.has(qs.passage_id)) {
           latestQSet.set(qs.passage_id, qs)
@@ -161,7 +162,7 @@ export function useProject(userId: string | undefined) {
           source: fileName ?? null,
           original_file_name: fileName ?? null,
           original_file_url: fileUrl ?? null,
-          structured_data: structured as unknown as Record<string, unknown>,
+          structured_data: structured as unknown as import('@/lib/types/database').Json,
           status: 'completed' as const,
         }
 
@@ -232,7 +233,7 @@ export function useProject(userId: string | undefined) {
             difficulty: q.difficulty ?? null,
             instruction: q.instruction,
             passage_with_markers: q.passage_with_markers ?? null,
-            choices: q.choices as unknown as Record<string, unknown> | null,
+            choices: q.choices as unknown as import('@/lib/types/database').Json | null,
             answer: q.answer,
             explanation: q.explanation ?? null,
             test_point: q.test_point ?? null,

@@ -56,6 +56,7 @@ export type Database = {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
 
       // ----------------------------------------------------------
@@ -95,6 +96,7 @@ export type Database = {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
 
       // ----------------------------------------------------------
@@ -149,6 +151,7 @@ export type Database = {
           validation_result?: Json | null
           created_at?: string
         }
+        Relationships: []
       }
 
       // ----------------------------------------------------------
@@ -182,6 +185,7 @@ export type Database = {
           options?: Json | null
           created_at?: string
         }
+        Relationships: []
       }
 
       // ----------------------------------------------------------
@@ -224,6 +228,7 @@ export type Database = {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
 
       // ----------------------------------------------------------
@@ -251,13 +256,20 @@ export type Database = {
           tokens_used?: number
           created_at?: string
         }
+        Relationships: []
       }
     }
 
-    Views: Record<string, never>
-    Functions: Record<string, never>
-    Enums: Record<string, never>
-    CompositeTypes: Record<string, never>
+    Views: Record<string, {
+      Row: Record<string, unknown>
+      Relationships: never[]
+    }>
+    Functions: Record<string, {
+      Args: Record<string, unknown>
+      Returns: unknown
+    }>
+    Enums: Record<string, string[]>
+    CompositeTypes: Record<string, Record<string, unknown>>
   }
 }
 

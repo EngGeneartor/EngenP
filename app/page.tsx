@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
-import { Zap, Upload, Sparkles, FileDown, ArrowRight, BookOpen, Brain, Target, Shield, Clock, ChevronRight, Star, GraduationCap, BarChart3, MessageCircle, User, LogOut } from "lucide-react"
+import { Zap, Upload, Sparkles, FileDown, ArrowRight, BookOpen, Brain, Target, Shield, Clock, ChevronRight, Star, GraduationCap, BarChart3, MessageCircle, User, LogOut, Loader2 } from "lucide-react"
 import { AmbientBackground } from "@/components/ambient-background"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useInView } from "@/hooks/use-in-view"
@@ -93,6 +93,7 @@ const stats = [
 
 export default function LandingPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null)
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -102,6 +103,33 @@ export default function LandingPage() {
       setUserEmail(session?.user?.email ?? null)
     })
     return () => subscription.unsubscribe()
+  }, [])
+
+  const handleProCheckout = useCallback(async () => {
+    setCheckoutLoading(true)
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.access_token) {
+        // Not logged in — redirect to login first
+        window.location.href = "/login"
+        return
+      }
+      const res = await fetch("/api/stripe/create-checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      })
+      if (!res.ok) throw new Error("결제 페이지를 열 수 없습니다.")
+      const { url } = await res.json()
+      if (url) window.location.href = url
+    } catch {
+      // Fall back to login page if anything fails
+      window.location.href = "/login"
+    } finally {
+      setCheckoutLoading(false)
+    }
   }, [])
 
   return (
@@ -573,9 +601,20 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/login" className="btn-shine mt-8 flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 py-3 text-[13px] font-bold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:shadow-purple-500/30 hover:brightness-110">
-                  Pro 시작하기
-                </Link>
+                <button
+                  onClick={handleProCheckout}
+                  disabled={checkoutLoading}
+                  className="btn-shine mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 py-3 text-[13px] font-bold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:shadow-purple-500/30 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {checkoutLoading ? (
+                    <>
+                      <Loader2 className="size-3.5 animate-spin" />
+                      결제 페이지 열기...
+                    </>
+                  ) : (
+                    "Pro 시작하기"
+                  )}
+                </button>
               </div>
             </FadeIn>
           </div>
