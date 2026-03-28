@@ -63,33 +63,25 @@ function DashboardContent() {
       return
     }
 
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) {
-        router.push("/login/")
-      } else {
-        setUser(user)
-        // Fetch current subscription plan
-        supabase
-          .from("subscriptions")
-          .select("plan, status")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .single()
-          .then(({ data }) => {
-            if (data && (data.status === "active" || data.status === "trialing")) {
-              setUserPlan(data.plan as "free" | "pro")
-            }
-          })
-      }
-      setLoading(false)
-    })
-
+    // Use onAuthStateChange as the PRIMARY auth check
+    // This handles both initial session recovery and subsequent changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session?.user) {
-        router.push("/login/")
+        // Give Supabase a moment to recover session from storage
+        // Only redirect if there's truly no session after a brief wait
+        setTimeout(() => {
+          supabase.auth.getSession().then(({ data: { session: s } }) => {
+            if (!s?.user) {
+              window.location.href = "/login"
+            } else {
+              setUser(s.user)
+              setLoading(false)
+            }
+          })
+        }, 500)
       } else {
         setUser(session.user)
+        setLoading(false)
       }
     })
 
