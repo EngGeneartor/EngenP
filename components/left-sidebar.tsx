@@ -14,17 +14,10 @@ import type { UploadedFile, StructuredPassage, GeneratedQuestion, SchoolDnaProfi
 import { structurizeFile, generateQuestions, analyzeExamDna, mapSidebarTypes } from "@/lib/api-client"
 import type { ProcessingStep } from "@/app/dashboard/page"
 
-const questionTypes = [
-  { id: "grammar", label: "어법" },
-  { id: "vocabulary", label: "어휘" },
-  { id: "blank", label: "빈칸 추론" },
-  { id: "order", label: "순서 배열" },
-  { id: "insertion", label: "문장 삽입" },
-  { id: "title", label: "제목 추론" },
-  { id: "purpose", label: "글의 목적" },
-  { id: "summary", label: "요약문" },
-  { id: "implication", label: "함축 의미" },
-  { id: "mood", label: "심경 변화" },
+const generationModes = [
+  { id: "variation", label: "변형문제", desc: "지문 기반 유형별 변형 문제 생성" },
+  { id: "workbook", label: "워크북", desc: "어휘/어법/서술형 워크북 생성" },
+  { id: "mock_exam", label: "동형모의고사", desc: "기출 DNA 기반 실전 모의고사" },
 ]
 
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png", "text/plain"]
@@ -141,6 +134,7 @@ export function LeftSidebar({
   const [difficulty, setDifficulty] = useState([3])
   const [questionCount, setQuestionCount] = useState([5])
   const [selectedTypes, setSelectedTypes] = useState<string[]>(["grammar", "vocabulary", "blank"])
+  const [generationMode, setGenerationMode] = useState("variation")
   const [sectionsOpen, setSectionsOpen] = useState({
     upload: true,
     analysis: false,
@@ -889,30 +883,28 @@ export function LeftSidebar({
                   </div>
                 </div>
 
-                {/* Question Types */}
+                {/* Generation Mode */}
                 <div className="rounded-2xl bg-muted/20 p-4">
-                  <div className="mb-3 flex items-center justify-between">
-                    <Label className="text-xs font-semibold text-foreground/70">문제 유형</Label>
-                    <span className="text-[11px] text-muted-foreground/70">{selectedTypes.length}개 선택</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {questionTypes.map((type) => (
-                      <label
-                        key={type.id}
+                  <Label className="text-xs font-semibold text-foreground/70 mb-3 block">문제 유형</Label>
+                  <div className="flex flex-col gap-2">
+                    {generationModes.map((mode) => (
+                      <button
+                        key={mode.id}
+                        type="button"
+                        onClick={() => setGenerationMode(mode.id)}
                         className={cn(
-                          "group/type flex cursor-pointer items-center gap-2 rounded-xl border px-2.5 py-2 text-xs transition-smooth",
-                          selectedTypes.includes(type.id)
-                            ? "border-purple-500/30 bg-purple-500/10 text-purple-700 dark:text-purple-300 glow-sm"
-                            : "border-transparent bg-background/30 text-foreground/50 hover:bg-accent/40 hover:text-foreground/70"
+                          "flex flex-col items-start rounded-xl border px-3 py-2.5 text-left transition-smooth",
+                          generationMode === mode.id
+                            ? "border-purple-500/30 bg-purple-500/10 glow-sm"
+                            : "border-transparent bg-background/30 hover:bg-accent/40"
                         )}
                       >
-                        <Checkbox
-                          checked={selectedTypes.includes(type.id)}
-                          onCheckedChange={() => toggleType(type.id)}
-                          className="size-3.5 border-muted-foreground/30 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500"
-                        />
-                        <span className="font-medium">{type.label}</span>
-                      </label>
+                        <span className={cn(
+                          "text-xs font-bold",
+                          generationMode === mode.id ? "text-purple-700 dark:text-purple-300" : "text-foreground/60"
+                        )}>{mode.label}</span>
+                        <span className="text-[10px] text-muted-foreground/60 mt-0.5">{mode.desc}</span>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -964,7 +956,7 @@ export function LeftSidebar({
         </Button>
         <p className="mt-2 text-center text-[10px] text-muted-foreground/65">
           {(isDemo || uploadedFiles.length > 0)
-            ? `${isDemo ? "데모 모드" : `${uploadedFiles.length}개 파일`} · ${selectedTypes.length}개 유형 · ${questionCount[0]}문항 · 난이도 ${difficulty[0]}`
+            ? `${isDemo ? "데모 모드" : `${uploadedFiles.length}개 파일`} · ${generationModes.find(m => m.id === generationMode)?.label} · ${questionCount[0]}문항 · 난이도 ${difficulty[0]}`
             : "파일을 업로드하면 문제를 생성할 수 있습니다"
           }
         </p>
