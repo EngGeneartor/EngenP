@@ -254,10 +254,18 @@ function DashboardContent() {
 
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background">
+      <style>{`
+        .dash-desktop { display: none; height: 100%; width: 100%; }
+        .dash-mobile { display: flex; flex-direction: column; height: 100%; width: 100%; }
+        @media (min-width: 768px) {
+          .dash-desktop { display: flex; }
+          .dash-mobile { display: none; }
+        }
+      `}</style>
       <AmbientBackground />
 
       {/* ════════════ DESKTOP LAYOUT (md+) ════════════ */}
-      <div className="dashboard-desktop">
+      <div className="dash-desktop">
         <ProjectHistory
           collapsed={historyCollapsed}
           onToggle={() => setHistoryCollapsed(!historyCollapsed)}
@@ -337,7 +345,7 @@ function DashboardContent() {
       </div>
 
       {/* ════════════ MOBILE LAYOUT (<md) ════════════ */}
-      <div className="dashboard-mobile">
+      <div className="dash-mobile">
         {/* Mobile content area */}
         <div className="flex-1 overflow-hidden">
           {/* Upload tab */}
