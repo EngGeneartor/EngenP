@@ -81,6 +81,9 @@ export interface QuestionTypeTemplate {
   examples: GeneratedQuestion[]
 }
 
+/** Generation mode determines which prompt template and rules to use */
+export type GenerationMode = 'variation' | 'workbook' | 'mock_exam'
+
 /** Options passed to the generator service */
 export interface GenerationOptions {
   /** Which question type IDs to generate */
@@ -93,6 +96,8 @@ export interface GenerationOptions {
   explanationLanguage?: string
   /** Seed text / topic hints to bias generation */
   topicHints?: string[]
+  /** Generation mode: 'variation' (default), 'workbook', or 'mock_exam' */
+  generationMode?: GenerationMode
 }
 
 /** A single generated exam question */

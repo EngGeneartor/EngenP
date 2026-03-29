@@ -17,9 +17,9 @@ import Anthropic from '@anthropic-ai/sdk'
 // Constants
 // -----------------------------------------------------------
 
-const STRUCTURIZE_MODEL = 'claude-sonnet-4-6-20250514' // vision-capable model
-const GENERATION_MODEL = 'claude-sonnet-4-6-20250514'
-const VALIDATION_MODEL = 'claude-sonnet-4-6-20250514'
+const STRUCTURIZE_MODEL = 'claude-sonnet-4-20250514' // vision-capable model
+const GENERATION_MODEL = 'claude-sonnet-4-20250514'
+const VALIDATION_MODEL = 'claude-sonnet-4-20250514'
 
 const MAX_TOKENS_STRUCTURIZE = 4096
 const MAX_TOKENS_GENERATE = 8192

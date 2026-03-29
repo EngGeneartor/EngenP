@@ -28,12 +28,15 @@ import {
   buildGenerateSystemPrompt,
   buildGenerateUserMessage,
   buildCorrectionMessage,
+  buildWorkbookSystemPrompt,
+  buildWorkbookUserMessage,
 } from './prompt-builder'
 import { validateQuestionsDetailed } from './validator'
 import type {
   StructuredPassage,
   GeneratedQuestion,
   GenerationOptions,
+  GenerationMode,
   DetailedValidationResult,
   TypeContext,
   QuestionTypeId,
@@ -280,15 +283,26 @@ async function generateWithCorrection(
   options: GenerationOptions,
   dnaProfile?: SchoolDnaProfile
 ): Promise<GeneratedQuestion[]> {
-  // --- Step 1: Build prompts ---
-  const systemPrompt = await buildGenerateSystemPrompt()
-  const userMessage = buildGenerateUserMessage(
-    passage,
-    typeContexts,
-    fewShotExamples,
-    options,
-    dnaProfile
-  )
+  // --- Step 1: Build prompts based on generation mode ---
+  const mode: GenerationMode = options.generationMode ?? 'variation'
+  let systemPrompt: string
+  let userMessage: string
+
+  if (mode === 'workbook') {
+    systemPrompt = await buildWorkbookSystemPrompt()
+    userMessage = buildWorkbookUserMessage(passage, typeContexts, options)
+  } else {
+    // 'variation' and 'mock_exam' both use generate_questions.txt
+    // 'mock_exam' additionally uses the dnaProfile for biasing
+    systemPrompt = await buildGenerateSystemPrompt()
+    userMessage = buildGenerateUserMessage(
+      passage,
+      typeContexts,
+      fewShotExamples,
+      options,
+      dnaProfile
+    )
+  }
 
   // --- Step 2: Initial generation ---
   let questions = await withRetry(async () => {
@@ -438,8 +452,9 @@ export async function generateQuestions(
     FEW_SHOT_COUNT_PER_TYPE
   )
 
+  const mode = resolvedOptions.generationMode ?? 'variation'
   console.info(
-    `[generator] RAG loaded: ${typeContexts.length} type context(s), ` +
+    `[generator] Mode: ${mode} | RAG loaded: ${typeContexts.length} type context(s), ` +
       `few-shot examples for [${resolvedOptions.types.join(', ')}]` +
       (dnaProfile ? ` | DNA profile: ${dnaProfile.profile_id}` : '')
   )
@@ -461,6 +476,7 @@ export type {
   StructuredPassage,
   GeneratedQuestion,
   GenerationOptions,
+  GenerationMode,
   DetailedValidationResult,
   QuestionTypeId,
   SchoolDnaProfile,

@@ -313,6 +313,62 @@ question_number는 1부터 순차적으로 부여하세요.`
 }
 
 // -----------------------------------------------------------
+// Public API: Workbook prompts
+// -----------------------------------------------------------
+
+/**
+ * Build the static system prompt for workbook generation.
+ * Reads from data/prompts/workbook_generate.txt.
+ *
+ * Workbook mode uses a completely separate prompt template
+ * with its own 10 question type specifications and formatting rules.
+ */
+export async function buildWorkbookSystemPrompt(): Promise<string> {
+  return loadPromptFile('workbook_generate.txt')
+}
+
+/**
+ * Build the dynamic user message for workbook generation.
+ * Formatted specifically for the workbook prompt template's expected input.
+ */
+export function buildWorkbookUserMessage(
+  passage: StructuredPassage,
+  typeContexts: TypeContext[],
+  options: GenerationOptions
+): string {
+  const typeIds = typeContexts.map((t) => t.typeId)
+
+  return `## 입력 지문 (Passage)
+
+${formatPassageForPrompt(passage)}
+
+---
+
+## 생성 요청 (Generation Request)
+
+\`\`\`json
+{
+  "passage_text": ${JSON.stringify(passage.fullText)},
+  "passage_source": ${JSON.stringify(passage.title ?? passage.topics?.join(', ') ?? '(unknown)')},
+  "question_types": ${JSON.stringify(typeIds)},
+  "difficulty": ${options.difficulty}
+}
+\`\`\`
+
+---
+
+## 최종 생성 지시
+
+- 목표 난이도: ${options.difficulty}/5
+- 요청 유형: ${typeIds.join(', ')}
+- 설명 언어: ${options.explanationLanguage === 'en' ? 'English' : '한국어 (Korean)'}
+- 전수 유형(03 동사변형, 08 단어배열, 09 해석쓰기, 10 영작)은 모든 문장을 순서대로 빠짐없이 문제화하세요.
+- 지문 전체 포함 유형(01 어휘선택, 02 어법선택, 04 오류수정, 05 TF, 06 순서, 07 삽입)은 지문 전체를 문제 지문에 포함하세요.
+
+위 지문과 규칙에 따라 워크북 문제를 JSON 형식으로 생성하세요.`
+}
+
+// -----------------------------------------------------------
 // Public API: Validation prompts
 // -----------------------------------------------------------
 

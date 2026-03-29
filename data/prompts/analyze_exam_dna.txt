@@ -109,8 +109,8 @@ grammar_choice 문제에서 출제된 어법 포인트를 분석하십시오.
 - frequency: 전체 기출에서의 출제 횟수
 - recency_weight: 최근 시험일수록 높은 가중치를 부여한 중요도 점수 (0.0~1.0)
 
-top_grammar_points: 빈도 기준 상위 5개 어법 포인트
-grammar_blind_spots: 한 번도 출제되지 않은 어법 포인트 (함정 가능성 높음)
+top_grammar_points: 빈도 기준 상위 5개 어법 포인트 (반드시 5개 추출, 빈도와 recency_weight 모두 산출)
+grammar_blind_spots: 한 번도 출제되지 않은 어법 포인트 (함정 가능성 높음 — 동형 모의고사에서 우선 활용 고려)
 
 ### DOMAIN 4: 어휘 출제 스타일 (Vocabulary Testing Style)
 
@@ -326,6 +326,16 @@ Output ONLY the JSON below. Do NOT include any explanatory text, markdown code f
 2. 단일 시험지에만 나타나는 패턴은 signature_patterns에 별도 기록하고 reliability_warnings에 표시합니다.
 3. 3회 이상 반복 확인된 패턴을 "확정된 DNA"로 간주합니다.
 4. generation_guidelines를 구체적으로 작성합니다. 이 가이드라인이 동형 모의고사 생성의 직접적 지침이 됩니다.
+
+### STEP 6: 동형 모의고사 연동 데이터 생성
+DNA 프로필은 동형 모의고사 제작 시 다음 용도로 사용됩니다:
+1. **유형별 문제 비율 결정**: 기출 30문항의 유형 분포를 기반으로 모의고사 유형 배분
+2. **패러프레이징 비율 결정**: 5문제 중 2~3문제는 패러프레이징, 나머지는 원문 유지
+3. **난이도 배분**: 기출 문제의 배점·난이도 수준을 유지하여 배분
+4. **어법/어휘 출제 포인트 우선순위**: top_grammar_points와 vocab_testing_style을 반영
+5. **오답 구성 패턴 재현**: wrong_answer_patterns을 기반으로 동일한 함정 구조 적용
+
+generation_guidelines의 recommended_type_mix는 기출 유형별 1문제씩 5세트 구성이 가능하도록 설계하십시오.
 
 ---
 
