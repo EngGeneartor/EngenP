@@ -96,6 +96,36 @@
       "answer": "②",
       "explanation": "현재의 모습이 미래를 말해주지만 시간이 지나면 현재의 관심사와 관점은 희미해질 수 있으므로, 미래의 자신에게 편지를 써보는 것이 좋다는 내용이다. 편지 쓰기의 이점(자기 성찰, 과거의 자신 상기, 의미 있는 삶의 힘)을 설명한다. 따라서 글의 주제로 가장 적절한 것은 ②이다.",
       "test_point": "글 전체 논지(편지 쓰기의 이점)를 포괄하는 주제 선택 — 유사 주제(기억 보존, 일기 효과)와의 변별"
+    },
+    {
+      "instruction": "다음 글의 내용을 한 문장으로 요약하고자 한다. 빈칸 (A), (B)에 들어갈 말로 가장 적절한 것은?",
+      "subtype": "summary",
+      "passage_with_markers": "Exhausted from a full day of labor, a boy habitually climbed his hilltop to gaze at a faraway dwelling whose windows seemed to gleam with gold and diamond in the evening light. Setting out one day to reach the house, he discovered upon arrival that its windows were merely ordinary glass. A girl who lived there led him to a high vantage point, from which the golden windows appeared once more — but this time on a distant hill he recognized as his own home.",
+      "choices": [
+        "① (A) distant — (B) appreciation",
+        "② (A) distant — (B) disappointment",
+        "③ (A) glittering — (B) appreciation",
+        "④ (A) glittering — (B) disappointment",
+        "⑤ (A) familiar — (B) recognition"
+      ],
+      "answer": "①",
+      "explanation": "(A) distant — 소년이 찾아간 집은 '멀리 있는(distant)' 언덕 위의 집이다. 소년의 여정은 'a distant house'를 향한 탐색이었으므로, distant가 (A)에 적절하다. glittering은 집의 특성 중 하나이나 quest의 목적어로 어울리지 않는다.\n(B) appreciation — 소년은 황금 창문이 자신의 집 것임을 깨닫고 돌아와 자신의 삶에 대한 '감사/인식(appreciation)'에 이르렀다. disappointment는 여정 중간의 감정이지 최종 결론이 아니다.",
+      "test_point": "요약문 (A)(B) 완성 — (A)=핵심 수식어 vs 지문 소재어 구분, (B)=최종 결론 감정 vs 중간 과정 감정 구분"
+    },
+    {
+      "instruction": "다음 글에서 필자가 주장하는 바로 가장 적절한 것은?",
+      "subtype": "main_idea",
+      "passage_with_markers": "We often find ourselves gazing at the lives of others, convinced that beauty, richness, and fulfillment exist somewhere beyond our reach. Like a boy who traveled far in search of golden windows only to discover that they had always adorned his own home, we may spend years chasing what we believe to be extraordinary, overlooking the quiet treasures that surround us every day.",
+      "choices": [
+        "① 장거리 여행은 삶의 목표를 새롭게 설정하는 데 도움이 된다.",
+        "② 타인의 삶을 관찰함으로써 자신의 부족함을 깨달을 수 있다.",
+        "③ 부모의 조언을 따르는 것이 성장의 가장 빠른 길이다.",
+        "④ 일상 속 가까운 것들에서 진정한 삶의 가치를 발견해야 한다.",
+        "⑤ 낯선 환경에서의 경험이 감사하는 마음을 길러 준다."
+      ],
+      "answer": "④",
+      "explanation": "④ 일상 속 가까운 것들에서 진정한 삶의 가치를 발견해야 한다. — 필자는 먼 곳을 동경하다 결국 자신의 집 창문이 황금빛임을 깨닫는 소년의 이야기를 통해, 우리가 이미 가진 것이 바로 찾던 보물임을 역설한다.\n① — 여행의 목표 재설정에 대한 내용은 언급되지 않는다.\n② — 타인의 삶 관찰을 통한 자기 부족함 인식은 글의 요지와 다르다.\n③ — 부모의 조언은 서사의 도입 장치일 뿐 핵심 주장이 아니다.\n⑤ — 낯선 환경이 감사함을 길러준다는 내용은 일부 유사하나, 핵심은 '자신의 일상'으로 시선을 돌리는 것이다.",
+      "test_point": "필자 주장 파악(한국어 선지) — 배경·소재를 가리키는 부분 사실 오답 vs 핵심 메시지 추상화 정답 구별"
     }
   ]
 }

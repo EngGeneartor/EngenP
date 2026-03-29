@@ -763,7 +763,23 @@ html {
   background: radial-gradient(circle, oklch(0.5 0.2 250 / 0.25) 0%, transparent 70%);
 }
 
-/* ─── Dashboard responsive layout ───
-   Now handled via Tailwind utility classes (hidden md:flex / flex md:hidden)
-   in app/dashboard/page.tsx to avoid CSS layer priority issues with Tailwind v4.
-*/
+/* ─── Dashboard responsive layout ─── */
+.dashboard-desktop {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+.dashboard-mobile {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .dashboard-desktop {
+    display: flex;
+  }
+  .dashboard-mobile {
+    display: none;
+  }
+}
