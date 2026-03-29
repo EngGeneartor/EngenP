@@ -20,3 +20,5 @@ out/
 .claude/
 archiv/
 tsconfig.tsbuildinfo
+REBUILD_PLAN.md
+notion_*.py
