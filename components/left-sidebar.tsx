@@ -526,7 +526,7 @@ export function LeftSidebar({
   // ─── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <aside className="relative z-10 flex h-full w-[310px] flex-col sidebar-glass">
+    <aside className="relative z-10 flex h-full w-full md:w-[310px] flex-col sidebar-glass">
       {/* Logo - click to go home */}
       <a href="/" className="flex items-center gap-3 px-5 py-5 transition-smooth hover:opacity-80">
         <div className="relative flex size-10 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 glow-md">

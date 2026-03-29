@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { MessageCircle, X, Star, CheckCircle2, Zap, Settings } from "lucide-react"
+import { MessageCircle, X, Star, CheckCircle2, Zap, Settings, Upload, BookOpen, FolderOpen } from "lucide-react"
 import { LeftSidebar } from "@/components/left-sidebar"
 import { MainContent } from "@/components/main-content"
 import { AIChatSidebar } from "@/components/ai-chat-sidebar"
@@ -25,6 +25,10 @@ function DashboardContent() {
   const [selectedFile, setSelectedFile] = useState<UploadedFile | null>(null)
   const [chatOpen, setChatOpen] = useState(true)
   const [historyCollapsed, setHistoryCollapsed] = useState(true)
+
+  // Mobile tab navigation
+  type MobileTab = "upload" | "result" | "chat" | "history"
+  const [mobileTab, setMobileTab] = useState<MobileTab>("upload")
 
   // Subscription plan
   const [userPlan, setUserPlan] = useState<"free" | "pro">("free")
@@ -239,56 +243,219 @@ function DashboardContent() {
 
   if (!user && !isDemo) return null
 
+  // ─── Mobile bottom nav tabs ─────────────────────────────────────────────────
+
+  const mobileTabs: { id: MobileTab; label: string; icon: React.ReactNode }[] = [
+    { id: "upload", label: "업로드", icon: <Upload className="size-5" /> },
+    { id: "result", label: "결과", icon: <BookOpen className="size-5" /> },
+    { id: "chat", label: "AI 채팅", icon: <MessageCircle className="size-5" /> },
+    { id: "history", label: "이력", icon: <FolderOpen className="size-5" /> },
+  ]
+
   return (
     <div className="relative flex h-screen w-full overflow-hidden bg-background">
       <AmbientBackground />
-      <ProjectHistory
-        collapsed={historyCollapsed}
-        onToggle={() => setHistoryCollapsed(!historyCollapsed)}
-        projects={projects}
-        isLoading={projectsLoading}
-        selectedId={selectedProjectId}
-        onSelectProject={handleSelectProject}
-        onCreateProject={handleCreateProject}
-        onDeleteProject={deleteProject}
-        onRenameProject={renameProject}
-      />
-      <div className="divider-v-gradient shrink-0" />
-      <LeftSidebar
-        uploadedFiles={uploadedFiles}
-        setUploadedFiles={setUploadedFiles}
-        selectedFile={selectedFile}
-        onFileSelect={handleFileSelect}
-        isDemo={isDemo}
-        isProcessing={isProcessing}
-        processingStep={processingStep}
-        pipelineError={pipelineError}
-        onStructuredPassage={handleStructuredPassage}
-        onGeneratedQuestions={handleGeneratedQuestions}
-        onIsProcessing={setIsProcessing}
-        onProcessingStep={setProcessingStep}
-        onPipelineError={setPipelineError}
-        dnaProfile={dnaProfile}
-        onDnaProfile={setDnaProfile}
-        userId={user?.id}
-        currentProjectId={currentPassageId}
-      />
-      <div className="divider-v-gradient shrink-0" />
-      <MainContent
-        selectedFile={selectedFile}
-        uploadedFiles={uploadedFiles}
-        structuredPassage={structuredPassage}
-        generatedQuestions={generatedQuestions}
-        isProcessing={isProcessing}
-        processingStep={processingStep}
-        isDemo={isDemo}
-      />
 
-      {/* 저장됨 indicator — shown during save and briefly after */}
+      {/* ════════════ DESKTOP LAYOUT (md+) ════════════ */}
+      <div className="hidden md:flex h-full w-full">
+        <ProjectHistory
+          collapsed={historyCollapsed}
+          onToggle={() => setHistoryCollapsed(!historyCollapsed)}
+          projects={projects}
+          isLoading={projectsLoading}
+          selectedId={selectedProjectId}
+          onSelectProject={handleSelectProject}
+          onCreateProject={handleCreateProject}
+          onDeleteProject={deleteProject}
+          onRenameProject={renameProject}
+        />
+        <div className="divider-v-gradient shrink-0" />
+        <LeftSidebar
+          uploadedFiles={uploadedFiles}
+          setUploadedFiles={setUploadedFiles}
+          selectedFile={selectedFile}
+          onFileSelect={handleFileSelect}
+          isDemo={isDemo}
+          isProcessing={isProcessing}
+          processingStep={processingStep}
+          pipelineError={pipelineError}
+          onStructuredPassage={handleStructuredPassage}
+          onGeneratedQuestions={handleGeneratedQuestions}
+          onIsProcessing={setIsProcessing}
+          onProcessingStep={setProcessingStep}
+          onPipelineError={setPipelineError}
+          dnaProfile={dnaProfile}
+          onDnaProfile={setDnaProfile}
+          userId={user?.id}
+          currentProjectId={currentPassageId}
+        />
+        <div className="divider-v-gradient shrink-0" />
+        <MainContent
+          selectedFile={selectedFile}
+          uploadedFiles={uploadedFiles}
+          structuredPassage={structuredPassage}
+          generatedQuestions={generatedQuestions}
+          isProcessing={isProcessing}
+          processingStep={processingStep}
+          isDemo={isDemo}
+        />
+
+        {chatOpen ? (
+          <>
+            <div className="divider-v-gradient shrink-0" />
+            <div className="relative">
+              <button
+                onClick={() => setChatOpen(false)}
+                className="absolute right-3 top-3 z-20 rounded-lg p-1.5 text-foreground/50 transition-smooth hover:bg-muted/30 hover:text-foreground/60"
+                title="채팅 닫기"
+              >
+                <X className="size-4" />
+              </button>
+              <AIChatSidebar
+                userEmail={user?.email}
+                context={{ passage: structuredPassage, questions: generatedQuestions }}
+                onQuestionsUpdate={(updatedQuestions) => {
+                  handleGeneratedQuestions(updatedQuestions)
+                  setProcessingStep("done")
+                }}
+                onSignOut={async () => {
+                  await supabase.auth.signOut()
+                  router.push("/")
+                }}
+              />
+            </div>
+          </>
+        ) : (
+          <button
+            onClick={() => setChatOpen(true)}
+            className="fixed bottom-6 right-6 z-50 flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-600 text-white shadow-xl shadow-purple-500/25 transition-smooth hover:shadow-purple-500/40 hover:brightness-110 active:scale-95"
+            title="Haean AI 열기"
+          >
+            <MessageCircle className="size-6" />
+          </button>
+        )}
+      </div>
+
+      {/* ════════════ MOBILE LAYOUT (<md) ════════════ */}
+      <div className="flex md:hidden h-full w-full flex-col">
+        {/* Mobile content area */}
+        <div className="flex-1 overflow-hidden">
+          {/* Upload tab */}
+          <div className={cn("h-full", mobileTab !== "upload" && "hidden")}>
+            <LeftSidebar
+              uploadedFiles={uploadedFiles}
+              setUploadedFiles={setUploadedFiles}
+              selectedFile={selectedFile}
+              onFileSelect={handleFileSelect}
+              isDemo={isDemo}
+              isProcessing={isProcessing}
+              processingStep={processingStep}
+              pipelineError={pipelineError}
+              onStructuredPassage={(p) => { handleStructuredPassage(p); setMobileTab("result") }}
+              onGeneratedQuestions={(q) => { handleGeneratedQuestions(q); setMobileTab("result") }}
+              onIsProcessing={setIsProcessing}
+              onProcessingStep={setProcessingStep}
+              onPipelineError={setPipelineError}
+              dnaProfile={dnaProfile}
+              onDnaProfile={setDnaProfile}
+              userId={user?.id}
+              currentProjectId={currentPassageId}
+            />
+          </div>
+
+          {/* Result tab */}
+          <div className={cn("h-full", mobileTab !== "result" && "hidden")}>
+            <MainContent
+              selectedFile={selectedFile}
+              uploadedFiles={uploadedFiles}
+              structuredPassage={structuredPassage}
+              generatedQuestions={generatedQuestions}
+              isProcessing={isProcessing}
+              processingStep={processingStep}
+              isDemo={isDemo}
+            />
+          </div>
+
+          {/* Chat tab */}
+          <div className={cn("h-full", mobileTab !== "chat" && "hidden")}>
+            <AIChatSidebar
+              userEmail={user?.email}
+              context={{ passage: structuredPassage, questions: generatedQuestions }}
+              onQuestionsUpdate={(updatedQuestions) => {
+                handleGeneratedQuestions(updatedQuestions)
+                setProcessingStep("done")
+                setMobileTab("result")
+              }}
+              onSignOut={async () => {
+                await supabase.auth.signOut()
+                router.push("/")
+              }}
+            />
+          </div>
+
+          {/* History tab */}
+          <div className={cn("h-full", mobileTab !== "history" && "hidden")}>
+            <div className="flex h-full flex-col sidebar-glass">
+              <div className="flex items-center gap-3 px-5 py-4">
+                <FolderOpen className="size-5 text-purple-400" />
+                <h3 className="text-[15px] font-extrabold tracking-tight text-foreground/80">프로젝트 이력</h3>
+              </div>
+              <div className="divider-gradient mx-4" />
+              <ProjectHistory
+                collapsed={false}
+                onToggle={() => {}}
+                projects={projects}
+                isLoading={projectsLoading}
+                selectedId={selectedProjectId}
+                onSelectProject={(id) => { handleSelectProject(id); setMobileTab("result") }}
+                onCreateProject={() => { handleCreateProject(); setMobileTab("upload") }}
+                onDeleteProject={deleteProject}
+                onRenameProject={renameProject}
+                isMobile
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile bottom navigation bar */}
+        <nav className="relative z-20 flex shrink-0 items-center justify-around border-t border-border/20 bg-background/95 px-2 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl">
+          {mobileTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setMobileTab(tab.id)}
+              className={cn(
+                "flex flex-col items-center gap-0.5 px-3 py-2.5 text-[10px] font-medium transition-all",
+                mobileTab === tab.id
+                  ? "text-purple-500"
+                  : "text-foreground/40 active:text-foreground/60"
+              )}
+            >
+              {tab.icon}
+              <span>{tab.label}</span>
+              {mobileTab === tab.id && (
+                <div className="absolute top-0 h-0.5 w-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500" />
+              )}
+            </button>
+          ))}
+          <button
+            onClick={() => setSettingsOpen(true)}
+            className={cn(
+              "flex flex-col items-center gap-0.5 px-3 py-2.5 text-[10px] font-medium text-foreground/40 transition-all active:text-foreground/60"
+            )}
+          >
+            <Settings className="size-5" />
+            <span>설정</span>
+          </button>
+        </nav>
+      </div>
+
+      {/* ════════════ SHARED OVERLAYS ════════════ */}
+
+      {/* 저장됨 indicator */}
       {(isSaving || savedAt) && !isDemo && (
         <div
           className={cn(
-            "fixed bottom-24 left-1/2 z-50 -translate-x-1/2 flex items-center gap-2 rounded-xl border bg-background/90 px-4 py-2 text-[12px] font-medium shadow-lg backdrop-blur-sm transition-all duration-300",
+            "fixed bottom-20 md:bottom-24 left-1/2 z-50 -translate-x-1/2 flex items-center gap-2 rounded-xl border bg-background/90 px-4 py-2 text-[12px] font-medium shadow-lg backdrop-blur-sm transition-all duration-300",
             isSaving
               ? "border-purple-500/20 text-purple-400"
               : "border-emerald-500/20 text-emerald-400",
@@ -308,44 +475,9 @@ function DashboardContent() {
         </div>
       )}
 
-      {chatOpen ? (
-        <>
-          <div className="divider-v-gradient shrink-0" />
-          <div className="relative">
-            <button
-              onClick={() => setChatOpen(false)}
-              className="absolute right-3 top-3 z-20 rounded-lg p-1.5 text-foreground/50 transition-smooth hover:bg-muted/30 hover:text-foreground/60"
-              title="채팅 닫기"
-            >
-              <X className="size-4" />
-            </button>
-            <AIChatSidebar
-              userEmail={user?.email}
-              context={{ passage: structuredPassage, questions: generatedQuestions }}
-              onQuestionsUpdate={(updatedQuestions) => {
-                handleGeneratedQuestions(updatedQuestions)
-                setProcessingStep("done")
-              }}
-              onSignOut={async () => {
-                await supabase.auth.signOut()
-                router.push("/")
-              }}
-            />
-          </div>
-        </>
-      ) : (
-        <button
-          onClick={() => setChatOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-600 text-white shadow-xl shadow-purple-500/25 transition-smooth hover:shadow-purple-500/40 hover:brightness-110 active:scale-95"
-          title="Haean AI 열기"
-        >
-          <MessageCircle className="size-6" />
-        </button>
-      )}
-
-      {/* Bottom-left controls: Plan badge + Settings */}
+      {/* Bottom-left controls: Plan badge + Settings (desktop only) */}
       {!isDemo && (
-        <div className="fixed bottom-6 left-6 z-40 flex items-center gap-2">
+        <div className="hidden md:flex fixed bottom-6 left-6 z-40 items-center gap-2">
           {userPlan === "pro" ? (
             <div className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 px-3 py-1.5 shadow-lg shadow-purple-500/30">
               <Star className="size-3 text-white" strokeWidth={2.5} />

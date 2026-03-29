@@ -27,6 +27,8 @@ interface ProjectHistoryProps {
   onCreateProject: () => void
   onDeleteProject: (id: string) => void
   onRenameProject: (id: string, title: string) => void
+  /** When true, renders full-width list without collapse toggle (mobile layout) */
+  isMobile?: boolean
 }
 
 export function ProjectHistory({
@@ -39,6 +41,7 @@ export function ProjectHistory({
   onCreateProject,
   onDeleteProject,
   onRenameProject,
+  isMobile,
 }: ProjectHistoryProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null)
@@ -111,7 +114,7 @@ export function ProjectHistory({
     (p) => Date.now() - p.createdAt.getTime() >= 86400000
   )
 
-  if (collapsed) {
+  if (collapsed && !isMobile) {
     return (
       <aside className="relative z-10 flex h-full w-[52px] flex-col items-center sidebar-glass py-4">
         <button
@@ -157,8 +160,9 @@ export function ProjectHistory({
   }
 
   return (
-    <aside className="relative z-10 flex h-full w-[240px] flex-col sidebar-glass">
+    <aside className={cn("relative z-10 flex h-full flex-col", isMobile ? "w-full" : "w-[240px] sidebar-glass")}>
       {/* Header */}
+      {!isMobile && (
       <div className="flex items-center justify-between px-4 py-4">
         <div className="flex items-center gap-2">
           <Clock className="size-4 text-purple-400/70" />
@@ -181,8 +185,9 @@ export function ProjectHistory({
           </button>
         </div>
       </div>
+      )}
 
-      <div className="divider-gradient mx-3" />
+      {!isMobile && <div className="divider-gradient mx-3" />}
 
       {/* New Project Button */}
       <div className="px-3 pt-3 pb-1">

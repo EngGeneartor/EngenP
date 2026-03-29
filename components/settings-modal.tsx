@@ -143,16 +143,16 @@ export function SettingsModal({
       <div className="absolute inset-0 bg-background/70 backdrop-blur-md" />
 
       {/* Modal */}
-      <div className="relative z-10 flex h-[min(580px,85vh)] w-full max-w-[680px] overflow-hidden rounded-3xl border border-border/30 bg-background shadow-2xl shadow-purple-500/10">
+      <div className="relative z-10 flex flex-col sm:flex-row h-[min(580px,90vh)] w-full max-w-[680px] overflow-hidden rounded-3xl border border-border/30 bg-background shadow-2xl shadow-purple-500/10">
         {/* Gradient top accent */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
         {/* Left: Tab navigation */}
-        <div className="flex w-[180px] shrink-0 flex-col border-r border-border/20 bg-muted/10 py-5">
-          <div className="px-5 mb-5">
+        <div className="flex sm:w-[180px] shrink-0 sm:flex-col border-b sm:border-b-0 sm:border-r border-border/20 bg-muted/10 py-3 sm:py-5 overflow-x-auto">
+          <div className="hidden sm:block px-5 mb-5">
             <h2 className="text-[15px] font-extrabold tracking-tight text-foreground/90">설정</h2>
           </div>
-          <nav className="flex flex-col gap-0.5 px-3">
+          <nav className="flex sm:flex-col gap-0.5 px-3">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
