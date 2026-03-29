@@ -447,3 +447,240 @@ function ThemeCard({ active, onClick, icon, label, description }: { active: bool
     </button>
   )
 }
+
+/* ═══ Mobile Full-Page Settings View ═══ */
+
+interface MobileSettingsViewProps {
+  userEmail?: string | null
+  userId?: string | null
+  userPlan?: "free" | "pro"
+  createdAt?: string | null
+  onSignOut: () => void
+}
+
+export function MobileSettingsView({
+  userEmail,
+  userId,
+  userPlan = "free",
+  createdAt,
+  onSignOut,
+}: MobileSettingsViewProps) {
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const [activeTab, setActiveTab] = useState<Tab>("account")
+
+  const [usageStats, setUsageStats] = useState<UsageStats | null>(null)
+  const [statsLoading, setStatsLoading] = useState(false)
+  const [cancelLoading, setCancelLoading] = useState(false)
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    if (!userId) return
+    setStatsLoading(true)
+    getUsageStats(userId)
+      .then(setUsageStats)
+      .catch(() => {})
+      .finally(() => setStatsLoading(false))
+  }, [userId])
+
+  if (!mounted) return null
+
+  const isPro = userPlan === "pro"
+  const genUsed = usageStats?.thisMonthGenerations ?? 0
+  const expUsed = usageStats?.thisMonthExports ?? 0
+  const genPct = isPro ? 0 : Math.min((genUsed / FREE_GEN_LIMIT) * 100, 100)
+  const expPct = isPro ? 0 : Math.min((expUsed / FREE_EXP_LIMIT) * 100, 100)
+
+  const cancelSubscription = async () => {
+    if (!confirm("정말로 구독을 취소하시겠습니까?")) return
+    setCancelLoading(true)
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.access_token) return
+      const res = await fetch("/api/payments/cancel", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      })
+      if (res.ok) {
+        alert("구독이 취소되었습니다.")
+        window.location.reload()
+      }
+    } catch {} finally { setCancelLoading(false) }
+  }
+
+  const openCheckout = () => {
+    setCheckoutLoading(true)
+    try {
+      const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENTS_CLIENT_KEY
+      if (!clientKey || !userId) return
+      const origin = window.location.origin
+      const orderId = `pro-${userId.slice(0, 8)}-${Date.now()}`
+      const params = new URLSearchParams({
+        clientKey, orderId, orderName: "Haean Pro 월간 구독",
+        amount: "29900", currency: "KRW", customerEmail: userEmail ?? "",
+        successUrl: `${origin}/payments/success`, failUrl: `${origin}/payments/fail`, method: "카드",
+      })
+      window.location.href = `https://api.tosspayments.com/v1/payments?${params.toString()}`
+    } catch {} finally { setCheckoutLoading(false) }
+  }
+
+  const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
+    { id: "account", label: "계정", icon: <User className="size-4" /> },
+    { id: "billing", label: "결제", icon: <CreditCard className="size-4" /> },
+    { id: "usage", label: "사용량", icon: <BarChart3 className="size-4" /> },
+    { id: "appearance", label: "화면", icon: <Sun className="size-4" /> },
+  ]
+
+  return (
+    <div className="flex h-full sidebar-glass">
+      {/* Left: Tab navigation */}
+      <div className="flex w-[72px] shrink-0 flex-col border-r border-border/20 bg-muted/10 py-3">
+        <nav className="flex flex-col gap-0.5 px-1.5">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={cn(
+                "flex flex-col items-center gap-1 rounded-xl px-1 py-2.5 text-[10px] font-medium transition-smooth",
+                activeTab === tab.id
+                  ? "bg-purple-500/15 text-purple-700 dark:text-purple-300"
+                  : "text-foreground/50 active:bg-muted/30 active:text-foreground/70"
+              )}
+            >
+              {tab.icon}
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </nav>
+        <div className="mt-auto px-1.5">
+          <button
+            onClick={onSignOut}
+            className="flex w-full flex-col items-center gap-1 rounded-xl px-1 py-2.5 text-[10px] font-medium text-foreground/50 transition-smooth active:bg-red-500/10 active:text-red-400"
+          >
+            <LogOut className="size-4" />
+            <span>로그아웃</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Right: Content */}
+      <ScrollArea className="flex-1">
+        <div className="p-5">
+          {/* ═══ 계정 ═══ */}
+          {activeTab === "account" && (
+            <div>
+              <SectionHeader title="계정 정보" />
+              <div className="mb-5 flex items-center gap-4">
+                <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 via-violet-500 to-indigo-600 text-lg font-extrabold text-white shadow-lg shadow-purple-500/20">
+                  {userEmail ? userEmail.slice(0, 2).toUpperCase() : "??"}
+                </div>
+                <div>
+                  <p className="text-[14px] font-bold text-foreground/85">{userEmail ?? "Unknown"}</p>
+                  <span className={cn(
+                    "mt-0.5 inline-flex items-center gap-1 rounded-lg px-2.5 py-0.5 text-[11px] font-bold",
+                    isPro ? "bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white" : "bg-muted/40 text-foreground/70"
+                  )}>
+                    {isPro && <Sparkles className="size-3" />}
+                    {isPro ? "Pro" : "Free"}
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <InfoRow icon={<Mail className="size-4 text-purple-400" />} label="이메일" value={userEmail ?? "-"} />
+                <InfoRow icon={<Calendar className="size-4 text-indigo-400" />} label="가입일" value={createdAt ? new Date(createdAt).toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" }) : "-"} />
+              </div>
+            </div>
+          )}
+
+          {/* ═══ 결제 ═══ */}
+          {activeTab === "billing" && (
+            <div>
+              <SectionHeader title="결제 관리" />
+              {isPro ? (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/15 px-4 py-3">
+                    <CheckCircle2 className="size-4 text-emerald-400" />
+                    <p className="text-[13px] font-medium text-emerald-700 dark:text-emerald-300">Pro 플랜 이용 중</p>
+                  </div>
+                  <button onClick={cancelSubscription} disabled={cancelLoading}
+                    className="flex items-center justify-between rounded-xl border border-border/30 bg-muted/15 px-4 py-3.5 text-[13px] font-medium text-foreground/70 transition-smooth hover:bg-muted/30 disabled:opacity-50">
+                    <div className="flex items-center gap-2.5"><CreditCard className="size-4 text-foreground/50" />구독 취소</div>
+                    {cancelLoading ? <Loader2 className="size-4 animate-spin" /> : <ChevronRight className="size-4 text-foreground/50" />}
+                  </button>
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/[0.06] to-indigo-500/[0.06] p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Star className="size-5 text-purple-400" />
+                    <h4 className="text-[15px] font-bold text-foreground/90">Pro 플랜</h4>
+                    <span className="text-[22px] font-extrabold text-gradient ml-auto">₩29,900</span>
+                    <span className="text-[12px] text-foreground/50">/월</span>
+                  </div>
+                  <ul className="space-y-2 mb-4">
+                    {["무제한 문제 생성", "무제한 내보내기", "10가지 전체 유형", "학교 기출 DNA 분석"].map((f) => (
+                      <li key={f} className="flex items-center gap-2 text-[12px] text-foreground/70">
+                        <CheckCircle2 className="size-3.5 text-purple-400" />{f}
+                      </li>
+                    ))}
+                  </ul>
+                  <button onClick={openCheckout} disabled={checkoutLoading}
+                    className="btn-shine flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 py-3 text-[13px] font-bold text-white shadow-lg shadow-purple-500/20 transition-smooth hover:brightness-110 active:scale-[0.98] disabled:opacity-50">
+                    {checkoutLoading ? <Loader2 className="size-4 animate-spin" /> : <ArrowUpRight className="size-4" />}
+                    업그레이드
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ═══ 사용량 ═══ */}
+          {activeTab === "usage" && (
+            <div>
+              <SectionHeader title="이번 달 사용량" />
+              {statsLoading ? (
+                <div className="flex items-center justify-center py-8"><Loader2 className="size-5 animate-spin text-purple-400/50" /></div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-3 mb-5">
+                    <StatCard label="문제 생성" value={genUsed} limit={isPro ? "무제한" : String(FREE_GEN_LIMIT)} icon={<Sparkles className="size-4 text-purple-400" />} />
+                    <StatCard label="내보내기" value={expUsed} limit={isPro ? "무제한" : String(FREE_EXP_LIMIT)} icon={<FileDown className="size-4 text-teal-400" />} />
+                  </div>
+                  {!isPro && (
+                    <div className="flex flex-col gap-3 mb-5">
+                      <ProgressBar label="생성" pct={genPct} used={genUsed} limit={FREE_GEN_LIMIT} />
+                      <ProgressBar label="내보내기" pct={expPct} used={expUsed} limit={FREE_EXP_LIMIT} />
+                    </div>
+                  )}
+                  {usageStats && (
+                    <>
+                      <SectionHeader title="전체 누적" className="mt-2" />
+                      <div className="grid grid-cols-2 gap-3">
+                        <MiniStat label="총 생성" value={usageStats.totalGenerations} />
+                        <MiniStat label="총 내보내기" value={usageStats.totalExports} />
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
+          {/* ═══ 화면 ═══ */}
+          {activeTab === "appearance" && (
+            <div>
+              <SectionHeader title="테마 설정" />
+              <p className="mb-4 text-[12px] text-foreground/55">화면 모드를 선택하세요.</p>
+              <div className="grid grid-cols-3 gap-2.5">
+                <ThemeCard active={theme === "light"} onClick={() => setTheme("light")} icon={<Sun className="size-5" />} label="라이트" description="밝은 배경" />
+                <ThemeCard active={theme === "dark"} onClick={() => setTheme("dark")} icon={<Moon className="size-5" />} label="다크" description="어두운 배경" />
+                <ThemeCard active={theme === "system"} onClick={() => setTheme("system")} icon={<Monitor className="size-5" />} label="시스템" description="OS 설정 따름" />
+              </div>
+            </div>
+          )}
+        </div>
+      </ScrollArea>
+    </div>
+  )
+}

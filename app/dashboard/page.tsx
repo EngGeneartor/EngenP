@@ -9,7 +9,7 @@ import { AIChatSidebar } from "@/components/ai-chat-sidebar"
 import { ProjectHistory } from "@/components/project-history"
 import { AmbientBackground } from "@/components/ambient-background"
 import { UpgradePrompt } from "@/components/upgrade-prompt"
-import { SettingsModal } from "@/components/settings-modal"
+import { SettingsModal, MobileSettingsView } from "@/components/settings-modal"
 import { supabase } from "@/lib/supabase"
 import { useProject } from "@/lib/hooks/use-project"
 import { cn } from "@/lib/utils"
@@ -27,7 +27,7 @@ function DashboardContent() {
   const [historyCollapsed, setHistoryCollapsed] = useState(true)
 
   // Mobile tab navigation
-  type MobileTab = "upload" | "result" | "chat" | "history"
+  type MobileTab = "upload" | "result" | "chat" | "history" | "settings"
   const [mobileTab, setMobileTab] = useState<MobileTab>("upload")
 
   // Subscription plan
@@ -250,6 +250,7 @@ function DashboardContent() {
     { id: "result", label: "결과", icon: <BookOpen className="size-5" /> },
     { id: "chat", label: "AI 채팅", icon: <MessageCircle className="size-5" /> },
     { id: "history", label: "이력", icon: <FolderOpen className="size-5" /> },
+    { id: "settings", label: "설정", icon: <Settings className="size-5" /> },
   ]
 
   return (
@@ -423,37 +424,42 @@ function DashboardContent() {
               />
             </div>
           </div>
+
+          {/* Settings tab — full page */}
+          <div className={cn("h-full", mobileTab !== "settings" && "hidden")}>
+            <MobileSettingsView
+              userEmail={user?.email}
+              userId={user?.id}
+              userPlan={userPlan}
+              createdAt={user?.created_at}
+              onSignOut={async () => {
+                await supabase.auth.signOut()
+                router.push("/")
+              }}
+            />
+          </div>
         </div>
 
         {/* Mobile bottom navigation bar */}
-        <nav className="relative z-20 flex shrink-0 items-center justify-around border-t border-border/20 bg-background/95 px-2 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl">
+        <nav className="relative z-20 flex shrink-0 items-stretch border-t border-border/20 bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl">
           {mobileTabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setMobileTab(tab.id)}
               className={cn(
-                "flex flex-col items-center gap-0.5 px-3 py-2.5 text-[10px] font-medium transition-all",
+                "relative flex flex-1 flex-col items-center justify-center gap-0.5 py-2.5 text-[10px] font-medium transition-all",
                 mobileTab === tab.id
                   ? "text-purple-500"
                   : "text-foreground/40 active:text-foreground/60"
               )}
             >
-              {tab.icon}
-              <span>{tab.label}</span>
               {mobileTab === tab.id && (
                 <div className="absolute top-0 h-0.5 w-8 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500" />
               )}
+              {tab.icon}
+              <span>{tab.label}</span>
             </button>
           ))}
-          <button
-            onClick={() => setSettingsOpen(true)}
-            className={cn(
-              "flex flex-col items-center gap-0.5 px-3 py-2.5 text-[10px] font-medium text-foreground/40 transition-all active:text-foreground/60"
-            )}
-          >
-            <Settings className="size-5" />
-            <span>설정</span>
-          </button>
         </nav>
       </div>
 
