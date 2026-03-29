@@ -69,7 +69,7 @@ export function AIChatSidebar({ userEmail, onSignOut, context, onQuestionsUpdate
   }
 
   return (
-    <aside className="relative z-10 flex h-full w-full md:w-[310px] flex-col sidebar-glass">
+    <aside className="relative z-10 flex h-full w-full md:w-[320px] shrink-0 flex-col sidebar-glass">
       {/* User Info */}
       {userEmail && (
         <div className="px-5 pt-4 pb-2">

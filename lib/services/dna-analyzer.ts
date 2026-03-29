@@ -21,7 +21,7 @@ import type { SchoolDnaProfile } from '@/lib/types'
 // -----------------------------------------------------------
 
 const PROMPTS_DIR = path.join(process.cwd(), 'data', 'prompts')
-const DNA_MODEL = 'claude-sonnet-4-6-20250514'
+const DNA_MODEL = 'claude-sonnet-4-20250514'
 const DNA_MAX_TOKENS = 8192
 
 // -----------------------------------------------------------

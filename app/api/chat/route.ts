@@ -155,7 +155,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const stream = anthropic.messages.stream({
-      model: 'claude-sonnet-4-6-20250514',
+      model: 'claude-sonnet-4-20250514',
       max_tokens: 2048,
       system: buildSystemPrompt(context),
       messages: messages.map((m) => ({ role: m.role, content: m.content })),
@@ -183,7 +183,7 @@ export async function POST(request: NextRequest) {
           console.error('[/api/chat] Stream error:', message)
           controller.enqueue(
             new TextEncoder().encode(
-              `data: ${JSON.stringify({ error: 'AI 채팅 중 오류가 발생했습니다.' })}\n\n`
+              `data: ${JSON.stringify({ error: `AI 채팅 중 오류가 발생했습니다: ${message}` })}\n\n`
             )
           )
           controller.close()
@@ -202,7 +202,7 @@ export async function POST(request: NextRequest) {
     const message = err instanceof Error ? err.message : 'unknown'
     console.error('[/api/chat] Error:', message)
     return new Response(
-      JSON.stringify({ error: 'AI 채팅 중 오류가 발생했습니다.' }),
+      JSON.stringify({ error: `AI 채팅 중 오류가 발생했습니다: ${message}` }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }

@@ -193,7 +193,7 @@ export function MainContent({
   const isGenerating = processingStep === "structurizing" || processingStep === "generating"
 
   return (
-    <main className="relative z-10 flex flex-1 flex-col">
+    <main className="relative z-10 flex min-w-0 flex-1 flex-col">
       {/* Header */}
       <header className="flex items-center justify-between px-7 py-4">
         <div className="flex items-center gap-4">
