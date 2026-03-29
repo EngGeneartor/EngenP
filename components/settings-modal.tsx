@@ -136,14 +136,14 @@ export function SettingsModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[60] sm:z-[100] flex items-end sm:items-center justify-center sm:p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-background/70 backdrop-blur-md" />
 
-      {/* Modal */}
-      <div className="relative z-10 flex flex-col sm:flex-row h-[min(580px,90vh)] w-full max-w-[680px] overflow-hidden rounded-3xl border border-border/30 bg-background shadow-2xl shadow-purple-500/10">
+      {/* Modal — mobile: bottom sheet above tab bar; desktop: centered modal */}
+      <div className="relative z-10 flex flex-col sm:flex-row h-[65vh] sm:h-[min(580px,90vh)] w-full sm:max-w-[680px] mb-[52px] sm:mb-0 overflow-hidden rounded-t-3xl sm:rounded-3xl border border-border/30 bg-background shadow-2xl shadow-purple-500/10">
         {/* Gradient top accent */}
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
