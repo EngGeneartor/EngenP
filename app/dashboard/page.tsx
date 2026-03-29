@@ -257,7 +257,7 @@ function DashboardContent() {
       <AmbientBackground />
 
       {/* ════════════ DESKTOP LAYOUT (md+) ════════════ */}
-      <div className="dashboard-desktop">
+      <div className="hidden md:flex h-full w-full">
         <ProjectHistory
           collapsed={historyCollapsed}
           onToggle={() => setHistoryCollapsed(!historyCollapsed)}
@@ -337,7 +337,7 @@ function DashboardContent() {
       </div>
 
       {/* ════════════ MOBILE LAYOUT (<md) ════════════ */}
-      <div className="dashboard-mobile">
+      <div className="flex md:hidden flex-col h-full w-full">
         {/* Mobile content area */}
         <div className="flex-1 overflow-hidden">
           {/* Upload tab */}
