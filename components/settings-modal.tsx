@@ -148,30 +148,39 @@ export function SettingsModal({
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
         {/* Left: Tab navigation */}
-        <div className="flex sm:w-[180px] shrink-0 sm:flex-col border-b sm:border-b-0 sm:border-r border-border/20 bg-muted/10 py-3 sm:py-5 overflow-x-auto">
+        <div className="flex shrink-0 sm:w-[180px] sm:flex-col border-b sm:border-b-0 sm:border-r border-border/20 bg-muted/10 sm:py-5">
           <div className="hidden sm:block px-5 mb-5">
             <h2 className="text-[15px] font-extrabold tracking-tight text-foreground/90">설정</h2>
           </div>
-          <nav className="flex sm:flex-col gap-0.5 px-3">
+          {/* Mobile: horizontal icon tabs filling width */}
+          <nav className="flex w-full sm:w-auto sm:flex-col sm:gap-0.5 sm:px-3">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setTabKey(k => k + 1) }}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-smooth",
+                  "flex flex-1 sm:flex-initial flex-col sm:flex-row items-center gap-1 sm:gap-2.5 rounded-none sm:rounded-xl px-1 sm:px-3 py-2.5 text-[11px] sm:text-[13px] font-medium transition-smooth",
                   activeTab === tab.id
                     ? "bg-purple-500/15 text-purple-700 dark:text-purple-300"
                     : "text-foreground/55 hover:bg-muted/30 hover:text-foreground/80"
                 )}
               >
                 {tab.icon}
-                {tab.label}
+                <span className="whitespace-nowrap">{tab.label}</span>
               </button>
             ))}
+            {/* Sign out: inline on mobile, bottom on desktop */}
+            <button
+              onClick={onSignOut}
+              className="flex flex-1 sm:hidden flex-col items-center gap-1 rounded-none px-1 py-2.5 text-[11px] font-medium text-foreground/50 transition-smooth hover:bg-red-500/10 hover:text-red-400"
+            >
+              <LogOut className="size-4" />
+              <span className="whitespace-nowrap">로그아웃</span>
+            </button>
           </nav>
 
-          {/* Bottom: Sign out */}
-          <div className="mt-auto px-3">
+          {/* Desktop: Sign out at bottom */}
+          <div className="hidden sm:block mt-auto px-3">
             <button
               onClick={onSignOut}
               className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] font-medium text-foreground/50 transition-smooth hover:bg-red-500/10 hover:text-red-400"
